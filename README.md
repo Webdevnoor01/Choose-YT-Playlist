@@ -6,10 +6,10 @@
 
 ### Requiremet Anyalisys of Choose-YT-Playlist 
 
-#### Functional Requirements
-      - User can login and logout
-      - User can add playlist using playlist id.
-      - User can play any video from a particular playlist.
-      - User can add playlist as a favorite
-      - User can see recent watch playlist 
+Functional Requirements:
+ - User can login and logout
+ - User can add playlist using playlist id.
+ - User can play any video from a particular playlist.
+ - User can add playlist as a favorite
+ - User can see recent watch playlist 
           
