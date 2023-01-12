@@ -12,4 +12,7 @@ Functional Requirements:
  - User can play any video from a particular playlist.
  - User can add playlist as a favorite
  - User can see recent watch playlist 
-          
+
+In **c-yt-p-1.0** version we develop two features
+  1.User can add playlist
+  2.User can watch any video from the playlist on a new page      
