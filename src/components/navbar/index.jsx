@@ -22,7 +22,6 @@ const NavBar = ({ getPlayListById }) => {
   };
 
   const getPlayListId = (playlistId) => {
-    console.log("getPlayListId called");
     getPlayListById(playlistId);
   };
   return (
