@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate,createSearchParams } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
@@ -7,7 +7,14 @@ import Typography from "@mui/material/Typography";
 import { PlayCircleFilled } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
 
-const PlaylistCard = ({ thumbnail, playlistTitle, ChannelTitle, playlistId }) => {
+const PlaylistCard = ({ thumbnail, playlistTitle, ChannelTitle, playlistId, videoId }) => {
+  const navigate = useNavigate()
+  const goToPlaylist = () =>{
+    navigate({
+      pathname:`/playlist/${playlistId}/watch`,
+      search:`?${createSearchParams({v:videoId})}`
+    })
+  }
   return (
     <Card sx={{ maxWidth: 250, m: 1 }}>
       <CardMedia
@@ -29,7 +36,7 @@ const PlaylistCard = ({ thumbnail, playlistTitle, ChannelTitle, playlistId }) =>
           {ChannelTitle}
         </Typography>
       </CardContent>
-      <Button to={`/playlist/${playlistId}`} LinkComponent={RouterLink} >
+      <Button onClick={goToPlaylist}  LinkComponent={RouterLink} >
         <Stack
           direction={"row"}
           alignItems={"center"}
