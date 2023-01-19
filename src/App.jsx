@@ -9,14 +9,15 @@ import "./app.css"
 
 const App = () => {
   const { playlists, error, getPlaylistsById } = usePlaylist();
+  console
   return (
     <div className="App">
       <BrowserRouter>
         <CssBaseline />
-        <NavBar getPlayListById={getPlaylistsById} playlists={playlists} />
+        <NavBar getPlayListById={getPlaylistsById} />
         <Routes>
-          <Route path="/" element={<Playlists playlists={playlists} />} />
-          <Route path="/playlist/:playlistId" element={<Player playlists={playlists} />} />
+          <Route path="/" element={<Playlists/>} />
+          <Route path="/playlist/:playlistId/watch" element={<Player />} />
         </Routes>
       </BrowserRouter>
     </div>
