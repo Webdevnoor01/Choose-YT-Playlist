@@ -1,20 +1,41 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams, createSearchParams } from "react-router-dom";
+import * as qs from "query-string"
+import {useDispatch, useSelector } from "react-redux"
 import ReactPlayer from "react-player/youtube";
 import VideoList from "../../components/video-list";
-import { useState } from "react";
-const Player = ({ playlists }) => {
-  const [currVideoId, setVideoId] = useState(null)
+import { useState, useEffect } from "react";
+import { setplaylist } from "../../store/playlistSlice";
+import storage from "../../utils/Storage";
+const STORAGE_KEY = "C-YT-PLAYLIST";
 
-  const updateVideoId = (videoId) =>{
-    console.log("current video id: ", videoId)
-    setVideoId(videoId)
-  }
+const Player = () => {
+  const state = useSelector(state => state.playlist)
+  const [currVideoId, setCurrVideoId] = useState(null)
   const { playlistId } = useParams();
-  const currentPlaylist = playlists[playlistId];
+  const [searchParams , setSearchParams ] = useSearchParams()
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    const data = storage.get(STORAGE_KEY);
+    const query = qs.default.parse(location.search)
+    if (data) {
+      dispatch(setplaylist(data))
+      setCurrVideoId(query.v)
+    }
+    
+  },[]);
+
+  if(!state.playlists[playlistId] || !currVideoId ) return (<h2>Loading...</h2>) ;
+  const currentPlaylist = state.playlists[playlistId];
   const { channelTitle, videos } = currentPlaylist;
   const { videoId } = currentPlaylist.videos[0].videoContentDetails;
+
+  const updateVideoId = (videoId) =>{
+    setCurrVideoId(videoId)
+    setSearchParams(createSearchParams({v:videoId}))
+  }
+  
   const url = `www.youtube.com/watch?v=${currVideoId ? currVideoId:videoId}`;
-  console.log(url)
   return (
     <>
       <h2> {currentPlaylist.playlistTitle} </h2>
