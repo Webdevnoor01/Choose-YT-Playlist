@@ -21,3 +21,8 @@ In **c-yt-p-1.1** version we add redux store in our project:
  1. User can add playlist
  2. User can watch any video from the playlist on a new page 
  3. Now user can copy the URL from the video player page and paste it into a new tab it would work now.
+
+In **c-yt-p-1.11** version we add easy-peasy store in our project:
+ 1. User can add playlist
+ 2. User can watch any video from the playlist on a new page 
+ 3. Now user can copy the URL from the video player page and paste it into a new tab it would work now.

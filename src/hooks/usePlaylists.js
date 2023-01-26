@@ -13,16 +13,13 @@ const usePlaylists = () => {
 
   useEffect(() => {
     const data = storage.get(STORAGE_KEY);
-    console.log(data)
     if (data) {
       dispatch(setplaylist(data))
-      console.log(data);
     }
     
   }, []);
 
   useEffect(() => {
-    console.log(state.playlist===INIT_STATE)
     if (state.playlist !== INIT_STATE) {
       storage.save(STORAGE_KEY, state.playlist);
       console.log("save state to storage", state.playlist)

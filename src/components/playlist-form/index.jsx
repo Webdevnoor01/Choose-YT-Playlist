@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 const  PlaylistForm = ({open, handleClose, getPlayListId}) => {
   const [value, setValue ] = useState('')
-
+  console.log("Form state: ", value);
   const handleSubmit = () =>{
     if(!value) return alert("Please type valid id")
     getPlayListId(value)
