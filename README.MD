@@ -27,6 +27,7 @@ In **c-yt-p-1.11** version we add easy-peasy store in our project:
  2. User can watch any video from the playlist on a new page 
  3. Now user can copy the URL from the video player page and paste it into a new tab it would work now.
 
-In **c-yt-p-1.2** version we add easy-peasy store in our project:
+In **c-yt-p-1.2** version:
+ 1.In this version I build front-end UI
 
 
