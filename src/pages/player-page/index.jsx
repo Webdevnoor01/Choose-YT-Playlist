@@ -1,6 +1,7 @@
 import { useParams, useSearchParams, createSearchParams } from "react-router-dom";
 import * as qs from "query-string"
 import {useDispatch, useSelector } from "react-redux"
+import { useStoreActions, useStoreState } from "easy-peasy"
 import ReactPlayer from "react-player/youtube";
 import VideoList from "../../components/video-list";
 import { useState, useEffect } from "react";
@@ -9,17 +10,20 @@ import storage from "../../utils/Storage";
 const STORAGE_KEY = "C-YT-PLAYLIST";
 
 const Player = () => {
-  const state = useSelector(state => state.playlist)
+  // const state = useSelector(state => state.playlist)
+  // const dispatch = useDispatch()
   const [currVideoId, setCurrVideoId] = useState(null)
   const { playlistId } = useParams();
   const [searchParams , setSearchParams ] = useSearchParams()
-  const dispatch = useDispatch()
   
+  const state = useStoreState((state) => state.playlist)
+  const setPlaylist = useStoreActions((action) =>action.setPlaylist)
   useEffect(() => {
     const data = storage.get(STORAGE_KEY);
     const query = qs.default.parse(location.search)
     if (data) {
-      dispatch(setplaylist(data))
+      // dispatch(setplaylist(data))
+      setPlaylist(data)
       setCurrVideoId(query.v)
     }
     

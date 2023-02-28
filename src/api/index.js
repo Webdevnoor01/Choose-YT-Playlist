@@ -57,8 +57,7 @@ const getPlaylist = async (playlistId) =>{
         playlistThumbnail:thumbnails.medium,
         videos:result,
         channelTitle:ct,
-        channelId:cid,
-        channelTitle
+        channelId:cid
 
       }
 

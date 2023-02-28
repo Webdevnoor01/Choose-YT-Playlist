@@ -1,12 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux"
+import { useStoreState } from "easy-peasy";
 import PlaylistCard from "../playlist-card";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router-dom";
 
 
 const Playlists = () => {
-  const state = useSelector(state => state.playlist)
+  // const state = useSelector(state => state.playlist)
+  const state = useStoreState((state) => state.playlist)
   const playlistArr =  Object.values(state.playlists);
   return (
     <>
