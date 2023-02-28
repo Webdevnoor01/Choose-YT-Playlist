@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setSidebarToggle,
   setUserProfileToggle,
+  setAddPlaylistToggle,
 } from "../../store/toogleSlice";
 import { setMode } from "../../store/modeSlice";
 
@@ -32,6 +33,7 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 import { useProSidebar } from "react-pro-sidebar";
 import ProfileAction from "../UI/profile-action";
+import AddPlaylistModal from "../modals/add-playlist";
 
 const TopBar = ({ auth }) => {
   const states = useSelector((state) => state);
@@ -49,6 +51,10 @@ const TopBar = ({ auth }) => {
 
   const handleToggleUser = () => {
     dispatch(setUserProfileToggle(!states.toggle.userProfileToggle));
+  };
+
+  const handleTogglePlaylist = () => {
+    dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
   };
 
   const handleMode = () => {
@@ -72,7 +78,7 @@ const TopBar = ({ auth }) => {
         display='flex'
         justifyContent='space-between'
         alignItems='center'
-        zIndex={'2000 !important' }
+        zIndex={"2000 !important"}
       >
         <IconButton
           onClick={handleMenuToggle}
@@ -148,6 +154,23 @@ const TopBar = ({ auth }) => {
           },
         }}
       >
+        <Typography
+          variant='button'
+          onClick={handleTogglePlaylist}
+          sx={{
+            backgroundColor: colors.btn[500],
+            color: colors.light[100],
+            borderRadius: ".3rem",
+            p: ".3rem 1rem  ",
+            cursor: "pointer",
+            "&:hover": {
+              backgroundColor: colors.btn[600],
+            },
+          }}
+        >
+          add playlist
+        </Typography>
+
         <IconButton onClick={handleMode}>
           {theme.palette.mode === "dark" ? (
             <LightModeOutlinedIcon sx={{ color: colors.pinkAccent[500] }} />
@@ -177,7 +200,7 @@ const TopBar = ({ auth }) => {
               variant='popover'
               popupId='demo-popup-popover'
               sx={{
-                zIndex:"1 !important"
+                zIndex: "1 !important",
               }}
             >
               {(popupState) => (
@@ -218,7 +241,6 @@ const TopBar = ({ auth }) => {
                         gap: ".5rem",
                         pt: "1rem",
                         backgroundColor: colors.primary[500],
-                        
                       }}
                     >
                       <ProfileAction
@@ -229,7 +251,7 @@ const TopBar = ({ auth }) => {
                       <ProfileAction
                         text={"logout"}
                         Icon={LogoutOutlinedIcon}
-                        to="/login"
+                        to='/login'
                       />
                     </Box>
                   </Popover>

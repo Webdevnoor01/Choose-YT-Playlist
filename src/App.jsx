@@ -11,12 +11,12 @@ import Layout from "./layout";
 // Hooks
 import { useMode } from "./hooks/useMode";
 import AuthLayout from "./auth-layout";
+import AddPlaylistModal from "./components/modals/add-playlist";
 
 function App() {
   const { pathname } = useLocation();
   const state = useSelector((state) => state);
   const { theme, colorMode } = useMode(state.mode.value);
-  console.log("location: ", location);
   return (
     <ThemeProvider theme={theme}>
       <ProSidebarProvider>
@@ -33,6 +33,9 @@ function App() {
             </AuthLayout>
           :null
         }
+
+        {/* Modals */}
+        {state.toggle.addPlaylistToggle && <AddPlaylistModal open={state.toggle.addPlaylistToggle} />}
       </ProSidebarProvider>
     </ThemeProvider>
   );

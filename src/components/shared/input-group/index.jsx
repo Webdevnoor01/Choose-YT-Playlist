@@ -9,7 +9,6 @@ const InputGroup = ({
   type,
   placeHolder,
   Icon,
-
   onChange,
   onBlur,
   onFocus,
@@ -19,16 +18,24 @@ const InputGroup = ({
   const colors = tokens(theme.palette.mode);
   return (
     <>
-      <Box component="label" htmlFor={name} >{label}</Box>
+      <Box
+        component='label'
+        htmlFor={name}
+        sx={{
+          color:colors.gray[100]
+        }}
+      >
+        {label}
+      </Box>
       <Box
         display='flex'
         alignItems='center'
-        backgroundColor={colors.secondary[500]}
+        backgroundColor={colors.primary[500]}
         borderRadius='.5rem'
-        color={colors.gray[500]}
-        margin=".3rem 0 1rem 0"
+        color={colors.gray[100]}
+        margin='.3rem 0 1rem 0'
         width='100%'
-        p=".1rem .5rem .1rem 0"
+        p='.1rem .5rem .1rem 0'
       >
         <InputBase
           type={type}
@@ -38,13 +45,16 @@ const InputGroup = ({
             height: "100%",
             width: "100%",
             padding: ".5rem 1.5rem",
+            borderRadius: ".5rem",
+            backgroundColor: colors.primary[500],
+            color:colors.gray[100]
           }}
         />
-
-        <IconButton  >
-
-        <Icon />
-        </IconButton>
+        {Icon && (
+          <IconButton>
+            <Icon />
+          </IconButton>
+        )}
       </Box>
     </>
   );

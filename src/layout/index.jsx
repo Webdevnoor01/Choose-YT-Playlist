@@ -14,7 +14,7 @@ const Layout = ({children}) => {
   console.log("selected: ", collapsed)
 
   return (
-    <Box flexGrow={1}>
+    <Box flexGrow={1} zIndex={1} >
       <Grid display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>
         <Grid item gridColumn="span 12">
           <TopBar onSelect={setSelected} selected={selected} />
@@ -44,7 +44,7 @@ const Layout = ({children}) => {
               [theme.breakpoints.down("md")]:{
                 width:"100vw",
                 pb:"8rem",
-              }
+              },
             }}
           >
             {children}
