@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit"
+<<<<<<< HEAD
 
 // Slice: 
 import toggleSlice from "./toogleSlice"
@@ -7,6 +8,12 @@ const store = configureStore({
     reducer: {
         toggle: toggleSlice,
         mode: modeSlice
+=======
+import playlistReducer from "./playlistSlice"
+const store = configureStore({
+    reducer:{
+        playlist:playlistReducer
+>>>>>>> main
     }
 })
 

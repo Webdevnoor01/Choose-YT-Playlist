@@ -1,0 +1,27 @@
+*,*::after, *::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.App{
+    max-width: 1444px;
+    margin: 0 auto;
+}
+.player_containe{
+    /* height: 20rem;
+    width: 30rem; */
+    padding:1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.video__container{
+    width: 65%;
+}
+.playlsit_video_list{
+    padding: 0 1rem;
+    max-width: 35%;
+    max-height: 29.5rem;
+    overflow-y: scroll;
+}
