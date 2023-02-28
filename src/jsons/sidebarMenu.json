@@ -1,0 +1,27 @@
+{
+    "Playlists": {
+        "title": "Playlists",
+        "icon": "PlaylistPlayOutlinedIcon",
+        "to": "/"
+    },
+    "favoritePlaylist": {
+        "title": "Favorite Playlist",
+        "icon": "FavoriteOutlinedIcon",
+        "to": "favorite-playlists"
+    },
+    "recentPlaylist": {
+        "title": "Recent Playlist",
+        "icon": "VideoLibraryOutlinedIcon",
+        "to": "recent-playlists"
+    },
+    "history": {
+        "title": "History",
+        "icon": "HistoryOutlinedIcon",
+        "to": "history"
+    },
+    "notes": {
+        "title": "Notes",
+        "icon": "TextSnippetOutlinedIcon",
+        "to": "notes"
+    }
+}
