@@ -152,6 +152,7 @@ const TopBar = ({ auth }) => {
       >
         <ButtonUI
           text='add playlist'
+          onClick={handleTogglePlaylist}
           mdNone={true}
           style={{
             backgroundColor:colors.pinkAccent[500],
