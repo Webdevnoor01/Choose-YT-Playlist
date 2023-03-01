@@ -53,6 +53,7 @@ const AddPlaylistModal = () => {
           "& .MuiDialogContent-root": {
             "& .MuiTypography-root": {
               height: "100% !important",
+              overflow:"none"
             },
           },
         }}

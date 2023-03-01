@@ -21,7 +21,6 @@ const ProfileAction = ({ onClick, Icon, text, style={}, to }) => {
         LinkComponent={Link}
         to={to}
         sx={{
-          color: colors.gray[100],
           backgroundColor: colors.blueAccent[500],
           width: "100%",
           diaplay: "flex",

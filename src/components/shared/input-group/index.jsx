@@ -30,7 +30,7 @@ const InputGroup = ({
       <Box
         display='flex'
         alignItems='center'
-        backgroundColor={colors.primary[500]}
+        backgroundColor={colors.secondary[500]}
         borderRadius='.5rem'
         color={colors.gray[100]}
         margin='.3rem 0 1rem 0'
@@ -46,7 +46,7 @@ const InputGroup = ({
             width: "100%",
             padding: ".5rem 1.5rem",
             borderRadius: ".5rem",
-            backgroundColor: colors.primary[500],
+            backgroundColor: colors.secondary[500],
             color:colors.gray[100]
           }}
         />

@@ -12,14 +12,7 @@ import { useTheme } from "@mui/material/styles";
 import { useContext } from "react";
 
 // mui componetn
-import {
-  Box,
-  InputBase,
-  IconButton,
-  Typography,
-  Popover,
-  Button,
-} from "@mui/material";
+import { Box, InputBase, IconButton, Typography, Popover } from "@mui/material";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 
 // mui icons
@@ -30,10 +23,13 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 import { useProSidebar } from "react-pro-sidebar";
+
+// Components
+import ButtonUI from "../UI/button";
 import ProfileAction from "../UI/profile-action";
-import AddPlaylistModal from "../modals/add-playlist";
 
 const TopBar = ({ auth }) => {
   const states = useSelector((state) => state);
@@ -154,22 +150,30 @@ const TopBar = ({ auth }) => {
           },
         }}
       >
-        <Typography
-          variant='button'
-          onClick={handleTogglePlaylist}
-          sx={{
-            backgroundColor: colors.btn[500],
-            color: colors.light[100],
-            borderRadius: ".3rem",
-            p: ".3rem 1rem  ",
-            cursor: "pointer",
-            "&:hover": {
-              backgroundColor: colors.btn[600],
-            },
+        <ButtonUI
+          text='add playlist'
+          mdNone={true}
+          style={{
+            backgroundColor:colors.pinkAccent[500],
+            "&:hover":{
+              backgroundColor:colors.pinkAccent[600],
+
+            }
           }}
-        >
-          add playlist
-        </Typography>
+        />
+
+        {!auth && (
+          <IconButton
+            onClick={handleTogglePlaylist}
+            sx={{
+              [theme.breakpoints.up("md")]: {
+                display: "none",
+              },
+            }}
+          >
+            <AddCircleOutlineOutlinedIcon sx={{ color: colors.icon[500] }} />
+          </IconButton>
+        )}
 
         <IconButton onClick={handleMode}>
           {theme.palette.mode === "dark" ? (
@@ -190,7 +194,7 @@ const TopBar = ({ auth }) => {
               sx={{
                 wordBreak: "unset",
                 [theme.breakpoints.down("md")]: {
-                  fontSize: ".8rem",
+                  display: "none",
                 },
               }}
             >
@@ -263,48 +267,27 @@ const TopBar = ({ auth }) => {
 
         {auth && (
           <>
-            <Typography
-              variant='button'
-              sx={{
-                backgroundColor: colors.btn[500],
-                color: colors.light[100],
-                borderRadius: ".3rem",
-                p: ".3rem 1rem  ",
-                cursor: "pointer",
+            <ButtonUI
+              text='login'
+              style={{
+                backgroundColor: colors.blueAccent[500],
                 "&:hover": {
-                  backgroundColor: colors.btn[600],
+                  backgroundColor: colors.blueAccent[600],
                 },
               }}
-            >
-              login
-            </Typography>
+              to='/login'
+            />
 
-            <Typography
-              variant='button'
-              sx={{
-                backgroundColor: `${
-                  theme.palette.mode === "dark"
-                    ? colors.blueAccent[500]
-                    : colors.pinkAccent[500]
-                }`,
-                color: colors.light[100],
-                borderRadius: ".3rem",
-                p: ".3rem 1rem  ",
-                cursor: "pointer",
+            <ButtonUI
+              text='signup'
+              style={{
+                backgroundColor: colors.pinkAccent[500],
                 "&:hover": {
-                  backgroundColor: `${
-                    theme.palette.mode === "dark"
-                      ? colors.blueAccent[600]
-                      : colors.pinkAccent[600]
-                  }`,
-                },
-                [theme.breakpoints.down("md")]: {
-                  display: "none",
+                  backgroundColor: colors.pinkAccent[600],
                 },
               }}
-            >
-              signup
-            </Typography>
+              to='/signup'
+            />
           </>
         )}
       </Box>

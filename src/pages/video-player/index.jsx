@@ -22,6 +22,9 @@ import NoteItem from "../../components/shared";
 import VideoList from "../../components/video-list";
 import AddNote from "../../components/add-note";
 
+// Components
+import ButtonUI from "../../components/UI/button"
+
 const videos = [
   {
     title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
@@ -135,19 +138,18 @@ const VideoPlayer = () => {
               justifyContent: "flex-end",
             }}
           >
-            <Button
-              sx={{
-                backgroundColor: colors.pinkAccent[500],
-                color: colors.light[500],
+
+            <ButtonUI 
+             text='add note'
+             onClick={()=> setOpen(!open)}
+             style={{
+              backgroundColor: colors.pinkAccent[500],
                 padding: ".5rem 2rem",
                 "&:hover": {
                   backgroundColor: colors.pinkAccent[600],
                 },
-              }}
-              onClick={()=> setOpen(!open)}
-            >
-              Add note
-            </Button>
+             }}
+             />
           </Box>
 
           {/* Individual note */}

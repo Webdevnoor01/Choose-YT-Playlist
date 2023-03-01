@@ -21,6 +21,7 @@ import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlin
 import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
 import InputGroup from "../../components/shared/input-group";
 import { Link } from "react-router-dom";
+import ButtonUI from "../../components/UI/button";
 
 const Login = () => {
   const theme = useTheme();
@@ -38,7 +39,9 @@ const Login = () => {
         m: "0 auto",
         [theme.breakpoints.down("md")]: {
           // alignItems:"flex-start"
+          mt:"9.5rem",
           justifyContent: "center",
+          alignItems:"flex-start"
         },
       }}
     >
@@ -77,21 +80,17 @@ const Login = () => {
           Icon={HttpsOutlinedIcon}
         />
 
-        <Button
-          type='submit'
-          sx={{
-            backgroundColor: colors.blueAccent[500],
-            color: colors.light[500],
-            width: "100%",
-            "&:hover": {
-              backgroundColor: colors.pinkAccent[500],
-            },
-          }}
-          LinkComponent={Link}
-          to="/"
-        >
-          Login
-        </Button>
+        <ButtonUI 
+        text='login'
+        style={{
+          p:".6rem",
+          "&:hover": {
+            backgroundColor: colors.pinkAccent[500],
+          },
+          width:"100%"
+        }}
+        to="/"
+        />
       </Box>
 
       <Box
