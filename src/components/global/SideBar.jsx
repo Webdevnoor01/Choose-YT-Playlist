@@ -10,6 +10,7 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import VideoLibraryOutlinedIcon from "@mui/icons-material/VideoLibraryOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import TextSnippetOutlinedIcon from "@mui/icons-material/TextSnippetOutlined";
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { Link } from "react-router-dom";
 
 // Menu Data
@@ -31,6 +32,7 @@ const SideBar = () => {
     "VideoLibraryOutlinedIcon": <VideoLibraryOutlinedIcon/>,
     "HistoryOutlinedIcon": <HistoryOutlinedIcon/>,
     "TextSnippetOutlinedIcon": <TextSnippetOutlinedIcon/>,
+    "SettingsOutlinedIcon":<SettingsOutlinedIcon/>
 
   }
 

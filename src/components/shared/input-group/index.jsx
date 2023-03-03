@@ -13,41 +13,66 @@ const InputGroup = ({
   onBlur,
   onFocus,
   value,
+  disabled,
+  fullWidth
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <>
-      <Box
-        component='label'
-        htmlFor={name}
-        sx={{
-          color:colors.gray[100]
-        }}
-      >
-        {label}
-      </Box>
+      {label && (
+        <Box
+          component='label'
+          htmlFor={name}
+          sx={{
+            color: colors.gray[100],
+          }}
+        >
+          {label}
+        </Box>
+      )}
       <Box
         display='flex'
         alignItems='center'
-        backgroundColor={colors.secondary[500]}
+        backgroundColor={`${
+          disabled ? colors.blueAccent[600] : colors.secondary[500]
+        }`}
         borderRadius='.5rem'
-        color={colors.gray[100]}
+        color={colors.light[500]}
         margin='.3rem 0 1rem 0'
-        width='100%'
         p='.1rem .5rem .1rem 0'
+        width={`${fullWidth ? "100%":null}`}
+        sx={{
+          [theme.breakpoints.down("md")]:{
+            width:"100%"
+          }
+        }}
+        
       >
         <InputBase
           type={type}
           name={name}
           placeholder={placeHolder}
+          value={value}
+          disabled={disabled}
+          width={`${fullWidth ? "100%":null}`}
+
+          disableInjectingGlobalStyles={
+            {
+              backgroundColor:"red"
+            }
+          }
           sx={{
             height: "100%",
-            width: "100%",
             padding: ".5rem 1.5rem",
             borderRadius: ".5rem",
-            backgroundColor: colors.secondary[500],
-            color:colors.gray[100]
+            backgroundColor: `${
+              disabled ? colors.blueAccent[600] : colors.secondary[500]
+            }`,
+            color: `${disabled ? colors.light[500] : colors.gray[100]}`,
+            [theme.breakpoints.down("md")]:{
+              width:"100%"
+            }
           }}
         />
         {Icon && (

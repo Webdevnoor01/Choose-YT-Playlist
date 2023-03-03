@@ -23,5 +23,10 @@
         "title": "Notes",
         "icon": "TextSnippetOutlinedIcon",
         "to": "notes"
+    },
+    "settings": {
+        "title": "Settings",
+        "icon": "SettingsOutlinedIcon",
+        "to": "profile"
     }
 }
