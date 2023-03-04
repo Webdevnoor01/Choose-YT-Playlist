@@ -1,0 +1,16 @@
+{
+    "email": {
+        "name": "email",
+        "type": "email",
+        "placeHolder": "example@gmail.com",
+        "label": "Email",
+        "icon": "AlternateEmailOutlinedIcon"
+    },
+    "password": {
+        "name": "password",
+        "type": "password",
+        "placeHolder": "Jsd$5sadfsi435",
+        "label": "password",
+        "icon": "HttpsOutlinedIcon"
+    }
+}

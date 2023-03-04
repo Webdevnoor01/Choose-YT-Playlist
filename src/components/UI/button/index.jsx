@@ -5,13 +5,14 @@ import { tokens } from "../../../theme";
 
 import { Link } from "react-router-dom"
 
-const ButtonUI = ({ text, onClick, style, mdNone, to }) => {
+const ButtonUI = ({ text, onClick, style, mdNone, to, type }) => {
   const theme = useTheme()
   const colors = tokens(theme.palette.mode)
   return (
     <Button
         onClick={onClick}
         LinkComponent={Link}
+        type={type}
         to={to && to}
       sx={{
         color: colors.light[100],

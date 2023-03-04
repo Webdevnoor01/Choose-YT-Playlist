@@ -25,14 +25,12 @@ const PlaylistCard = ({ thumbnail, title, channelName, videos }) => {
   return (
     <Card
       sx={{
-        maxWidth: `${collapsed ? "290px" : "255px"}`,
+        
         "& .MuiCardContent-root": {
           padding: ".5rem 1rem !important",
         },
         backgroundColor: theme.palette.secondary.main,
-        [theme.breakpoints.down("md")]: {
-          maxWidth: "100%",
-        },
+        
       }}
     >
       <CardMedia

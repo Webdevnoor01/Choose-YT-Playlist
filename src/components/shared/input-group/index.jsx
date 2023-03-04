@@ -1,4 +1,4 @@
-import { Box, IconButton, InputBase } from "@mui/material";
+import { Box, IconButton, InputBase, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 import { tokens } from "../../../theme";
@@ -9,12 +9,12 @@ const InputGroup = ({
   type,
   placeHolder,
   Icon,
-  onChange,
-  onBlur,
-  onFocus,
   value,
   disabled,
-  fullWidth
+  fullWidth,
+  error,
+  style,
+  ...rest
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -39,46 +39,84 @@ const InputGroup = ({
         }`}
         borderRadius='.5rem'
         color={colors.light[500]}
-        margin='.3rem 0 1rem 0'
+        m=' 0.3rem 0px 1rem'
         p='.1rem .5rem .1rem 0'
-        width={`${fullWidth ? "100%":null}`}
+        width={`${fullWidth ? 100 : null}%`}
         sx={{
-          [theme.breakpoints.down("md")]:{
-            width:"100%"
-          }
+          [theme.breakpoints.down("md")]: {
+            width: "100%",
+          },
+          ...style,
         }}
-        
       >
-        <InputBase
-          type={type}
-          name={name}
-          placeholder={placeHolder}
-          value={value}
-          disabled={disabled}
-          width={`${fullWidth ? "100%":null}`}
+        
+        {value && (
+          <InputBase
+            type={type}
+            name={name}
+            placeholder={placeHolder}
+            value={value && value}
+            disabled={disabled}
+            {...rest.field}
+            sx={{
+              height: "100%",
+              padding: ".5rem 1.5rem",
+              borderRadius: ".5rem",
+              backgroundColor: `${
+                disabled ? colors.blueAccent[600] : colors.secondary[500]
+              }`,
+              color: `${disabled ? colors.light[500] : colors.gray[100]}`,
+              width: `${fullWidth ? 100 : null}%`,
+              [theme.breakpoints.down("md")]: {
+                width: "100%",
+              },
+            }}
+          />
+        )}
 
-          disableInjectingGlobalStyles={
-            {
-              backgroundColor:"red"
-            }
-          }
-          sx={{
-            height: "100%",
-            padding: ".5rem 1.5rem",
-            borderRadius: ".5rem",
-            backgroundColor: `${
-              disabled ? colors.blueAccent[600] : colors.secondary[500]
-            }`,
-            color: `${disabled ? colors.light[500] : colors.gray[100]}`,
-            [theme.breakpoints.down("md")]:{
-              width:"100%"
-            }
-          }}
-        />
+        {!value && (
+          <InputBase
+            type={type}
+            name={name}
+            placeholder={placeHolder}
+            disabled={disabled}
+            {...rest.field}
+            sx={{
+              height: "100%",
+              padding: ".5rem 1.5rem",
+              borderRadius: ".5rem",
+              backgroundColor: `${
+                disabled ? colors.blueAccent[600] : colors.secondary[500]
+              }`,
+              color: `${disabled ? colors.light[500] : colors.gray[100]}`,
+              width: `${fullWidth ? 100 : null}%`,
+              [theme.breakpoints.down("md")]: {
+                width: "100%",
+              },
+            }}
+          />
+        )}
         {Icon && (
           <IconButton>
             <Icon />
           </IconButton>
+        )}
+      </Box>
+      <Box
+        sx={{
+          minHeight: "1.5rem",
+        }}
+      >
+        {error && (
+          <Typography
+            sx={{
+              color: "red",
+              fontSize: ".8rem",
+            }}
+          >
+            {" "}
+            {error}{" "}
+          </Typography>
         )}
       </Box>
     </>

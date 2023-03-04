@@ -1,9 +1,13 @@
 import React from "react";
+
+// uuid
+import shortid from "shortid";
+
 // MUI Components
 import { Box, Typography } from "@mui/material";
 
 // MUI hooks
-import {useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 
 // Components
 import InputGroup from "../shared/input-group";
@@ -11,11 +15,10 @@ import ButtonUI from "../UI/button";
 import { tokens } from "../../theme";
 import { useState } from "react";
 
-const ProfileEdit = ({heading, button, inputs=[] }) => {
-
-    const [profileEditInputs, setProfileEditInputs] = useState()
-    const theme = useTheme()
-    const colors = tokens(theme.palette.mode)
+const ProfileEdit = ({ heading, button, inputs }) => {
+  console.log(inputs);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   return (
     <Box
       sx={{
@@ -38,20 +41,22 @@ const ProfileEdit = ({heading, button, inputs=[] }) => {
             flexWrap: "wrap",
           }}
         >
-        {inputs.map((input) => (
+          {inputs.map((input) => (
             <InputGroup
+              key={shortid.generate()}
               type={input.type}
               placeHolder={input.placeHolder}
               fullWidth={input.fullWidth}
               value={input?.value}
               disabled={input?.disabled}
+              style={{ mr: ".5rem" }}
             />
           ))}
         </Box>
 
         <ButtonUI
           text={button.text}
-          style={{...button.style}}
+          style={{ ...button.style, mt: "1rem" }}
         />
       </Box>
     </Box>

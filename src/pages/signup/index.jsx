@@ -1,32 +1,82 @@
-import { Box } from "@mui/system";
+// React
 import React from "react";
+
+// React Router Dom
+import { Link, useNavigate } from "react-router-dom";
+
+// Form Hook
+import { useForm, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 // Mui
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
-import {
-  Button,
-  CardMedia,
-  IconButton,
-  Input,
-  InputBase,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { HttpOutlined, SearchOutlined } from "@mui/icons-material";
+import { CardMedia, Typography, Box } from "@mui/material";
 
 // MUI Icons
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
 import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
 import InputGroup from "../../components/shared/input-group";
-import { Link } from "react-router-dom";
 import ButtonUI from "../../components/UI/button";
 
+// input json
+import inputObj from "./signpup.json";
+
 const Signup = () => {
+  // Form validation schema
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .min(4)
+      .max(20)
+      .required("Your name must be under 4 to 25 charecter"),
+    email: yup.string()
+      .required("Email is required")
+      .email("Invalid email address format"),
+    password: yup
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .max(32, "Password cannot be longer than 32 characters")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/,
+        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+      )
+      .required("Password is required"),
+  });
+
+  const {
+    formState: { errors },
+    handleSubmit,
+    control,
+  } = useForm({
+    reValidateMode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    resolver: yupResolver(schema),
+  });
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const formArr = Object.values(inputObj);
+  const iconObj = {
+    PersonOutlineOutlinedIcon,
+    AlternateEmailOutlinedIcon,
+    HttpsOutlinedIcon,
+  };
+
+  const onValid = (data) => {
+    console.log(data);
+    navigate("/login");
+  };
+  const onInValid = (errors) => {
+    console.log(errors);
+  };
   return (
     <Box
       component='div'
@@ -39,14 +89,15 @@ const Signup = () => {
         m: "0 auto",
         [theme.breakpoints.down("md")]: {
           // alignItems:"flex-start"
-          mt:"5rem",
+          mt: "5rem",
           justifyContent: "center",
-          alignItems:"flex-start"
+          alignItems: "flex-start",
         },
       }}
     >
       <Box
         component='form'
+        onSubmit={handleSubmit(onValid, onInValid)}
         sx={{
           width: "55%",
           [theme.breakpoints.down("md")]: {
@@ -65,38 +116,36 @@ const Signup = () => {
           <Typography variant='h5'>Create Your Account</Typography>
         </Box>
 
-        <InputGroup
-          label='Name'
-          type='text'
-          name='name'
-          placeHolder='Enter your Name'
-          Icon={PersonOutlineOutlinedIcon}
-        />
-        <InputGroup
-          label='Email'
-          type='email'
-          name='email'
-          placeHolder='Enter your email'
-          Icon={AlternateEmailOutlinedIcon}
-        />
-        <InputGroup
-          label='Password'
-          type='password'
-          name='password'
-          placeHolder='Enter strong password'
-          Icon={HttpsOutlinedIcon}
-        />
+        {formArr.map((formItem, i) => (
+          <Controller
+            control={control}
+            name={formItem.name}
+            key={i * 32 + 435}
+            render={(field) => (
+              <InputGroup
+                label={formItem.label}
+                type={formItem.type}
+                name={formItem.name}
+                placeHolder={formItem.placeHolder}
+                Icon={iconObj[formItem.icon]}
+                fullWidth={true}
+                {...field}
+                error={errors[formItem.name]?.message}
+              />
+            )}
+          />
+        ))}
 
-        <ButtonUI 
+        <ButtonUI
           text='signup'
+          type='submit'
           style={{
-            p:".6rem 0",
-            width:"100%",
+            p: ".6rem 0",
+            width: "100%",
             "&:hover": {
               backgroundColor: colors.pinkAccent[500],
             },
           }}
-          to="/login"
         />
       </Box>
 

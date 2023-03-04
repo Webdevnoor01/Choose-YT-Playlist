@@ -42,18 +42,21 @@ const profileEditObj = {
         type: "password",
         placeHolder: "Enter old password",
         fullWidth: true,
+        value:null
       },
       {
         name:"newPassword",
         type: "password",
         placeHolder: "Enter new password",
         fullWidth: false,
+        value:null
       },
       {
         name:"newConformPassword",
         type: "password",
         placeHolder: "Enter new conform password",
         fullWidth: false,
+        value:null
       },
     ],
     button: {
@@ -66,6 +69,7 @@ const profileEditObj = {
 const Profile = () => {
 
   const [profileEditComponent, setProfileEditComponent] = useState("userInfo");
+  console.log(profileEditObj[profileEditComponent])
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   profileEditObj.changePassword.button.style = {
@@ -101,11 +105,7 @@ const Profile = () => {
           [theme.breakpoints.down("sm")]: {
             width: "100%",
             height: "50%",
-          },
-          // [theme.breakpoints.down("md")]: {
-          //   width: "100%",
-          //   height: "90%",
-          // },
+          }
         }}
       >
         <Typography
@@ -211,89 +211,7 @@ const Profile = () => {
           button={profileEditObj[profileEditComponent].button}
           inputs={profileEditObj[profileEditComponent].inputs}
         />
-        {/* <Box
-          sx={{
-            backgroundColor: colors.primary[500],
-            borderRadius: ".5rem",
-            m: ".5rem 0",
-            p: "1rem .5rem",
-          }}
-        >
-          <Typography variant='body1'>Edit user info</Typography>
 
-          <Box component='form'>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                gap: "1rem",
-              }}
-            >
-              <InputGroup
-                type='text'
-                value='Abdun Noor Faruki Biswas'
-                disabled={false}
-              />
-              <InputGroup
-                type='email'
-                value='abdunnoor@gmail.com'
-                disabled={true}
-              />
-            </Box>
-
-            <ButtonUI text='Update user infor' />
-          </Box>
-        </Box> */}
-
-        {/* <Box
-          sx={{
-            backgroundColor: colors.primary[500],
-            borderRadius: ".5rem",
-            m: ".5rem 0",
-            p: "1rem .5rem",
-          }}
-        >
-          <Typography variant='body1'>Change password</Typography>
-
-          <Box component='form'>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                gap: "1rem",
-                flexWrap: "wrap",
-              }}
-            >
-              <InputGroup
-                type='password'
-                placeHolder='Enter old password'
-                fullWidth
-              />
-              <InputGroup
-                type='password'
-                placeHolder='Enter new password'
-              />
-              <InputGroup
-                type='password'
-                placeHolder='Enter new conform password'
-              />
-            </Box>
-
-            <ButtonUI
-              text='change password'
-              style={{
-                backgroundColor: colors.pinkAccent[500],
-                "&:hover": {
-                  backgroundColor: colors.pinkAccent[600],
-                },
-              }}
-            />
-          </Box>
-        </Box> */}
       </Box>
     </Box>
   );

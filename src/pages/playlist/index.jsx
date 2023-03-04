@@ -19,11 +19,14 @@ const Playlist = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        gap: "1rem",
+        // display: "flex",
+        // flexWrap: "wrap",
+        // justifyContent: "flex-start",
+        // alignItems: "center",
+        // gap: "1rem",
+        display:"grid",
+        gridTemplateColumns:"repeat(auto-fit, minmax(255px, 1fr))",
+        gap:".5rem"
       }}
     >
       <PlaylistCard
