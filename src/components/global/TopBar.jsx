@@ -35,8 +35,6 @@ const TopBar = ({ auth }) => {
   const states = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  console.log("states: ", states);
-
   const { collapseSidebar, collapsed } = useProSidebar(false);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

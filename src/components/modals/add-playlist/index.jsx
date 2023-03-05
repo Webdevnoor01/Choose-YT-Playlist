@@ -9,31 +9,84 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
 
 // MUI hooks
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../../theme";
 
 // Store
+// actions
 import { setAddPlaylistToggle } from "../../../store/toogleSlice";
+import { fetchPlaylist } from "../../../store/playlistSlice";
+
+// Components
 import InputGroup from "../../shared/input-group";
 
+// React Hook Form
+import { useForm, Controller } from "react-hook-form";
+import { Box } from "@mui/material";
+import ButtonUI from "../../UI/button";
+import { setPlaylistId } from "../../../store/playlsitIdSlice";
+
 const AddPlaylistModal = () => {
-  const state = useSelector((state) => state.toggle);
+  const {
+    formState: { errors },
+    handleSubmit,
+    control,
+    setError,
+  } = useForm({
+    defaultValues: {
+      playlistId: "",
+    },
+  });
+  const states = useSelector((state) => state);
   const dispatch = useDispatch();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const handleCloseToggle = () => {
-    dispatch(setAddPlaylistToggle(!state.addPlaylistToggle));
+    dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
   };
 
-  console.log("add-playlist: ", state);
+  const onValid = (data) => {
+    const { playlistId } = data;
+    if (!playlistId.includes("youtube.com")) {
+      if (playlistId.slice(0, 2) == "PL") {
+        dispatch(fetchPlaylist(playlistId));
+        dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+        return;
+      }
+      setError("playlistId", {
+        message: "Please enter valid playlist link or playlist id",
+      });
+    }
+    if (playlistId.includes("youtube.com")) {
+      const splitPlaylistId = playlistId.split("=");
+      console.log(splitPlaylistId);
+      dispatch(fetchPlaylist(splitPlaylistId[1]));
+    }
+    dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+  };
+  const onInValid = (errors) => {
+    console.log(errors);
+  };
+
+  // const playlistResult = useEffect(()=>{
+  //   console.log("render useEffect")
+  //   if(!states.playlistId) return;
+  //   async function fetchData(){
+  //     const result = await getPlaylist(states.playlistId)
+  //     dispatch(setplaylist(result))
+  //     console.log(result)
+  //   }
+  //   fetchData()
+  // },[states.playlistId])
+  console.log("errors: ", errors);
+  console.log("states: ", states);
   return (
     <div>
       <Dialog
-        open={state.addPlaylistToggle}
+        open={states.toggle.addPlaylistToggle}
         onClose={handleCloseToggle}
         sx={{
           width: "80%",
@@ -47,13 +100,15 @@ const AddPlaylistModal = () => {
           "& .MuiPaper-root": {
             height: "100%",
             width: "100%",
-            overflow:"none"
+            overflow: "none",
+            backgroundColor: colors.primary[400],
+            // color:colors.blueAccent[500]
           },
 
           "& .MuiDialogContent-root": {
             "& .MuiTypography-root": {
               height: "100% !important",
-              overflow:"none"
+              overflow: "none",
             },
           },
         }}
@@ -64,19 +119,30 @@ const AddPlaylistModal = () => {
             id='scroll-dialog-description'
             tabIndex={-1}
           >
-            <InputGroup
-              label={"Playlist"}
-              type={"text"}
-              name='playlistId'
-              placeHolder='Enter valid playlist link or playlist id'
-            />
+            <Box>
+              <Controller
+                name='playlistId'
+                control={control}
+                render={(field) => (
+                  <InputGroup
+                    label={"Playlist"}
+                    type={"text"}
+                    name='playlistId'
+                    placeHolder='Enter valid playlist link or playlist id'
+                    fullWidth={true}
+                    {...field}
+                    error={errors["playlistId"]?.message}
+                  />
+                )}
+              />
+            </Box>
           </DialogContentText>
         </DialogContent>
 
         <DialogActions>
-          <Button
-            onClick={handleCloseToggle}
-            sx={{
+          <ButtonUI
+            text='cancel'
+            style={{
               p: ".5rem 1rem",
               backgroundColor: colors.pinkAccent[500],
               color: colors.light[100],
@@ -84,12 +150,13 @@ const AddPlaylistModal = () => {
                 backgroundColor: colors.pinkAccent[600],
               },
             }}
-          >
-            Cancel
-          </Button>
-          <Button
             onClick={handleCloseToggle}
-            sx={{
+          />
+          <ButtonUI
+            text='save'
+            type='submit'
+            onClick={handleSubmit(onValid, onInValid)}
+            style={{
               p: ".5rem 1rem",
               backgroundColor: colors.blueAccent[500],
               color: colors.light[100],
@@ -97,9 +164,7 @@ const AddPlaylistModal = () => {
                 backgroundColor: colors.blueAccent[600],
               },
             }}
-          >
-            save
-          </Button>
+          />
         </DialogActions>
       </Dialog>
     </div>

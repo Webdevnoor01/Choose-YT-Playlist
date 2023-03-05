@@ -1,5 +1,11 @@
 import React from "react";
 
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+
+// Redux actions
+import { setUserProfile } from "../../store/userSlice";
+
 // React router dom
 import { useNavigate } from "react-router-dom";
 
@@ -25,6 +31,10 @@ import * as yup from "yup";
 import inputObj from "./login.json";
 
 const Login = () => {
+  // manage state
+  const state = useSelector((state) =>state.user)
+  const dispatch = useDispatch()
+
   const schema = yup.object().shape({
     email: yup.string()
       .email("Invalid email address format")
@@ -51,6 +61,9 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const theme = useTheme();
+
+
+
   const colors = tokens(theme.palette.mode);
 
   const formArr = Object.values(inputObj);
@@ -61,6 +74,7 @@ const Login = () => {
 
   const onValid = (data) => {
     console.log(data);
+    dispatch(setUserProfile({email:data.email}))
     navigate("/");
   };
   const onInValid = (errors) => {

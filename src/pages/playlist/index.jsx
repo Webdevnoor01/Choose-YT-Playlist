@@ -1,5 +1,8 @@
 import React from "react";
 
+// react, redux
+import { useSelector, useDispatch } from "react-redux";
+
 // MUI components
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -16,61 +19,38 @@ const playlist = {
 };
 
 const Playlist = () => {
+  const playlists = useSelector((state) => state.playlist);
+  const playlistArr = Object.values(playlists.items);
+  console.log(playlistArr);
+
+
+  // The gridMinMaxObj is used to add grid size unit in grid minmax
+  const gridMinMaxObj = {
+    290: "px",
+    1: "fr",
+  };
+  {
+    playlist.loading && <h2>Loading...</h2>;
+  }
   return (
     <Box
       sx={{
-        // display: "flex",
-        // flexWrap: "wrap",
-        // justifyContent: "flex-start",
-        // alignItems: "center",
-        // gap: "1rem",
-        display:"grid",
-        gridTemplateColumns:"repeat(auto-fit, minmax(255px, 1fr))",
-        gap:".5rem"
+        display: "grid",
+        gridTemplateColumns: `repeat(auto-fit, minmax(255px, ${
+          playlistArr.length < 4 ? 290 : 1
+        }${gridMinMaxObj[playlistArr.length < 4 ? 290 : 1]}))`,
+        gap: ".5rem",
       }}
     >
-      <PlaylistCard
-        title={playlist.title}
-        thumbnail={playlist.thumbnail}
-        channelName={playlist.channelName}
-        videos={playlist.videos}
-      />
-      <PlaylistCard
-        title={playlist.title}
-        thumbnail={playlist.thumbnail}
-        channelName={playlist.channelName}
-        videos={playlist.videos}
-      />
-      <PlaylistCard
-        title={playlist.title}
-        thumbnail={playlist.thumbnail}
-        channelName={playlist.channelName}
-        videos={playlist.videos}
-      />
-      <PlaylistCard
-        title={playlist.title}
-        thumbnail={playlist.thumbnail}
-        channelName={playlist.channelName}
-        videos={playlist.videos}
-      />
-      <PlaylistCard
-        title={playlist.title}
-        thumbnail={playlist.thumbnail}
-        channelName={playlist.channelName}
-        videos={playlist.videos}
-      />
-      <PlaylistCard
-        title={playlist.title}
-        thumbnail={playlist.thumbnail}
-        channelName={playlist.channelName}
-        videos={playlist.videos}
-      />
-      <PlaylistCard
-        title={playlist.title}
-        thumbnail={playlist.thumbnail}
-        channelName={playlist.channelName}
-        videos={playlist.videos}
-      />
+      {playlistArr.map((playlist) => (
+        <PlaylistCard
+          title={playlist.playlistTitle}
+          thumbnail={playlist.playlistThumbnail.url}
+          channelName={playlist.channelTitle}
+          videos={playlist.videos.length}
+        />
+      ))}
+      {playlistArr.length === 0 && <h2>Empty playlist</h2>}
     </Box>
   );
 };
