@@ -45,7 +45,7 @@ const PlaylistCard = ({ thumbnail, title, channelName, videos }) => {
           color='text.secondary'
           InfoText={title}
         >
-          {title}
+          {title.slice(0, 50)}...
         </Typography>
       </CardContent>
       <CardContent

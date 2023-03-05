@@ -71,16 +71,6 @@ const AddPlaylistModal = () => {
     console.log(errors);
   };
 
-  // const playlistResult = useEffect(()=>{
-  //   console.log("render useEffect")
-  //   if(!states.playlistId) return;
-  //   async function fetchData(){
-  //     const result = await getPlaylist(states.playlistId)
-  //     dispatch(setplaylist(result))
-  //     console.log(result)
-  //   }
-  //   fetchData()
-  // },[states.playlistId])
   console.log("errors: ", errors);
   console.log("states: ", states);
   return (

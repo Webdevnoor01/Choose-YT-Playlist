@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import getPlaylist from "../api";
 export const INIT_STATE = {
     error: "",
-    loading: "",
+    loading: false,
     items: {
 
     }
