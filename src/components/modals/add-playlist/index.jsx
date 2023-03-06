@@ -18,15 +18,15 @@ import { tokens } from "../../../theme";
 // actions
 import { setAddPlaylistToggle } from "../../../store/toogleSlice";
 import { fetchPlaylist } from "../../../store/playlistSlice";
+import { setPlaylistId } from "../../../store/playlsitIdSlice";
 
 // Components
 import InputGroup from "../../shared/input-group";
+import ButtonUI from "../../UI/button";
 
 // React Hook Form
 import { useForm, Controller } from "react-hook-form";
 import { Box } from "@mui/material";
-import ButtonUI from "../../UI/button";
-import { setPlaylistId } from "../../../store/playlsitIdSlice";
 
 const AddPlaylistModal = () => {
   const {
@@ -54,6 +54,7 @@ const AddPlaylistModal = () => {
       if (playlistId.slice(0, 2) == "PL") {
         dispatch(fetchPlaylist(playlistId));
         dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+        dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
         return;
       }
       setError("playlistId", {
@@ -64,8 +65,9 @@ const AddPlaylistModal = () => {
       const splitPlaylistId = playlistId.split("=");
       console.log(splitPlaylistId);
       dispatch(fetchPlaylist(splitPlaylistId[1]));
+      dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+
     }
-    dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
   };
   const onInValid = (errors) => {
     console.log(errors);
