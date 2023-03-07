@@ -10,7 +10,7 @@ import CardContent from "@mui/material/CardContent";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
 
-const VideoList = ({ videos, channelTitle }) => {
+const VideoList = ({ videos, channelTitle,onVideoClick  }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode)
   return (
@@ -29,6 +29,7 @@ const VideoList = ({ videos, channelTitle }) => {
               minHeight: "5rem",
             },
           }}
+          onClick={( ) =>onVideoClick(video.videoContentDetails.videoId, video.index)}
         >
           <Box
             sx={{
@@ -44,7 +45,7 @@ const VideoList = ({ videos, channelTitle }) => {
             <CardMedia
               component='img'
               sx={{ width: "100%" }}
-              image={video.thumbnail}
+              image={video.videoThumbnail?.url}
               alt='Live from space album cover'
             />
           </Box>
@@ -62,7 +63,7 @@ const VideoList = ({ videos, channelTitle }) => {
                 variant='body2'
                 fontSize='.8rem'
               >
-                {video.title.substr(0, 50)}
+                {video.videoTitle?.slice(0, 50)}
               </Typography>
               <Typography
                 variant='subtitle1'

@@ -1,8 +1,18 @@
 // React Hooks
-import { useState } from "react";
+import { useState, Suspense, lazy } from "react";
+// react-redux
+import { useSelector } from "react-redux";
+// React-Router-Dom
+import {
+  useNavigate,
+  createSearchParams,
+  useSearchParams,
+  useParams,
+} from "react-router-dom";
 
 // third-party libraries
 import ReactPlayer from "react-player/youtube";
+import * as qs from "query-string";
 
 // MUI Hooks
 import { useTheme } from "@mui/material/styles";
@@ -17,62 +27,21 @@ import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
 
 // theme settings
 import { tokens } from "../../theme";
-import { Button, IconButton, Typography } from "@mui/material";
+import {  IconButton, Typography } from "@mui/material";
 import NoteItem from "../../components/shared";
 import VideoList from "../../components/video-list";
 import AddNote from "../../components/add-note";
 
 // Components
-import ButtonUI from "../../components/UI/button"
+import ButtonUI from "../../components/UI/button";
 
-const videos = [
-  {
-    title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-    thumbnail:
-      "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-    channelName: "Procoder BD",
-    videos: "50",
-  },
-  {
-    title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-    thumbnail:
-      "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-    channelName: "Procoder BD",
-    videos: "50",
-  },
-  {
-    title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-    thumbnail:
-      "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-    channelName: "Procoder BD",
-    videos: "50",
-  },
-  {
-    title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-    thumbnail:
-      "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-    channelName: "Procoder BD",
-    videos: "50",
-  },
-  {
-    title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-    thumbnail:
-      "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-    channelName: "Procoder BD",
-    videos: "50",
-  },
-  {
-    title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-    thumbnail:
-      "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-    channelName: "Procoder BD",
-    videos: "50",
-  },
-];
 const VideoPlayer = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = qs.default.parse(location.search);
+  const playlist = useSelector((state) => state.playlist.items[query.list]);
   const [isListCollapsed, setIsListCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
-  const [scroll, setScroll] =useState("paper");
+  const [scroll, setScroll] = useState("paper");
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -89,7 +58,11 @@ const VideoPlayer = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log("video-player: ", open)
+  const handleVideoClick = (videoId, videoIndex) => {
+    setSearchParams(
+      createSearchParams({ v: videoId, list: query.list, index: videoIndex })
+    );
+  };
   return (
     <>
       <Box
@@ -112,7 +85,7 @@ const VideoPlayer = () => {
           }}
         >
           <ReactPlayer
-            url='https://www.youtube.com/watch?v=p7-6YWu6qCM'
+            url={`https://www.youtube.com/watch?v=${query.v}list=${query.list}&index=${query.index}`}
             height='100%'
             width='100%'
             controls={true}
@@ -138,18 +111,17 @@ const VideoPlayer = () => {
               justifyContent: "flex-end",
             }}
           >
-
-            <ButtonUI 
-             text='add note'
-             onClick={()=> setOpen(!open)}
-             style={{
-              backgroundColor: colors.pinkAccent[500],
+            <ButtonUI
+              text='add note'
+              onClick={() => setOpen(!open)}
+              style={{
+                backgroundColor: colors.pinkAccent[500],
                 padding: ".5rem 2rem",
                 "&:hover": {
                   backgroundColor: colors.pinkAccent[600],
                 },
-             }}
-             />
+              }}
+            />
           </Box>
 
           {/* Individual note */}
@@ -256,11 +228,12 @@ const VideoPlayer = () => {
                   Next:
                 </Typography>
                 <Typography variant='body2'>
-                  Lecture 1 - Aplication Requirements...
+                  {playlist.videos[query.index].videoTitle.slice(0, 35)}...
                 </Typography>
               </Typography>
               <Typography varient='body2'>
-                Full Stack Army Complete... 1/71
+                {playlist.playlistTitle.slice(0, 24)}...{query.index}/
+                {playlist.videos.length}
               </Typography>
             </Box>
 
@@ -285,8 +258,9 @@ const VideoPlayer = () => {
             }}
           >
             <VideoList
-              channelTitle='Procoder BD'
-              videos={videos}
+              channelTitle={playlist.channelTitle}
+              videos={playlist.videos}
+              onVideoClick={handleVideoClick}
             />
           </Box>
         </Box>

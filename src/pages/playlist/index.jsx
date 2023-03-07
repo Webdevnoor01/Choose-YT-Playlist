@@ -25,7 +25,7 @@ const Playlist = () => {
   const colors= tokens(theme.palette.mode)
   const playlists = useSelector((state) => state.playlist);
   const playlistArr = Object.values(playlists.items);
-  console.log(playlists);
+  console.log(playlistArr);
 
   // The gridMinMaxObj is used to add grid size unit in grid minmax
   const gridMinMaxObj = {
@@ -53,6 +53,7 @@ const Playlist = () => {
           thumbnail={playlist.playlistThumbnail.url}
           channelName={playlist.channelTitle}
           videos={playlist.videos.length}
+          playlistId={playlist.playlistId}
         />
       ))}
       {playlists.loading && <Box sx={{

@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 const Playlists = () => {
   const state = useSelector(state => state.playlist)
   const playlistArr =  Object.values(state.playlists);
+
   return (
     <>
       <Grid container alignItems={"stretch"}  sx={{maxWidth:"80%", margin:"0 auto"}} >

@@ -35,7 +35,7 @@ const getPlaylist = async (playlistId) => {
 
     let cid, ct;
     let result = await getPlaylistItems(playlistId);
-    result = result.map((item) => {
+    result = result.map((item, i) => {
       const {
         channelId,
         channelTitle,
@@ -57,6 +57,7 @@ const getPlaylist = async (playlistId) => {
         videoDescription: description,
         videoThumbnail: medium,
         videoContentDetails: item.contentDetails,
+        index:i+1
       };
     });
 

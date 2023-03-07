@@ -73,8 +73,6 @@ const AddPlaylistModal = () => {
     console.log(errors);
   };
 
-  console.log("errors: ", errors);
-  console.log("states: ", states);
   return (
     <div>
       <Dialog

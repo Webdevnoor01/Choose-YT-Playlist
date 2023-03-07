@@ -2,7 +2,6 @@
 import {
   Box,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Button,
@@ -14,14 +13,26 @@ import { useTheme } from "@mui/material/styles";
 
 import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, createSearchParams } from "react-router-dom";
 import { useProSidebar } from "react-pro-sidebar";
 import { tokens } from "../../theme";
+import { useSelector } from "react-redux";
 
-const PlaylistCard = ({ thumbnail, title, channelName, videos }) => {
+const PlaylistCard = ({ thumbnail, title, channelName, videos, playlistId }) => {
+  const state = useSelector(state => state.playlist)
+  const {items:playlists} = state
   const { collapsed } = useProSidebar();
   const theme = useTheme();
+  const navigate =useNavigate()
   const colors = tokens(theme.palette.mode);
+
+  const navigateToWatch = ()=>{
+    const videoId = playlists[playlistId].videos[0].videoContentDetails.videoId
+    navigate({
+      pathname:`/watch`,
+      search:`?${createSearchParams({v:videoId,list:playlistId, index:1})}`
+    })
+  }
   return (
     <Card
       sx={{
@@ -30,8 +41,9 @@ const PlaylistCard = ({ thumbnail, title, channelName, videos }) => {
           padding: ".5rem 1rem !important",
         },
         backgroundColor: theme.palette.secondary.main,
-        
+        cursor:"pointer"
       }}
+      onClick={navigateToWatch}
     >
       <CardMedia
         component='img'
