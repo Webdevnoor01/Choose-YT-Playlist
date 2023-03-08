@@ -30,7 +30,7 @@ import { tokens } from "../../theme";
 import {  IconButton, Typography } from "@mui/material";
 import NoteItem from "../../components/shared";
 import VideoList from "../../components/video-list";
-import AddNote from "../../components/add-note";
+import AddNote from "../../components/modals/add-note";
 
 // Components
 import ButtonUI from "../../components/UI/button";

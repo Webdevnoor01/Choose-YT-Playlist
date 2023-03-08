@@ -3,6 +3,7 @@ import React from "react";
 // MUI Components
 import { Box } from "@mui/material";
 import NoteCard from "../../components/note-card";
+import { useSelector } from "react-redux";
 const playlist = {
   title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
   thumbnail:
@@ -11,21 +12,32 @@ const playlist = {
   videos: "50",
 };
 const Notes = () => {
+  const notes = useSelector((state) => state.notes);
+  console.log(notes)
+  const noteArr = Object.values(notes);
   return (
     <Box
       sx={{
         display: "flex",
         flexWrap: "wrap",
-        justifyContent: "flex-start",
+        justifyContent: `${noteArr.length===0?"center":"flex-start"}` ,
         alignItems: "center",
         gap: "1rem",
       }}
     >
-      <NoteCard
-        thumbnail={playlist.thumbnail}
-        note='This is the first note, click the read more button and read the note'
-        channelName={playlist.channelName}
-      />
+      {
+        noteArr.length === 0 && <h2>There is no available note</h2>
+      }
+      {noteArr.map((note) => (
+        <NoteCard
+          thumbnail={note.videoThumbnail}
+          note={note.noteData}
+          channelName={note.channelTitle}
+          videoId={note.videoId}
+          playlistId={note.playlistId}
+          noteId={note.noteId}
+        />
+      ))}
     </Box>
   );
 };

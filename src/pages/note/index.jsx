@@ -1,13 +1,34 @@
-import { Box, CardMedia, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+// react
 import React from "react";
+
+
+// react-redux
+import { useSelector } from "react-redux";
+
+// react-router-dom
+
+// third-party libraries
+import * as qs from "query-string"
+
+
+// MUI hooks
+import { useTheme } from "@mui/material/styles";
+
+// MUI ocmponents
+import { Box, CardMedia, Typography } from "@mui/material";
+
+// Theme settings
 import { tokens } from "../../theme";
 
 const Note = () => {
   const theme = useTheme();
+  const {noteId} = qs.default.parse(location.search)
+  const currentNote = useSelector(state => state.notes[noteId])
+  console.log(currentNote)
+
   const colors = tokens(theme.palette.mode);
 
-  console.log(new Date(Date.now()))
+  // return <h2>Loading</h2>
   return (
 
     <Box
@@ -27,7 +48,7 @@ const Note = () => {
       >
         <CardMedia
           component='img'
-          src='https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog'
+          src={currentNote.videoThumbnail}
           alt='note-image'
           sx={{
             height: "100%",
@@ -76,17 +97,7 @@ const Note = () => {
             textAlign: "left",
           }}
         >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quasi
-          enim vel quo ex, quae aspernatur dolor tempora vitae. Quaerat ab quod
-          veniam commodi esse sapiente at minus, sequi velit accusamus! Qui ea,
-          ratione dignissimos at pariatur iste quas? Enim illo fuga natus eaque
-          quaerat ab aspernatur deserunt dolore amet, officia consequatur
-          cupiditate et ratione eos magni repellat earum dignissimos iusto,
-          labore cum! A amet cumque illo natus ullam aspernatur veniam dolorum
-          praesentium. Minima perspiciatis id sint commodi optio cum quos,
-          aspernatur nobis repudiandae quis enim animi reiciendis officia quia
-          placeat accusamus alias provident voluptas soluta! Aperiam optio
-          labore voluptatibus.
+          {currentNote.noteData}
         </Typography>
       </Box>
     </Box>

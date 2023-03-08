@@ -14,8 +14,8 @@ import AuthLayout from "./auth-layout";
 import AddPlaylistModal from "./components/modals/add-playlist";
 
 function App() {
-  const { pathname } = useLocation();
   const state = useSelector((state) => state);
+  const { pathname } = useLocation();
   const { theme, colorMode } = useMode(state.mode.value);
   return (
     <ThemeProvider theme={theme}>
