@@ -3,24 +3,24 @@ import React from "react";
 // react, redux
 import { useSelector, useDispatch } from "react-redux";
 
+// Actions
+import { setAsFaroite } from "../../store/playlistSlice";
+
 // MUI components
 import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+// MUI icons
+import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 // Custom Components
 import PlaylistCard from "../../components/playlist-card";
 import EmptyMessage from "../../components/empty-message";
 import { tokens } from "../../theme";
 
-const playlist = {
-  title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-  thumbnail:
-    "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-  channelName: "Procoder BD",
-  videos: "50",
-};
 
 const Playlist = () => {
+  const dispatch = useDispatch()
   const theme = useTheme()
   const colors= tokens(theme.palette.mode)
   const playlists = useSelector((state) => state.playlist);
@@ -32,12 +32,28 @@ const Playlist = () => {
     20: "px",
     1: "fr",
   };
+  const playlistMoreOption = [
+    {
+      title:"Remove from playlist",
+      Icon:<RemoveCircleOutlineOutlinedIcon/>,
+      onClick:()=>{}
+    },
+    {
+      title:"add to favorite",
+      Icon:<FavoriteBorderOutlinedIcon/>,
+      onClick:(playlistId)=>{
+        dispatch(setAsFaroite(playlistId))
+      }
+    },
+  ]
   return (
+    <>
+    {playlistArr.length === 0 && !playlists?.loading && <EmptyMessage message="Empty playlist" />}
     <Box
       sx={{
         display: "grid",
         gridTemplateColumns: `repeat(auto-fit, minmax(255px, ${
-          playlistArr.length < 4 && playlistArr.length !== 0 ? 20 : 1
+          playlistArr.length < 4 && playlistArr.length !== 0 ? 290 : 1
         }${
           gridMinMaxObj[
             playlistArr.length < 4 && playlistArr.length !== 0 ? 20 : 1
@@ -46,14 +62,16 @@ const Playlist = () => {
         gap: ".5rem",
       }}
     >
-      
-      {playlistArr.length > 0&& playlistArr.map((playlist) => (
+     
+      {playlistArr.length > 0 && playlistArr.map((playlist) => (
         <PlaylistCard
           title={playlist.playlistTitle}
           thumbnail={playlist.playlistThumbnail.url}
           channelName={playlist.channelTitle}
           videos={playlist.videos.length}
           playlistId={playlist.playlistId}
+          catagory="playlist"
+          moreOptions={playlistMoreOption}
         />
       ))}
       {playlists.loading && <Box sx={{
@@ -67,8 +85,8 @@ const Playlist = () => {
         borderRadius:".5rem"
       }} >
        <Typography variant="body1" >Loading...</Typography>  </Box>}
-      {playlistArr.length === 0 && !playlists?.loading && <EmptyMessage />}
     </Box>
+    </>
   );
 };
 

@@ -9,7 +9,6 @@ import { setMode } from "../../store/modeSlice";
 
 import { tokens } from "../../theme/index";
 import { useTheme } from "@mui/material/styles";
-import { useContext } from "react";
 
 // mui componetn
 import { Box, InputBase, IconButton, Typography, Popover } from "@mui/material";

@@ -70,6 +70,7 @@ const getPlaylist = async (playlistId) => {
       channelTitle: ct,
       channelId: cid,
       channelTitle,
+      isFavorite:false
     };
   } catch (e) {
     console.log("getPlaylist-error: ", e);

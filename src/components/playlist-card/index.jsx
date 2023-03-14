@@ -1,3 +1,19 @@
+// React
+
+// react-redux
+import { useSelector, useDispatch } from "react-redux";
+
+// react-router-dom
+import { Link, useNavigate, createSearchParams } from "react-router-dom";
+
+// actions
+import { setRecentPlaylist } from "../../store/recentPlaylistSlice";
+
+// third-party libraries
+import { useProSidebar } from "react-pro-sidebar";
+import moment from "moment";
+import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
+
 // MUI components
 import {
   Box,
@@ -8,58 +24,161 @@ import {
   Typography,
   IconButton,
   Stack,
+  Tooltip,
+  Popover,
 } from "@mui/material";
+
+// MUI hooks
 import { useTheme } from "@mui/material/styles";
 
+// MUI Icons
 import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import { Link, useNavigate, createSearchParams } from "react-router-dom";
-import { useProSidebar } from "react-pro-sidebar";
-import { tokens } from "../../theme";
-import { useSelector } from "react-redux";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const PlaylistCard = ({ thumbnail, title, channelName, videos, playlistId }) => {
-  const state = useSelector(state => state.playlist)
-  const {items:playlists} = state
+// theme settings
+import { tokens } from "../../theme";
+
+const PlaylistCard = ({
+  thumbnail,
+  title,
+  channelName,
+  videos,
+  playlistId,
+  catagory,
+  moreOptions,
+}) => {
+  const state = useSelector((state) => state.playlist);
+  const recentPlaylists = useSelector((state) => state.recentPlaylists);
+  const dispatch = useDispatch();
+  const { items: playlists } = state;
   const { collapsed } = useProSidebar();
   const theme = useTheme();
-  const navigate =useNavigate()
+  const navigate = useNavigate();
   const colors = tokens(theme.palette.mode);
 
-  const navigateToWatch = ()=>{
-    const videoId = playlists[playlistId].videos[0].videoContentDetails.videoId
+  const navigateToWatch = () => {
+    const videoId = playlists[playlistId].videos[0].videoContentDetails.videoId;
+    if (!recentPlaylists.playlistId) {
+      dispatch(
+        setRecentPlaylist({
+          playlistId,
+          createdAt: new Date(),
+        })
+      );
+    }
     navigate({
-      pathname:`/watch`,
-      search:`?${createSearchParams({v:videoId,list:playlistId, index:1})}`
-    })
-  }
+      pathname: `/watch`,
+      search: `?${createSearchParams({
+        v: videoId,
+        list: playlistId,
+        index: 1,
+      })}`,
+    });
+  };
   return (
     <Card
       sx={{
-        
         "& .MuiCardContent-root": {
-          padding: ".5rem 1rem !important",
+          padding: ".25rem 1rem !important",
+          "& .MuiBox-root": {
+            "& .MuiPaper-root": {
+              pb: ".8rem",
+            },
+          },
         },
         backgroundColor: theme.palette.secondary.main,
-        cursor:"pointer"
+        cursor: "pointer",
       }}
-      onClick={navigateToWatch}
     >
       <CardMedia
         component='img'
         sx={{ height: "50%" }}
         image={thumbnail}
         title='green iguana'
+        onClick={navigateToWatch}
       />
-      <CardContent>
-        <Typography
-          variant='body2'
-          color='text.secondary'
-          InfoText={title}
-        >
-          {title.slice(0, 50)}...
-        </Typography>
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Tooltip title={title}>
+          <Typography
+            variant='body2'
+            color='text.secondary'
+            InfoText={title}
+            textOverflow={title}
+            onClick={navigateToWatch}
+          >
+            {title.slice(0, 40)}...
+          </Typography>
+        </Tooltip>
+        <PopupState variant='popover'>
+          {(popupState) => (
+            <>
+              <IconButton {...bindTrigger(popupState)}>
+                <MoreVertIcon />
+              </IconButton>
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                sx={{
+                  "& .MuiPaper-root": {
+                    borderRadius: ".5rem",
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    backgroundColor: colors.primary[500],
+                    p: "1rem 0",
+                    borderRadius: ".4rem",
+                    boxShadow: theme.shadows[19],
+                  }}
+                >
+                  {moreOptions.map((option) => (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: ".5rem",
+                        p: ".2rem .5rem",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: colors.secondary[500],
+                        },
+                      }}
+                      onClick={() => option.onClick(playlistId) }
+                    >
+                      <IconButton> {option.Icon} </IconButton>
+                      <Typography
+                        variant='body2'
+                        sx={{
+                          color: colors.gray[100],
+                        }}
+                      >
+                        {" "}
+                        {option.title}{" "}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Popover>
+            </>
+          )}
+        </PopupState>
       </CardContent>
+
       <CardContent
         sx={{
           display: "flex",
@@ -74,8 +193,7 @@ const PlaylistCard = ({ thumbnail, title, channelName, videos, playlistId }) => 
             alignItems: "center",
             gap: ".1rem",
           }}
-          component={Link}
-          to='playlist'
+          onClick={navigateToWatch}
         >
           <IconButton>
             <YouTubeIcon />
@@ -90,17 +208,33 @@ const PlaylistCard = ({ thumbnail, title, channelName, videos, playlistId }) => 
             {channelName}{" "}
           </Typography>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-          <Typography varient='subtitle1'> Videos: </Typography>
-          <Typography varient='subtitle1'> {videos} </Typography>
-        </Box>
+        {catagory === "playlist" && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+            onClick={navigateToWatch}
+          >
+            <Typography varient='body1'> Videos: </Typography>
+            <Typography varient='body2'> {videos} </Typography>
+          </Box>
+        )}
+        {catagory === "recentPlaylist" && (
+          <Box>
+            <Typography
+              variant='body2'
+              sx={{
+                fontSize: ".8rem",
+              }}
+            >
+              {" "}
+              {moment().startOf("hour").fromNow()}{" "}
+            </Typography>
+          </Box>
+        )}
       </CardContent>
 
       <Button
@@ -113,8 +247,7 @@ const PlaylistCard = ({ thumbnail, title, channelName, videos, playlistId }) => 
             },
           },
         }}
-        LinkComponent={Link}
-        to="/watch"
+        onClick={navigateToWatch}
       >
         <Stack
           direction={"row"}
@@ -143,7 +276,7 @@ const PlaylistCard = ({ thumbnail, title, channelName, videos, playlistId }) => 
           <Typography
             variant='body2'
             fontFamily="'Roboto', sans-serif"
-            fontWeight="bold"
+            fontWeight='bold'
           >
             Start Learning
           </Typography>

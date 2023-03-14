@@ -1,15 +1,16 @@
-import React from 'react'
-import { Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { MenuItem } from 'react-pro-sidebar';
-import { Link } from 'react-router-dom';
-import { tokens } from '../../../theme';
+import React from "react";
+import { Tooltip, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { MenuItem } from "react-pro-sidebar";
+import { Link } from "react-router-dom";
+import { tokens } from "../../../theme";
 
-const Item = ({title, Icon, selected, setSelected, to}) => {
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-    return (
-      <>
+const Item = ({ title, Icon, selected, setSelected, to }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  return (
+    <>
+      <Tooltip title={title} >
         <Link
           to={to}
           style={{
@@ -20,7 +21,6 @@ const Item = ({title, Icon, selected, setSelected, to}) => {
             active={selected === title}
             onClick={(e) => setSelected(title)}
             icon={Icon}
-            
           >
             <Typography
               sx={{
@@ -33,8 +33,9 @@ const Item = ({title, Icon, selected, setSelected, to}) => {
             </Typography>
           </MenuItem>
         </Link>
-      </>
-    )
-}
+      </Tooltip>
+    </>
+  );
+};
 
-export default Item
+export default Item;

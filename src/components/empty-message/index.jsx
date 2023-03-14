@@ -1,7 +1,11 @@
-import { Box, CardMedia, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import React from "react";
+import { tokens } from "../../theme";
 
-const EmptyMessage = () => {
+const EmptyMessage = ({message}) => {
+  const theme = useTheme()
+  const colors = tokens(theme.palette.mode)
   return (
     <Box
       sx={{
@@ -10,27 +14,28 @@ const EmptyMessage = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        p:"1rem"
+        p:"1rem",
+        borderRadius:".5rem"
       }}
     >
       <Box
         sx={{
-        //   height: "50%",
-          width: "50%",
+          height: "100%",
+          width: "100%",
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "flex-start",
+          backgroundImage:"url(../images/animated_empty.gif)",
+          backgroundRepeat:"no-repeat",
+          backgroundPosition:"center center",
+          borderRadius:".5rem"
         }}
       >
-        <CardMedia
-          component='img'
-          src='../images/empty_dark.jpg'
-          alt="Empty playlist"
-          sx={{
-            width:"100%",
-            borderRadius:".5rem"
-          }}
-        />
+        <Typography variant="h3" sx={{
+          color:colors.dark[500],
+          fontSize:"1.5rem",
+          textAlign:"center"
+        }} >{message}</Typography>
       </Box>
     </Box>
   );

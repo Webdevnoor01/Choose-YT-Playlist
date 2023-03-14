@@ -36,7 +36,7 @@ const AddNote = ({ open, scroll, handleClickOpen, handleClose }) => {
 
   // input validation schema
   const schema = yup.object().shape({
-    noteData:yup.string("note data must be  string").required("note can't be empty").min(4, "your note is too small").max(2000, "your note is too long")
+    noteData:yup.string().required("Please enter some text to add note").min(4, "your note is too small").max(2000, "your note is too long").required("note can't be empty")
   })
 
   // useForm hook 

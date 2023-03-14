@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Sidebar, MenuItem, Menu, useProSidebar } from "react-pro-sidebar";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Tooltip, Grid, Typography } from "@mui/material";
 
 // mui icons
 import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";

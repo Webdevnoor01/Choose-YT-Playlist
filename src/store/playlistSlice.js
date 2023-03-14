@@ -21,7 +21,14 @@ export const fetchPlaylist = createAsyncThunk("user/playlist",
 const playlistSlice = createSlice({
     name: "playlist",
     initialState: INIT_STATE,
-    reducers: {},
+    reducers: {
+        setAsFaroite: (state, action) => {
+            state.items[action.payload].isFavorite = true
+        },
+        removeFromFavorite: (state, action) => {
+            state.items[action.payload].isFavorite = false
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchPlaylist.pending, (state) => {
                 state.loading = true;
@@ -39,7 +46,7 @@ const playlistSlice = createSlice({
     }
 });
 
-export const { setplaylist, setLoading, setError } = playlistSlice.actions;
+export const { setAsFaroite, removeFromFavorite } = playlistSlice.actions;
 export default playlistSlice.reducer;
 
 

@@ -7,6 +7,7 @@ import userSlice from "./userSlice"
 import playlsitIdSlice from "./playlsitIdSlice"
 import playlistSlice from "./playlistSlice"
 import noteSlice from "./noteSlice"
+import recentPlaylistSlice from "./recentPlaylistSlice"
 const store = configureStore({
     reducer: {
         toggle: toggleSlice,
@@ -14,7 +15,8 @@ const store = configureStore({
         user: userSlice,
         playlistId: playlsitIdSlice,
         playlist: playlistSlice,
-        notes: noteSlice
+        notes: noteSlice,
+        recentPlaylists: recentPlaylistSlice
     }
 })
 
