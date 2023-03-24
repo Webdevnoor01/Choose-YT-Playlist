@@ -8,8 +8,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeRecentPlaylist } from "../../store/recentPlaylistSlice";
 import { setAsFaroite } from "../../store/playlistSlice";
 
-
-
 // third-party libraries
 import shortid from "shortid";
 
@@ -19,9 +17,10 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 
 // Components
 import PlaylistCard from "../../components/playlist-card";
+import EmptyMessage from "../../components/empty-message";
 
 const RecentPlaylist = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const recentPlaylists = useSelector((state) => state.recentPlaylists);
   const playlists = useSelector((state) => state.playlist.items);
   const recentPlaylistArr = Object.keys(recentPlaylists);
@@ -32,23 +31,22 @@ const RecentPlaylist = () => {
     20: "px",
     1: "fr",
   };
-  const removePlaylist = (playlistId) =>{
-    dispatch(removeRecentPlaylist(playlistId))
-  }
+  const removePlaylist = (playlistId) => {
+    dispatch(removeRecentPlaylist(playlistId));
+  };
   const recentPlaylistMoreOption = [
     {
       title: "Remove from recent playlist",
       Icon: <RemoveCircleOutlineOutlinedIcon />,
       onClick: (playlistId) => {
-        dispatch(removeRecentPlaylist(playlistId))
-
+        dispatch(removeRecentPlaylist(playlistId));
       },
     },
     {
       title: "add to favorite",
       Icon: <FavoriteBorderOutlinedIcon />,
       onClick: (playlistId) => {
-        dispatch(setAsFaroite(playlistId))
+        dispatch(setAsFaroite(playlistId));
       },
     },
   ];
@@ -71,7 +69,13 @@ const RecentPlaylist = () => {
         gap: "1rem",
       }}
     >
-      {recentPlaylistArr.length === 0 && <h2>Empty recent playlist</h2>}
+      {recentPlaylistArr.length === 0 && (
+        <EmptyMessage
+          message={"Empty recent playlist available"}
+          btnTxt='Go to playlist'
+          to='/'
+        />
+      )}
       {recentPlaylistArr.map((playlistId) => (
         <PlaylistCard
           key={shortid.generate()}

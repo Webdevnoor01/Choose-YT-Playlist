@@ -1,10 +1,21 @@
-import { Grid, Box } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+// react
 import { useState } from "react";
+
+// MUI Components
+import { Grid, Box } from "@mui/material";
+
+// MUI hooks
+import { useTheme } from "@mui/material/styles";
+
+// Theme settings
+import { tokens } from "../theme";
+
+// Third party libraries
 import { useProSidebar } from "react-pro-sidebar";
+
+// Components
 import SideBar from "../components/global/SideBar";
 import TopBar from "../components/global/TopBar";
-import { tokens } from "../theme";
 
 const Layout = ({children}) => {
   const [selected, setSelected] = useState(false);

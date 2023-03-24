@@ -4,6 +4,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import NoteCard from "../../components/note-card";
 import { useSelector } from "react-redux";
+import EmptyMessage from "../../components/empty-message";
 const playlist = {
   title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
   thumbnail:
@@ -13,21 +14,25 @@ const playlist = {
 };
 const Notes = () => {
   const notes = useSelector((state) => state.notes);
-  console.log(notes)
+  console.log(notes);
   const noteArr = Object.values(notes);
   return (
     <Box
       sx={{
         display: "flex",
         flexWrap: "wrap",
-        justifyContent: `${noteArr.length===0?"center":"flex-start"}` ,
+        justifyContent: `${noteArr.length === 0 ? "center" : "flex-start"}`,
         alignItems: "center",
         gap: "1rem",
       }}
     >
-      {
-        noteArr.length === 0 && <h2>There is no available note</h2>
-      }
+      {noteArr.length === 0 && (
+        <EmptyMessage
+          message='No notes available'
+          btnTxt='Go to playlist'
+          to='/'
+        />
+      )}
       {noteArr.map((note) => (
         <NoteCard
           thumbnail={note.videoThumbnail}

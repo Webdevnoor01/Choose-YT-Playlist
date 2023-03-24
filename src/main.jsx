@@ -1,18 +1,18 @@
-import React from "react";
+import { lazy, Suspense, StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { ProSidebarProvider } from "react-pro-sidebar";
-import { createBrowserRouter,RouterProvider } from "react-router-dom";
-import App from "./App";
-import "./index.css";
-import FavoritePlaylist from "./pages/favorite-playlist";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+const App = lazy(() => import("./App"));
+// import App from "./App";
+const FavoritePlaylist = lazy(() => import("./pages/favorite-playlist"));
+const RecentPlaylist = lazy(() => import("./pages/recent-playlist"));
+const Notes = lazy(() => import("./pages/notes"));
+const Playlist = lazy(() => import("./pages/playlist"));
 import History from "./pages/history";
-import Notes from "./pages/notes";
-import Playlist from "./pages/playlist";
-import RecentPlaylist from "./pages/recent-playlist";
 import Signup from "./pages/signup";
 
 // store provider
-import { Provider } from "react-redux"
+import { Provider } from "react-redux";
 import store from "./store/store";
 
 import { ThemeProvider } from "@emotion/react";
@@ -20,63 +20,90 @@ import Login from "./pages/login";
 import VideoPlayer from "./pages/video-player";
 import Profile from "./pages/profile";
 import Note from "./pages/note";
+import LayoutSkeletonAnimation from "./components/layout-skeleton-animation";
 
+// animation skeleton
+import PlaylistsSkeletonAnimation from "./components/playlists-skeleton-animation";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
-    element:<Provider store={store} > <App /> </Provider>  ,
-    path:"/",
-    children:[
+    element: (
+      <Provider store={store}>
+        <Suspense fallback={<LayoutSkeletonAnimation />}>
+          <App />
+        </Suspense>
+      </Provider>
+    ),
+    path: "/",
+    children: [
       {
-        path:"/",
-        element:<Playlist />
+        path: "/",
+        element: (
+          <Suspense fallback={<PlaylistsSkeletonAnimation />}>
+            <Playlist />
+          </Suspense>
+        ),
       },
       {
-        path:"favorite-playlists",
-        element:<FavoritePlaylist />
+        path: "favorite-playlists",
+        element: (
+          <Suspense fallback={<PlaylistsSkeletonAnimation />}>
+            <FavoritePlaylist />
+          </Suspense>
+        ),
       },
       {
-        path:"recent-playlists",
-        element:<RecentPlaylist/>
+        path: "recent-playlists",
+        element: (
+          <Suspense fallback={<PlaylistsSkeletonAnimation />}>
+            <RecentPlaylist />
+          </Suspense>
+        ),
       },
       {
-        path:"history",
-        element:<History/>
+        path: "history",
+        element: <History />,
       },
       {
-        path:"notes",
-        element:<Notes />
+        path: "notes",
+        element: (
+          <Suspense fallback={<PlaylistsSkeletonAnimation />}>
+            <Notes />
+          </Suspense>
+        ),
       },
       {
-        path:"note",
-        element:<Note />
+        path: "note",
+        element: <Note />,
       },
       {
-        path:"watch",
-        element:<VideoPlayer/>
+        path: "watch",
+        element: <VideoPlayer />,
       },
       {
-        path:"signup",
-        element:<Signup/>
+        path: "signup",
+        element: <Signup />,
       },
       {
-        path:"login",
-        element:<Login />
+        path: "login",
+        element: <Login />,
       },
       {
-        path:"profile",
-        element:<Profile/>
+        path: "profile",
+        element: <Profile />,
       },
-      
-
-    ]
+    ],
   },
-  
-])
+  {
+    path: "/anime",
+    element: <LayoutSkeletonAnimation />,
+  },
+]);
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-  <ProSidebarProvider>
-    <RouterProvider router={router} />
-  </ProSidebarProvider>
-  </React.StrictMode>
+  <StrictMode>
+    <ProSidebarProvider>
+      <RouterProvider router={router} />
+    </ProSidebarProvider>
+  </StrictMode>
 );

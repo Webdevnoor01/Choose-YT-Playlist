@@ -1,11 +1,23 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CardMedia, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setAddPlaylistToggle } from "../../store/toogleSlice";
 import { tokens } from "../../theme";
+import ButtonUI from "../UI/button";
 
-const EmptyMessage = ({message}) => {
-  const theme = useTheme()
-  const colors = tokens(theme.palette.mode)
+const EmptyMessage = ({ message, btnTxt, to }) => {
+  const states = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
+  const handleTogglePlaylist = () => {
+    if (to) return navigate(to);
+    dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+  };
   return (
     <Box
       sx={{
@@ -14,28 +26,62 @@ const EmptyMessage = ({message}) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        p:"1rem",
-        borderRadius:".5rem"
+        p: "1rem",
+        borderRadius: ".5rem",
       }}
     >
       <Box
         sx={{
           height: "100%",
           width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          backgroundImage:"url(../images/animated_empty.gif)",
-          backgroundRepeat:"no-repeat",
-          backgroundPosition:"center center",
-          borderRadius:".5rem"
         }}
       >
-        <Typography variant="h3" sx={{
-          color:colors.dark[500],
-          fontSize:"1.5rem",
-          textAlign:"center"
-        }} >{message}</Typography>
+        <Box
+          sx={{
+            width: "20rem",
+            m: "0 auto",
+            borderRadius: "100%",
+          }}
+        >
+          <CardMedia
+            component='img'
+            src='../../images/empty_image.png'
+            sx={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        </Box>
+        <Typography
+          sx={{
+            color: colors.gray[100],
+            textAlign: "center",
+            fontSize: "1.1rem",
+            fontWeight: "400",
+            m: ".5rem 0",
+          }}
+        >
+          {message}
+        </Typography>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+          }}
+        >
+          <ButtonUI
+            text={btnTxt}
+            onClick={handleTogglePlaylist}
+            mdNone={false}
+            style={{
+              m: "0 auto",
+              backgroundColor: colors.pinkAccent[500],
+              "&:hover": {
+                backgroundColor: colors.pinkAccent[600],
+              },
+            }}
+          />
+        </Box>
       </Box>
     </Box>
   );

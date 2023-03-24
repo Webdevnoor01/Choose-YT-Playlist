@@ -27,7 +27,7 @@ function App() {
           </Layout>
         :null}
         {
-          (pathname === "/signup" || pathname === "/login")? 
+          (pathname === "/signup" || pathname === "/login") ? 
             <AuthLayout>
                <Outlet/>
             </AuthLayout>
