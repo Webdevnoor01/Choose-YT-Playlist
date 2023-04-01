@@ -8,7 +8,7 @@ const FavoritePlaylist = lazy(() => import("./pages/favorite-playlist"));
 const RecentPlaylist = lazy(() => import("./pages/recent-playlist"));
 const Notes = lazy(() => import("./pages/notes"));
 const Playlist = lazy(() => import("./pages/playlist"));
-import History from "./pages/history";
+const History = lazy(() => import("./pages/history"));
 import Signup from "./pages/signup";
 
 // store provider
@@ -25,12 +25,13 @@ import LayoutSkeletonAnimation from "./components/layout-skeleton-animation";
 // animation skeleton
 import PlaylistsSkeletonAnimation from "./components/playlists-skeleton-animation";
 import "./index.css";
+import Loading from "./components/loading-animation";
 
 const router = createBrowserRouter([
   {
     element: (
       <Provider store={store}>
-        <Suspense fallback={<LayoutSkeletonAnimation />}>
+        <Suspense fallback={<Loading />}>
           <App />
         </Suspense>
       </Provider>
@@ -63,7 +64,11 @@ const router = createBrowserRouter([
       },
       {
         path: "history",
-        element: <History />,
+        element: (
+          <Suspense fallback={<PlaylistsSkeletonAnimation />}>
+            <History />
+          </Suspense>
+        ),
       },
       {
         path: "notes",
@@ -94,6 +99,10 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
     ],
+  },
+  {
+    path: "/loading",
+    element: <Loading />,
   },
   {
     path: "/anime",

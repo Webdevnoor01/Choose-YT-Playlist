@@ -7,7 +7,7 @@ import { setAddPlaylistToggle } from "../../store/toogleSlice";
 import { tokens } from "../../theme";
 import ButtonUI from "../UI/button";
 
-const EmptyMessage = ({ message, btnTxt, to }) => {
+const EmptyMessage = ({ message, btnTxt, to, styles }) => {
   const states = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +28,7 @@ const EmptyMessage = ({ message, btnTxt, to }) => {
         alignItems: "center",
         p: "1rem",
         borderRadius: ".5rem",
+        ...styles,
       }}
     >
       <Box

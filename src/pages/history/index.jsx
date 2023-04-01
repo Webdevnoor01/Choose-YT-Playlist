@@ -20,7 +20,9 @@ import { tokens } from "../../theme";
 
 // Custom Components
 // import HistoryCard from "../../history-card";
-import HistoryCard from "../../components/history-card"
+import HistoryCard from "../../components/history-card";
+import { useSelector } from "react-redux";
+import EmptyMessage from "../../components/empty-message";
 
 const playlist = {
   title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
@@ -32,112 +34,130 @@ const playlist = {
 };
 
 const History = () => {
+  const states = useSelector((state) => state);
+  const historyArr = Object.keys(states.history);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100%",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        [theme.breakpoints.down("md")]: {
-          pb: "7rem",
-        },
-      }}
-    >
+    <>
       <Box
         sx={{
-          maxWidth: "60%",
           display: "flex",
+          width: "100%",
+          justifyContent: "space-between",
           flexWrap: "wrap",
-          gap: "1rem",
           [theme.breakpoints.down("md")]: {
-            maxWidth: "100%",
+            pb: "7rem",
           },
         }}
       >
-        <HistoryCard
-          thumbnail={playlist.thumbnail}
-          title={playlist.title}
-          channelName={playlist.channelName}
-          description={playlist.description}
-        />
-        <HistoryCard
-          thumbnail={playlist.thumbnail}
-          title={playlist.title}
-          channelName={playlist.channelName}
-          description={playlist.description}
-        />
-        <HistoryCard
-          thumbnail={playlist.thumbnail}
-          title={playlist.title}
-          channelName={playlist.channelName}
-          description={playlist.description}
-        />
-        <HistoryCard
-          thumbnail={playlist.thumbnail}
-          title={playlist.title}
-          channelName={playlist.channelName}
-          description={playlist.description}
-        />
-        <HistoryCard
-          thumbnail={playlist.thumbnail}
-          title={playlist.title}
-          channelName={playlist.channelName}
-          description={playlist.description}
-        />
-      </Box>
-      <Box
-        sx={{
-          maxWidth: "35%",
-          gap: "2rem",
-          [theme.breakpoints.down("md")]:{
-            display:"none"
-          }
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            backgroundColor: colors.secondary[500],
-          }}
-        >
-          <IconButton>
-            {" "}
-            <SearchOutlined />{" "}
-          </IconButton>
-          <InputBase placeholder='Search history...' />
-        </Box>
-        <Button 
-          sx={{
-            padding: "38px 0px"
-          }}
-        >
-          <Stack
-            direction={"row"}
-            alignItems={"center"}
-            spacing={"1"}
-            sx={{ 
-              padding: ".3rem .5rem", 
-              backgroundColor: colors.btn[500],
-              color:colors.gray[500],
-              borderRadius:".2rem",
-              "&:hover":{
-                backgroundColor:colors.btn[600]
-              }
+        {historyArr.length === 0 && (
+          <EmptyMessage
+            message='no history available'
+            btnTxt='go to playlist'
+            to='/'
+            styles={{
+              width: "70%",
+            }}
+          />
+        )}
+
+        {historyArr.length > 0 && (
+          <Box
+            sx={{
+              maxWidth: "60%",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "1rem",
+              [theme.breakpoints.down("md")]: {
+                maxWidth: "100%",
+              },
             }}
           >
-            <IconButton aria-label='Clear all watch history' >
-              <DeleteOutlineOutlined fontSize='1rem' />
+            <HistoryCard
+              thumbnail={playlist.thumbnail}
+              title={playlist.title}
+              channelName={playlist.channelName}
+              description={playlist.description}
+            />
+            <HistoryCard
+              thumbnail={playlist.thumbnail}
+              title={playlist.title}
+              channelName={playlist.channelName}
+              description={playlist.description}
+            />
+            <HistoryCard
+              thumbnail={playlist.thumbnail}
+              title={playlist.title}
+              channelName={playlist.channelName}
+              description={playlist.description}
+            />
+            <HistoryCard
+              thumbnail={playlist.thumbnail}
+              title={playlist.title}
+              channelName={playlist.channelName}
+              description={playlist.description}
+            />
+            <HistoryCard
+              thumbnail={playlist.thumbnail}
+              title={playlist.title}
+              channelName={playlist.channelName}
+              description={playlist.description}
+            />
+          </Box>
+        )}
+
+        <Box
+          sx={{
+            maxWidth: "35%",
+            gap: "2rem",
+            [theme.breakpoints.down("md")]: {
+              display: "none",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              backgroundColor: colors.secondary[500],
+            }}
+          >
+            <IconButton>
+              {" "}
+              <SearchOutlined />{" "}
             </IconButton>
-            <Typography variant='body1'>Clear all watch history</Typography>
-          </Stack>
-        </Button>
+            <InputBase placeholder='Search history...' />
+          </Box>
+          <Button
+            sx={{
+              padding: "38px 0px",
+            }}
+          >
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              spacing={"1"}
+              sx={{
+                padding: ".3rem .5rem",
+                backgroundColor: colors.btn[500],
+                color: colors.gray[500],
+                borderRadius: ".2rem",
+                "&:hover": {
+                  backgroundColor: colors.btn[600],
+                },
+              }}
+            >
+              <IconButton aria-label='Clear all watch history'>
+                <DeleteOutlineOutlined fontSize='1rem' />
+              </IconButton>
+              <Typography variant='body1'>Clear all watch history</Typography>
+            </Stack>
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
