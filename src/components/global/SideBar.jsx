@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sidebar, MenuItem, Menu, useProSidebar } from "react-pro-sidebar";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
@@ -10,8 +10,8 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import VideoLibraryOutlinedIcon from "@mui/icons-material/VideoLibraryOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import TextSnippetOutlinedIcon from "@mui/icons-material/TextSnippetOutlined";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import { Link } from "react-router-dom";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { Link, useLocation } from "react-router-dom";
 
 // Menu Data
 import menuItems from "../../jsons/sidebarMenu.json";
@@ -24,17 +24,29 @@ const SideBar = () => {
   const [selected, setSelected] = useState("Playlists");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const location = useLocation();
 
-  const menuItemsArr= Object.values(menuItems)
+  const menuName = {
+    "/": "Playlists",
+    "/favorite-playlists": "Favorite Playlist",
+    "/recent-playlists": "Recent Playlist",
+    "/history": "History",
+    "/notes": "Notes",
+    "/profile": "Settings",
+  };
+  useEffect(() => {
+    setSelected(menuName[location.pathname]);
+  }, [location.pathname]);
+
+  const menuItemsArr = Object.values(menuItems);
   const iconsObj = {
-    "PlaylistPlayOutlinedIcon": <PlaylistPlayOutlinedIcon/>,
-    "FavoriteOutlinedIcon": <FavoriteOutlinedIcon/>,
-    "VideoLibraryOutlinedIcon": <VideoLibraryOutlinedIcon/>,
-    "HistoryOutlinedIcon": <HistoryOutlinedIcon/>,
-    "TextSnippetOutlinedIcon": <TextSnippetOutlinedIcon/>,
-    "SettingsOutlinedIcon":<SettingsOutlinedIcon/>
-
-  }
+    PlaylistPlayOutlinedIcon: <PlaylistPlayOutlinedIcon />,
+    FavoriteOutlinedIcon: <FavoriteOutlinedIcon />,
+    VideoLibraryOutlinedIcon: <VideoLibraryOutlinedIcon />,
+    HistoryOutlinedIcon: <HistoryOutlinedIcon />,
+    TextSnippetOutlinedIcon: <TextSnippetOutlinedIcon />,
+    SettingsOutlinedIcon: <SettingsOutlinedIcon />,
+  };
 
   return (
     <Box
@@ -57,12 +69,12 @@ const SideBar = () => {
               ? colors.pinkAccent[500]
               : colors.dark[500]
           }`,
-          m:"0 auto"
+          m: "0 auto",
         },
         "& .ps-menu-button": {
           borderRadius: ".5rem",
           marginTop: "1rem",
-          padding:"0 .6rem",
+          padding: "0 .6rem",
           "&:hover": {
             backgroundColor: `${colors.secondary[700]} !important`,
           },
@@ -70,7 +82,7 @@ const SideBar = () => {
         [theme.breakpoints.down("md")]: {
           position: "fixed",
           bottom: 0,
-          zIndex:1
+          zIndex: 1,
         },
         "& .ps-menu-root": {
           "& ul": {
@@ -81,15 +93,15 @@ const SideBar = () => {
             },
           },
         },
-        "& .ps-menu-label":{
-          [theme.breakpoints.up("md")]:{
-            pl:"1rem"
-          }
+        "& .ps-menu-label": {
+          [theme.breakpoints.up("md")]: {
+            pl: "1rem",
+          },
         },
 
-        "& .MuiSvgIcon-root":{
-          fontSize:"1.4rem"
-        }
+        "& .MuiSvgIcon-root": {
+          fontSize: "1.4rem",
+        },
       }}
     >
       <Sidebar
@@ -103,10 +115,8 @@ const SideBar = () => {
             backgroundColor: colors.secondary[500],
           }}
         >
-
-          {
-            menuItemsArr.map((menuItem, index) => (
-              <Item
+          {menuItemsArr.map((menuItem, index) => (
+            <Item
               key={index}
               title={menuItem.title}
               Icon={iconsObj[menuItem.icon]}
@@ -114,9 +124,7 @@ const SideBar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            ))
-          }
-         
+          ))}
         </Menu>
       </Sidebar>
     </Box>

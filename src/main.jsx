@@ -9,23 +9,25 @@ const RecentPlaylist = lazy(() => import("./pages/recent-playlist"));
 const Notes = lazy(() => import("./pages/notes"));
 const Playlist = lazy(() => import("./pages/playlist"));
 const History = lazy(() => import("./pages/history"));
+const Profile = lazy(() => import("./pages/profile"));
+const VideoPlayer = lazy(() => import("./pages/video-player"));
 import Signup from "./pages/signup";
+import Login from "./pages/login";
+import Note from "./pages/note";
 
 // store provider
 import { Provider } from "react-redux";
 import store from "./store/store";
 
 import { ThemeProvider } from "@emotion/react";
-import Login from "./pages/login";
-import VideoPlayer from "./pages/video-player";
-import Profile from "./pages/profile";
-import Note from "./pages/note";
 import LayoutSkeletonAnimation from "./components/layout-skeleton-animation";
 
 // animation skeleton
 import PlaylistsSkeletonAnimation from "./components/playlists-skeleton-animation";
 import "./index.css";
 import Loading from "./components/loading-animation";
+import { SettingSkeletonAnimation } from "./components/setting-skeleton-animation";
+import VideoPlayerSkeletonAnimation from "./components/video-player-skeleton-animation";
 
 const router = createBrowserRouter([
   {
@@ -84,7 +86,11 @@ const router = createBrowserRouter([
       },
       {
         path: "watch",
-        element: <VideoPlayer />,
+        element: (
+          <Suspense fallback={<VideoPlayerSkeletonAnimation />}>
+            <VideoPlayer />
+          </Suspense>
+        ),
       },
       {
         path: "signup",
@@ -96,17 +102,13 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <Suspense fallback={<SettingSkeletonAnimation />}>
+            <Profile />
+          </Suspense>
+        ),
       },
     ],
-  },
-  {
-    path: "/loading",
-    element: <Loading />,
-  },
-  {
-    path: "/anime",
-    element: <LayoutSkeletonAnimation />,
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(

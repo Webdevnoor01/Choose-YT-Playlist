@@ -27,7 +27,7 @@ import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
 
 // theme settings
 import { tokens } from "../../theme";
-import {  IconButton, Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import NoteItem from "../../components/shared";
 import VideoList from "../../components/video-list";
 import AddNote from "../../components/modals/add-note";
@@ -90,6 +90,7 @@ const VideoPlayer = () => {
             width='100%'
             controls={true}
             playIcon={true}
+            playing={true}
           />
         </Box>
 

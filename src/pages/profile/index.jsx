@@ -9,8 +9,7 @@ import { tokens } from "../../theme/index";
 
 // Components
 import ButtonUI from "../../components/UI/button";
-import InputGroup from "../../components/shared/input-group";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileEdit from "../../components/profile-edit";
 
 const profileEditObj = {
@@ -18,15 +17,15 @@ const profileEditObj = {
     heading: "Edit user info",
     inputs: [
       {
-        name:"name",
+        name: "name",
         type: "text",
         value: "Abdun Noor Faruki Biswas",
       },
       {
-        name:"email",
+        name: "email",
         type: "email",
         value: "abdunnoor@gmail.com",
-        disabled:true
+        disabled: true,
       },
     ],
     button: {
@@ -38,47 +37,53 @@ const profileEditObj = {
     heading: "Change password",
     inputs: [
       {
-        name:"oldPassword",
+        name: "oldPassword",
         type: "password",
         placeHolder: "Enter old password",
         fullWidth: true,
-        value:null
+        value: null,
       },
       {
-        name:"newPassword",
+        name: "newPassword",
         type: "password",
         placeHolder: "Enter new password",
         fullWidth: false,
-        value:null
+        value: null,
       },
       {
-        name:"newConformPassword",
+        name: "newConformPassword",
         type: "password",
         placeHolder: "Enter new conform password",
         fullWidth: false,
-        value:null
+        value: null,
       },
     ],
     button: {
       text: "Save change password",
-      style:{}
+      style: {},
     },
   },
 };
 
 const Profile = () => {
-
   const [profileEditComponent, setProfileEditComponent] = useState("userInfo");
-  console.log(profileEditObj[profileEditComponent])
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   profileEditObj.changePassword.button.style = {
-    backgroundColor:colors.pinkAccent[500],
-    "&:hover":{
-      backgroundColor:colors.pinkAccent[600],
-
+    backgroundColor: colors.pinkAccent[500],
+    "&:hover": {
+      backgroundColor: colors.pinkAccent[600],
+    },
+  };
+  useEffect(() => {
+    let array = [];
+    for (let index = 0; index < 1000000; index++) {
+      const element = array[index];
     }
-  }
+    setTimeout(() => {
+      console.log("delay");
+    }, 50000);
+  }, []);
   return (
     <Box
       sx={{
@@ -105,7 +110,7 @@ const Profile = () => {
           [theme.breakpoints.down("sm")]: {
             width: "100%",
             height: "50%",
-          }
+          },
         }}
       >
         <Typography
@@ -211,7 +216,6 @@ const Profile = () => {
           button={profileEditObj[profileEditComponent].button}
           inputs={profileEditObj[profileEditComponent].inputs}
         />
-
       </Box>
     </Box>
   );
