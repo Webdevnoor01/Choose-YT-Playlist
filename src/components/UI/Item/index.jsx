@@ -8,7 +8,6 @@ import { tokens } from "../../../theme";
 const Item = ({ title, Icon, selected, setSelected, to }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  console.log(title);
   return (
     <>
       <Tooltip title={title}>

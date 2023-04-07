@@ -1,5 +1,3 @@
-import React from "react";
-
 // uuid
 import shortid from "shortid";
 
@@ -13,10 +11,8 @@ import { useTheme } from "@mui/material/styles";
 import InputGroup from "../shared/input-group";
 import ButtonUI from "../UI/button";
 import { tokens } from "../../theme";
-import { useState } from "react";
 
 const ProfileEdit = ({ heading, button, inputs }) => {
-  console.log(inputs);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (

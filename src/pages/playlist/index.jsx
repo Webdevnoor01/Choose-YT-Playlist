@@ -24,7 +24,6 @@ const Playlist = () => {
   const colors = tokens(theme.palette.mode);
   const playlists = useSelector((state) => state.playlist);
   const playlistArr = Object.values(playlists.items);
-  console.log(playlistArr);
 
   // The gridMinMaxObj is used to add grid size unit in grid minmax
   const gridMinMaxObj = {
@@ -64,8 +63,8 @@ const Playlist = () => {
             ]
           }))`,
           gap: ".5rem",
-          [theme.breakpoints.down("md")]: {
-            gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr)",
+          [theme.breakpoints.down("sm")]: {
+            gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
           },
         }}
       >

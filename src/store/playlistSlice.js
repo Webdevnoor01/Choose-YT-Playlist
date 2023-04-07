@@ -10,9 +10,7 @@ export const INIT_STATE = {
 
 export const fetchPlaylist = createAsyncThunk("user/playlist",
     async(userId) => {
-        console.log("apiCalled thunk")
         const response = await getPlaylist(userId)
-        console.log("response: ", response)
         if (response.error) throw new Error(response.message)
         return response
     }

@@ -1,6 +1,6 @@
+import React from "react";
 import { Box, IconButton, InputBase, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
 import { tokens } from "../../../theme";
 
 const InputGroup = ({
@@ -49,7 +49,6 @@ const InputGroup = ({
           ...style,
         }}
       >
-        
         {value && (
           <InputBase
             type={type}

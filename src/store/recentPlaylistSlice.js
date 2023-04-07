@@ -10,7 +10,6 @@ const recentPlaylistSlice = createSlice({
         removeRecentPlaylist: (state, action) => {
             if (!state[action.payload]) return
             delete state[action.payload]
-            return state
         }
     }
 })

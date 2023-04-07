@@ -35,7 +35,8 @@ const playlist = {
 
 const History = () => {
   const states = useSelector((state) => state);
-  const historyArr = Object.keys(states.history);
+  const historyArr = Object.values(states.history);
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -58,6 +59,9 @@ const History = () => {
             to='/'
             styles={{
               width: "70%",
+              [theme.breakpoints.down("md")]: {
+                width: "100%",
+              },
             }}
           />
         )}
@@ -74,36 +78,16 @@ const History = () => {
               },
             }}
           >
-            <HistoryCard
-              thumbnail={playlist.thumbnail}
-              title={playlist.title}
-              channelName={playlist.channelName}
-              description={playlist.description}
-            />
-            <HistoryCard
-              thumbnail={playlist.thumbnail}
-              title={playlist.title}
-              channelName={playlist.channelName}
-              description={playlist.description}
-            />
-            <HistoryCard
-              thumbnail={playlist.thumbnail}
-              title={playlist.title}
-              channelName={playlist.channelName}
-              description={playlist.description}
-            />
-            <HistoryCard
-              thumbnail={playlist.thumbnail}
-              title={playlist.title}
-              channelName={playlist.channelName}
-              description={playlist.description}
-            />
-            <HistoryCard
-              thumbnail={playlist.thumbnail}
-              title={playlist.title}
-              channelName={playlist.channelName}
-              description={playlist.description}
-            />
+            {historyArr.map((video) => (
+              <HistoryCard
+                thumbnail={video.thumbnail}
+                title={video.title}
+                channelName={video.channelName}
+                videoId={video.videoId}
+                videoIndex={video.videoIndex}
+                playlistId={video.playlistId}
+              />
+            ))}
           </Box>
         )}
 
@@ -113,6 +97,7 @@ const History = () => {
             gap: "2rem",
             [theme.breakpoints.down("md")]: {
               display: "none",
+              width: 0,
             },
           }}
         >

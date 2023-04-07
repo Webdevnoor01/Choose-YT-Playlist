@@ -58,10 +58,13 @@ const SideBar = () => {
             width: "100vw !important",
           },
         },
-        "& .ps-active.ps-menu-button": {
+        "& .ps-active .ps-menu-button": {
           backgroundColor: `${colors.secondary[700]} !important`,
           borderRadius: ".5rem",
           padding: "1.2rem",
+          [theme.breakpoints.down("mx")]: {
+            padding: "0",
+          },
         },
         "& .ps-menu-icon": {
           color: `${
@@ -75,6 +78,11 @@ const SideBar = () => {
           borderRadius: ".5rem",
           marginTop: "1rem",
           padding: "0 .6rem",
+
+          [theme.breakpoints.down("md")]: {
+            marginTop: ".5rem",
+            padding: "0 .5rem 0 .5rem !important",
+          },
           "&:hover": {
             backgroundColor: `${colors.secondary[700]} !important`,
           },

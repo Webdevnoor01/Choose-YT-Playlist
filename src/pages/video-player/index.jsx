@@ -1,7 +1,10 @@
 // React Hooks
 import { useState, Suspense, lazy } from "react";
 // react-redux
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+// actins
+import { setHistory } from "../../store/historySlice";
 // React-Router-Dom
 import {
   useNavigate,
@@ -34,11 +37,13 @@ import AddNote from "../../components/modals/add-note";
 
 // Components
 import ButtonUI from "../../components/UI/button";
+import { useEffect } from "react";
 
 const VideoPlayer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = qs.default.parse(location.search);
   const playlist = useSelector((state) => state.playlist.items[query.list]);
+  const dispatch = useDispatch();
   const [isListCollapsed, setIsListCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
   const [scroll, setScroll] = useState("paper");
@@ -50,18 +55,41 @@ const VideoPlayer = () => {
     setIsListCollapsed(!isListCollapsed);
   };
 
-  const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-    setScroll(scrollType);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
+  useEffect(() => {
+    const video = playlist.videos[query.index - 1];
+    const videoHistoryObj = {
+      playlistId: playlist.playlistId,
+      videoId: video.videoContentDetails.videoId,
+      videoIndex: query.index,
+      thumbnail: video.videoThumbnail.url,
+      title: video.videoTitle,
+      channelName: playlist.channelTitle,
+      watchedTime: 0,
+    };
+    dispatch(setHistory(videoHistoryObj));
+    console.log("render useeffect ");
+  }, [query.list]);
+
   const handleVideoClick = (videoId, videoIndex) => {
+    console.log("videoIndex: ", videoIndex);
     setSearchParams(
       createSearchParams({ v: videoId, list: query.list, index: videoIndex })
     );
+    const video = playlist.videos[videoIndex - 1];
+    const videoHistoryObj = {
+      playlistId: playlist.playlistId,
+      videoId: video.videoContentDetails.videoId,
+      videoIndex: videoIndex,
+      thumbnail: video.videoThumbnail.url,
+      title: video.videoTitle,
+      channelName: playlist.channelTitle,
+      watchedTime: 0,
+    };
+    dispatch(setHistory(videoHistoryObj));
+    console.log(videoHistoryObj);
   };
   return (
     <>
@@ -85,7 +113,9 @@ const VideoPlayer = () => {
           }}
         >
           <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${query.v}list=${query.list}&index=${query.index}`}
+            url={`https://www.youtube.com/watch?v=${query.v}list=${
+              query.list
+            }&index=${query.index - 1}`}
             height='100%'
             width='100%'
             controls={true}
@@ -229,7 +259,7 @@ const VideoPlayer = () => {
                   Next:
                 </Typography>
                 <Typography variant='body2'>
-                  {playlist.videos[query.index].videoTitle.slice(0, 35)}...
+                  {playlist.videos[query.index - 1].videoTitle.slice(0, 35)}...
                 </Typography>
               </Typography>
               <Typography varient='body2'>

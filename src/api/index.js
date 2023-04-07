@@ -21,7 +21,6 @@ const getPlaylistItems = async(playListId, pageToken, result = []) => {
 };
 
 const getPlaylist = async (playlistId) => {
-  console.log("api called");
   try {
     const url = `https://www.googleapis.com/youtube/v3/playlists?part=id,contentDetails,snippet&id=${playlistId}&key=${apiKey}`;
 

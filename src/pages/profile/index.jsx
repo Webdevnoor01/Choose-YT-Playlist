@@ -69,21 +69,14 @@ const Profile = () => {
   const [profileEditComponent, setProfileEditComponent] = useState("userInfo");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   profileEditObj.changePassword.button.style = {
     backgroundColor: colors.pinkAccent[500],
     "&:hover": {
       backgroundColor: colors.pinkAccent[600],
     },
   };
-  useEffect(() => {
-    let array = [];
-    for (let index = 0; index < 1000000; index++) {
-      const element = array[index];
-    }
-    setTimeout(() => {
-      console.log("delay");
-    }, 50000);
-  }, []);
+
   return (
     <Box
       sx={{

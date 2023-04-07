@@ -158,7 +158,7 @@ const PlaylistCard = ({
                           backgroundColor: colors.secondary[500],
                         },
                       }}
-                      onClick={() => option.onClick(playlistId) }
+                      onClick={() => option.onClick(playlistId)}
                     >
                       <IconButton> {option.Icon} </IconButton>
                       <Typography
