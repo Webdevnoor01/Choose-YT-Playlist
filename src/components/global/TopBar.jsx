@@ -1,9 +1,14 @@
+// react-router-dom
+import { Link } from "react-router-dom";
+
 // from store
 import { useSelector, useDispatch } from "react-redux";
+
+// actions
 import {
-  setSidebarToggle,
   setUserProfileToggle,
   setAddPlaylistToggle,
+  setSearchBoxToggle,
 } from "../../store/toogleSlice";
 import { setMode } from "../../store/modeSlice";
 
@@ -12,6 +17,8 @@ import { useTheme } from "@mui/material/styles";
 
 // mui componetn
 import { Box, InputBase, IconButton, Typography, Popover } from "@mui/material";
+
+// popupState library
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 
 // mui icons
@@ -49,6 +56,10 @@ const TopBar = ({ auth }) => {
   const handleTogglePlaylist = () => {
     dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
   };
+  const handleToggleSearch = () => {
+    console.log(states.toggle.searchBoxToggle);
+    dispatch(setSearchBoxToggle(!states.toggle.searchBoxToggle));
+  };
 
   const handleMode = () => {
     const newMode = states.mode.value === "dark" ? "light" : "dark";
@@ -83,13 +94,15 @@ const TopBar = ({ auth }) => {
         >
           <MenuIcon />
         </IconButton>
-        <Box
+        <Link
           component='div'
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            cursor: "pointer",
           }}
+          to='/'
         >
           <Box
             component='img'
@@ -101,7 +114,7 @@ const TopBar = ({ auth }) => {
               },
             }}
           ></Box>
-        </Box>
+        </Link>
       </Box>
 
       {!auth && (
@@ -128,8 +141,9 @@ const TopBar = ({ auth }) => {
                 display: "none",
               },
             }}
+            onClick={handleToggleSearch}
           />
-          <IconButton>
+          <IconButton onClick={handleToggleSearch}>
             <SearchIcon />
           </IconButton>
         </Box>
@@ -152,11 +166,10 @@ const TopBar = ({ auth }) => {
           onClick={handleTogglePlaylist}
           mdNone={true}
           style={{
-            backgroundColor:colors.pinkAccent[500],
-            "&:hover":{
-              backgroundColor:colors.pinkAccent[600],
-
-            }
+            backgroundColor: colors.pinkAccent[500],
+            "&:hover": {
+              backgroundColor: colors.pinkAccent[600],
+            },
           }}
         />
 
@@ -200,7 +213,7 @@ const TopBar = ({ auth }) => {
             </Typography>
             <PopupState
               variant='popover'
-              popupId='demo-popup-popover'
+              popupId='userPopupMenu'
               sx={{
                 zIndex: "1 !important",
               }}
@@ -249,11 +262,13 @@ const TopBar = ({ auth }) => {
                         text={"profile"}
                         Icon={AccountBoxOutlinedIcon}
                         to='/profile'
+                        onClick={() => popupState.close()}
                       />
                       <ProfileAction
                         text={"logout"}
                         Icon={LogoutOutlinedIcon}
                         to='/login'
+                        onClick={() => popupState.close()}
                       />
                     </Box>
                   </Popover>

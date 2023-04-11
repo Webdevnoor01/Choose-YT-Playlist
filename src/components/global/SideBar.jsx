@@ -57,6 +57,9 @@ const SideBar = () => {
           [theme.breakpoints.down("md")]: {
             width: "100vw !important",
           },
+          "& .ps-sidebar-container": {
+            zIndex: 1,
+          },
         },
         "& .ps-active .ps-menu-button": {
           backgroundColor: `${colors.secondary[700]} !important`,

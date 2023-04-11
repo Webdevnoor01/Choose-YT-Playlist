@@ -10,9 +10,9 @@ import CardContent from "@mui/material/CardContent";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
 
-const VideoList = ({ videos, channelTitle,onVideoClick  }) => {
+const VideoList = ({ videos, channelTitle, onVideoClick }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode)
+  const colors = tokens(theme.palette.mode);
   return (
     <>
       {videos.map((video) => (
@@ -24,21 +24,23 @@ const VideoList = ({ videos, channelTitle,onVideoClick  }) => {
             alignItems: "center",
             marginBottom: ".5rem",
             cursor: "pointer",
-            backgroundColor:colors.secondary[500],
+            backgroundColor: colors.secondary[500],
             [theme.breakpoints.down("md")]: {
               minHeight: "5rem",
             },
           }}
-          onClick={( ) =>onVideoClick(video.videoContentDetails.videoId, video.index)}
+          onClick={() =>
+            onVideoClick(video.videoContentDetails.videoId, video.index)
+          }
         >
           <Box
             sx={{
               width: "41%",
-              display:"flex",
-              justifyContent:"center",
-              alignItems:"center",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
               [theme.breakpoints.down("md")]: {
-                width: "65%",
+                minWidth: "45%",
               },
             }}
           >

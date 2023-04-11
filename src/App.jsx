@@ -12,6 +12,7 @@ import Layout from "./layout";
 import { useMode } from "./hooks/useMode";
 import AuthLayout from "./auth-layout";
 import AddPlaylistModal from "./components/modals/add-playlist";
+import SearchBox from "./components/modals/search-box";
 
 function App() {
   const state = useSelector((state) => state);
@@ -21,21 +22,24 @@ function App() {
     <ThemeProvider theme={theme}>
       <ProSidebarProvider>
         <CssBaseline />
-        {!(pathname == "/signup" || pathname == "/login") ?
+        {!(pathname == "/signup" || pathname == "/login") ? (
           <Layout>
             <Outlet />
           </Layout>
-        :null}
-        {
-          (pathname === "/signup" || pathname === "/login") ? 
-            <AuthLayout>
-               <Outlet/>
-            </AuthLayout>
-          :null
-        }
+        ) : null}
+        {pathname === "/signup" || pathname === "/login" ? (
+          <AuthLayout>
+            <Outlet />
+          </AuthLayout>
+        ) : null}
 
         {/* Modals */}
-        {state.toggle.addPlaylistToggle && <AddPlaylistModal open={state.toggle.addPlaylistToggle} />}
+        {state.toggle.addPlaylistToggle && (
+          <AddPlaylistModal open={state.toggle.addPlaylistToggle} />
+        )}
+        {state.toggle.searchBoxToggle && (
+          <SearchBox open={state.toggle.searchBoxToggle} />
+        )}
       </ProSidebarProvider>
     </ThemeProvider>
   );

@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // Actions
-import { setAsFaroite } from "../../store/playlistSlice";
+import { removePlaylist, setAsFaroite } from "../../store/playlistSlice";
 
 // MUI components
 import { Box, Typography } from "@mui/material";
@@ -17,6 +17,9 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import PlaylistCard from "../../components/playlist-card";
 import EmptyMessage from "../../components/empty-message";
 import { tokens } from "../../theme";
+
+// Utilities
+import { showToast } from "../../utils/showToast";
 
 const Playlist = () => {
   const dispatch = useDispatch();
@@ -34,13 +37,28 @@ const Playlist = () => {
     {
       title: "Remove from playlist",
       Icon: <RemoveCircleOutlineOutlinedIcon />,
-      onClick: () => {},
+      onClick: (playlistId, popupState) => {
+        dispatch(removePlaylist({ playlistId }));
+        popupState.close();
+      },
     },
     {
       title: "add to favorite",
       Icon: <FavoriteBorderOutlinedIcon />,
-      onClick: (playlistId) => {
+      onClick: (playlistId, popupState) => {
         dispatch(setAsFaroite(playlistId));
+        if (playlists.items[playlistId].isFavorite) {
+          showToast({
+            type: "error",
+            message: "Already playlist added as a favorite",
+          });
+        } else {
+          showToast({
+            type: "success",
+            message: "Playlist added as a favorite",
+          });
+        }
+        popupState.close();
       },
     },
   ];

@@ -111,7 +111,6 @@ const AddNote = ({ open, scroll, handleClickOpen, handleClose }) => {
       noteData: data.noteData,
       channleTitle,
     };
-    console.log(noteObj);
     showToast({
       type: "success",
       message: "Your note hasbeen created",

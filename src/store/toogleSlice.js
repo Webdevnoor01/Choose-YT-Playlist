@@ -6,7 +6,8 @@ const toggleSlice = createSlice({
     initialState: {
         sidebar: false,
         userProfileToggle: false,
-        addPlaylistToggle: false
+        addPlaylistToggle: false,
+        searchBoxToggle: false
     },
     reducers: {
         setSidebarToggle: (state, action) => {
@@ -17,10 +18,14 @@ const toggleSlice = createSlice({
         },
         setAddPlaylistToggle: (state, action) => {
             state.addPlaylistToggle = action.payload
+        },
+        setSearchBoxToggle: (state, action) => {
+            console.log("setSearchBoxToggle: ", action.payload)
+            state.searchBoxToggle = action.payload
         }
     }
 })
 
-export const { setSidebarToggle, setUserProfileToggle, setAddPlaylistToggle } = toggleSlice.actions
+export const { setSidebarToggle, setUserProfileToggle, setAddPlaylistToggle, setSearchBoxToggle } = toggleSlice.actions
 
 export default toggleSlice.reducer

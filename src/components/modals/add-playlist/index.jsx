@@ -3,7 +3,6 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // MUI Components
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -18,7 +17,6 @@ import { tokens } from "../../../theme";
 // actions
 import { setAddPlaylistToggle } from "../../../store/toogleSlice";
 import { fetchPlaylist } from "../../../store/playlistSlice";
-import { setPlaylistId } from "../../../store/playlsitIdSlice";
 
 // Components
 import InputGroup from "../../shared/input-group";
@@ -27,6 +25,9 @@ import ButtonUI from "../../UI/button";
 // React Hook Form
 import { useForm, Controller } from "react-hook-form";
 import { Box } from "@mui/material";
+
+// Uitilities
+import { showToast } from "../../../utils/showToast";
 
 const AddPlaylistModal = () => {
   const {
@@ -50,23 +51,41 @@ const AddPlaylistModal = () => {
 
   const onValid = (data) => {
     const { playlistId } = data;
+    if (states.playlist.items[playlistId]) {
+      showToast({
+        type: "error",
+        message: "You already added this playlist",
+      });
+      dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+      return;
+    }
     if (!playlistId.includes("youtube.com")) {
       if (playlistId.slice(0, 2) == "PL") {
         dispatch(fetchPlaylist(playlistId));
         dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
-        dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
         return;
       }
-      setError("playlistId", {
+      showToast({
+        type: "error",
         message: "Please enter valid playlist link or playlist id",
       });
+      // setError("playlistId", {
+      //   message: "Please enter valid playlist link or playlist id",
+      // });
     }
     if (playlistId.includes("youtube.com")) {
       const splitPlaylistId = playlistId.split("=");
-      console.log(splitPlaylistId);
+      console.log(splitPlaylistId[1].slice(0, 2));
+      if (splitPlaylistId[1].slice(0, 2) !== "PL") {
+        showToast({
+          type: "error",
+          message: "Please enter valid playlist link or playlist id",
+        });
+        dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+        return;
+      }
       dispatch(fetchPlaylist(splitPlaylistId[1]));
       dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
-
     }
   };
   const onInValid = (errors) => {

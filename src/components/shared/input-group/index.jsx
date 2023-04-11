@@ -109,12 +109,13 @@ const InputGroup = ({
         {error && (
           <Typography
             sx={{
-              color: "red",
-              fontSize: ".8rem",
+              color: "#ff1706",
+              fontSize: "1rem",
+              fontWeight: "bold",
+              p: ".2rem 0",
             }}
           >
-            {" "}
-            {error}{" "}
+            {error}
           </Typography>
         )}
       </Box>

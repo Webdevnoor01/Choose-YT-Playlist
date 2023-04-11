@@ -5,6 +5,13 @@ export const INIT_STATE = {
     loading: false,
     items: {
 
+    },
+    searchResult: {
+        resultError: {
+            isErr: false,
+            message: "No playlist found"
+        },
+        items: {}
     }
 };
 
@@ -20,12 +27,67 @@ const playlistSlice = createSlice({
     name: "playlist",
     initialState: INIT_STATE,
     reducers: {
+        removePlaylist: (state, action) => {
+            console.log(state.items)
+            if (!action.payload.playlistId) return
+            delete state.items[action.payload.playlistId]
+        },
         setAsFaroite: (state, action) => {
             state.items[action.payload].isFavorite = true
         },
         removeFromFavorite: (state, action) => {
             state.items[action.payload].isFavorite = false
+        },
+        findPlaylistById: (state, action) => {
+            if (Object.keys(state.items).length === 0) {
+                state.searchResult.resultError.isErr = true
+            } else {
+                state.searchResult.resultError.isErr = false
+
+            }
+            const result = Object.keys(state.items).filter(playlistId => {
+                if (playlistId.includes(action.payload)) {
+                    const playlist = state.items[playlistId]
+                    const playlistObj = {
+                        playlistId: playlist.playlistId,
+                        playlistTitle: playlist.playlistTitle,
+                        playlistThumbnail: playlist.playlistThumbnail,
+                        channelName: playlist.channelTitle
+                    }
+                    if (!state.searchResult.items[playlistId]) {
+
+                        state.searchResult.items[playlistId] = playlistObj
+                    }
+                }
+            })
+        },
+        findPlaylistByTitle: (state, action) => {
+            if (Object.keys(state.items).length === 0) {
+                state.searchResult.resultError.isErr = true
+            } else {
+                state.searchResult.resultError.isErr = false
+
+            }
+            const result = Object.values(state.items).filter(playlist => {
+                const lowerCaseTitle = playlist.playlistTitle.toLowerCase()
+                if (lowerCaseTitle.includes(action.payload.toLowerCase())) {
+                    const playlistObj = {
+                        playlistId: playlist.playlistId,
+                        playlistTitle: playlist.playlistTitle,
+                        playlistThumbnail: playlist.playlistThumbnail,
+                        channelName: playlist.channelTitle
+                    }
+                    if (!state.searchResult.items[playlist.playlistId]) {
+
+                        state.searchResult.items[playlist.playlistId] = playlistObj
+                    }
+                }
+            })
+        },
+        resetSearchResult: (state, action) => {
+            state.searchResult.items = {}
         }
+
     },
     extraReducers: (builder) => {
         builder.addCase(fetchPlaylist.pending, (state) => {
@@ -44,7 +106,7 @@ const playlistSlice = createSlice({
     }
 });
 
-export const { setAsFaroite, removeFromFavorite } = playlistSlice.actions;
+export const { removePlaylist, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle } = playlistSlice.actions;
 export default playlistSlice.reducer;
 
 

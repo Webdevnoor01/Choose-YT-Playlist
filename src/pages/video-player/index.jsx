@@ -54,7 +54,7 @@ const VideoPlayer = () => {
   const handleListCollapsed = () => {
     setIsListCollapsed(!isListCollapsed);
   };
-
+  console.log("videoTitle: ", playlist.videos[query.index - 1].videoTitle);
   const handleClose = () => {
     setOpen(false);
   };
@@ -70,11 +70,9 @@ const VideoPlayer = () => {
       watchedTime: 0,
     };
     dispatch(setHistory(videoHistoryObj));
-    console.log("render useeffect ");
   }, [query.list]);
 
   const handleVideoClick = (videoId, videoIndex) => {
-    console.log("videoIndex: ", videoIndex);
     setSearchParams(
       createSearchParams({ v: videoId, list: query.list, index: videoIndex })
     );
@@ -89,7 +87,6 @@ const VideoPlayer = () => {
       watchedTime: 0,
     };
     dispatch(setHistory(videoHistoryObj));
-    console.log(videoHistoryObj);
   };
   return (
     <>

@@ -38,6 +38,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 // theme settings
 import { tokens } from "../../theme";
+import { usePopupState, bindMenu } from "material-ui-popup-state/hooks";
 
 const PlaylistCard = ({
   thumbnail,
@@ -51,12 +52,16 @@ const PlaylistCard = ({
   const state = useSelector((state) => state.playlist);
   const recentPlaylists = useSelector((state) => state.recentPlaylists);
   const dispatch = useDispatch();
-  const { items: playlists } = state;
   const { collapsed } = useProSidebar();
   const theme = useTheme();
   const navigate = useNavigate();
+  const popupStateHook = usePopupState({
+    variant: "popover",
+    popupId: "playlistCardMenu",
+  });
   const colors = tokens(theme.palette.mode);
 
+  const { items: playlists } = state;
   const navigateToWatch = () => {
     const videoId = playlists[playlistId].videos[0].videoContentDetails.videoId;
     if (!recentPlaylists.playlistId) {
@@ -93,7 +98,7 @@ const PlaylistCard = ({
     >
       <CardMedia
         component='img'
-        sx={{ height: "50%" }}
+        sx={{ height: "auto" }}
         image={thumbnail}
         title='green iguana'
         onClick={navigateToWatch}
@@ -115,7 +120,12 @@ const PlaylistCard = ({
             {title.slice(0, 40)}...
           </Typography>
         </Tooltip>
-        <PopupState variant='popover'>
+
+        {/* After clicking the more icon on playlist card thsi belowo PopupState component will render */}
+        <PopupState
+          variant='popover'
+          popupId='playlistCardMenu'
+        >
           {(popupState) => (
             <>
               <IconButton {...bindTrigger(popupState)}>
@@ -158,7 +168,9 @@ const PlaylistCard = ({
                           backgroundColor: colors.secondary[500],
                         },
                       }}
-                      onClick={() => option.onClick(playlistId)}
+                      onClick={() => {
+                        option.onClick(playlistId, popupState);
+                      }}
                     >
                       <IconButton> {option.Icon} </IconButton>
                       <Typography
@@ -167,8 +179,7 @@ const PlaylistCard = ({
                           color: colors.gray[100],
                         }}
                       >
-                        {" "}
-                        {option.title}{" "}
+                        {option.title}
                       </Typography>
                     </Box>
                   ))}
