@@ -69,9 +69,6 @@ const AddPlaylistModal = () => {
         type: "error",
         message: "Please enter valid playlist link or playlist id",
       });
-      // setError("playlistId", {
-      //   message: "Please enter valid playlist link or playlist id",
-      // });
     }
     if (playlistId.includes("youtube.com")) {
       const splitPlaylistId = playlistId.split("=");
@@ -122,7 +119,7 @@ const AddPlaylistModal = () => {
           },
         }}
       >
-        <DialogTitle id='scroll-dialog-title'>Add Note</DialogTitle>
+        <DialogTitle id='scroll-dialog-title'>Add Playlist</DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText
             id='scroll-dialog-description'

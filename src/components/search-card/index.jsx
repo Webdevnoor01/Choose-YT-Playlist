@@ -21,10 +21,10 @@ const SearchCard = ({ title, channelName, thumbnail, onClick }) => {
         "&:hover": {
           backgroundColor: colors.secondary[600],
         },
-        maxWidth: "90%",
+        minWidth: "90%",
         cursor: "pointer",
         [theme.breakpoints.down("md")]: {
-          maxWidth: "100%",
+          minWidth: "100%",
         },
       }}
     >
@@ -59,6 +59,7 @@ const SearchCard = ({ title, channelName, thumbnail, onClick }) => {
             minWidth: "45",
           },
         }}
+        onClick={onClick}
       >
         <Typography
           className='childDiv'

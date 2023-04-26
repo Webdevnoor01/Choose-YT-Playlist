@@ -38,11 +38,13 @@ import AddNote from "../../components/modals/add-note";
 // Components
 import ButtonUI from "../../components/UI/button";
 import { useEffect } from "react";
+import shortid from "shortid";
 
 const VideoPlayer = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const query = qs.default.parse(location.search);
-  const playlist = useSelector((state) => state.playlist.items[query.list]);
+  const playlist = useSelector((states) => states.playlist.items[query.list]);
+  const notes = useSelector((states) => states.notes);
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const [isListCollapsed, setIsListCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
@@ -54,7 +56,6 @@ const VideoPlayer = () => {
   const handleListCollapsed = () => {
     setIsListCollapsed(!isListCollapsed);
   };
-  console.log("videoTitle: ", playlist.videos[query.index - 1].videoTitle);
   const handleClose = () => {
     setOpen(false);
   };
@@ -160,42 +161,13 @@ const VideoPlayer = () => {
               overflowY: "scroll",
             }}
           >
-            <NoteItem
-              index={1}
-              title='Lorem ipsum dolor sit, amet'
-            />
-            <NoteItem
-              index={2}
-              title='Lorem ipsum dolor sit, amet'
-            />
-            <NoteItem
-              index={3}
-              title='Lorem ipsum dolor sit, amet'
-            />
-            <NoteItem
-              index={4}
-              title='Lorem ipsum dolor sit, amet'
-            />
-            <NoteItem
-              index={5}
-              title='Lorem ipsum dolor sit, amet'
-            />
-            <NoteItem
-              index={6}
-              title='Lorem ipsum dolor sit, amet'
-            />
-            <NoteItem
-              index={7}
-              title='Lorem ipsum dolor sit, amet'
-            />
-            <NoteItem
-              index={8}
-              title='Lorem ipsum dolor sit, amet'
-            />
-            <NoteItem
-              index={9}
-              title='Lorem ipsum dolor sit, amet'
-            />
+            {Object.values(notes).map((note, i) => (
+              <NoteItem
+                key={shortid.generate()}
+                index={i}
+                title={note.noteData.slice(0, 30)}
+              />
+            ))}
           </Box>
         </Box>
 

@@ -35,7 +35,7 @@ const playlist = {
 
 const History = () => {
   const states = useSelector((state) => state);
-  const historyArr = Object.values(states.history);
+  const historyArr = Object.values(states.history.items);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

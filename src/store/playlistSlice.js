@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import getPlaylist from "../api";
 export const INIT_STATE = {
     error: "",
@@ -7,6 +7,7 @@ export const INIT_STATE = {
 
     },
     searchResult: {
+        loading: false,
         resultError: {
             isErr: false,
             message: "No playlist found"
@@ -28,16 +29,18 @@ const playlistSlice = createSlice({
     initialState: INIT_STATE,
     reducers: {
         removePlaylist: (state, action) => {
-            console.log(state.items)
             if (!action.payload.playlistId) return
             delete state.items[action.payload.playlistId]
         },
+
         setAsFaroite: (state, action) => {
             state.items[action.payload].isFavorite = true
         },
+
         removeFromFavorite: (state, action) => {
             state.items[action.payload].isFavorite = false
         },
+
         findPlaylistById: (state, action) => {
             if (Object.keys(state.items).length === 0) {
                 state.searchResult.resultError.isErr = true
@@ -61,6 +64,7 @@ const playlistSlice = createSlice({
                 }
             })
         },
+
         findPlaylistByTitle: (state, action) => {
             if (Object.keys(state.items).length === 0) {
                 state.searchResult.resultError.isErr = true
@@ -84,6 +88,55 @@ const playlistSlice = createSlice({
                 }
             })
         },
+
+        findRecentPlaylistByTitle: (state, action) => {
+            const recentPlaylist = Object.values(state.items).filter((playlist, i) => playlist.playlistId === action.payload.recentPlaylistIds[i])
+            const result = recentPlaylist.filter((playlist) => {
+                const lowerCaseTitle = playlist.playlistTitle.toLowerCase()
+                if (lowerCaseTitle.includes(action.payload.search.toLowerCase())) {
+                    const playlistObj = {
+                        playlistId: playlist.playlistId,
+                        playlistTitle: playlist.playlistTitle,
+                        playlistThumbnail: playlist.playlistThumbnail,
+                        channelName: playlist.channelTitle
+                    }
+                    if (!state.searchResult.items[playlist.playlistId]) {
+
+                        state.searchResult.items[playlist.playlistId] = playlistObj
+                    }
+                }
+            })
+
+        },
+
+        findVideosByTitle: (state, action) => {
+            state.searchResult.loading = true
+            const playlistIds = Object.keys(state.items)
+            const videosArr = []
+            playlistIds.map(playlistId => {
+                Object.values(state.items[playlistId].videos).map((video, index) => {
+
+                    const videoObj = {
+                        playlistId: playlistId,
+                        videoId: video.videoContentDetails.videoId,
+                        videoTitle: video.videoTitle,
+                        videoThumbnail: video.videoThumbnail,
+                        channelName: state.items[playlistId].channelTitle,
+                        index: index
+                    }
+                    videosArr.push(videoObj)
+
+
+                })
+            })
+            state.searchResult.loading = false
+            videosArr.filter(video => {
+                if (video.videoTitle.toLowerCase().includes(action.payload.toLowerCase())) {
+                    state.searchResult.items[video.videoId] = video
+                }
+            })
+
+        },
         resetSearchResult: (state, action) => {
             state.searchResult.items = {}
         }
@@ -106,54 +159,5 @@ const playlistSlice = createSlice({
     }
 });
 
-export const { removePlaylist, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle } = playlistSlice.actions;
+export const { removePlaylist, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle, findRecentPlaylistByTitle, findVideosByTitle } = playlistSlice.actions;
 export default playlistSlice.reducer;
-
-
-
-// export const fetchPlaylist = (playlistId) => {
-//     return async function fetPlaylistThunk(dispatch, getState) {
-//         const state = getState();
-//         console.log("fetchPlaylist: ", state)
-//         if (state.playlist.items[playlistId]) {
-//             const videosLen = state.playlists.items[playlistId].videos.length;
-//             dispatch(setLoading(true));
-//             try {
-//                 const result = await getPlaylist(playlistId);
-//                 dispatch(setError(""));
-//                 if (videosLen === result.videos.length) return state.playlists;
-//                 dispatch(
-//                     setplaylist({
-//                         playlistId,
-//                         data: result,
-//                     })
-//                 );
-//             } catch (e) {
-//                 console.log(e);
-//                 dispatch(
-//                     setError(`${e?.response?.data?.error?.message}` || "Something went wrong")
-//                 );
-//             } finally {
-//                 dispatch(setLoading(false));
-//             }
-//         } else {
-//             try {
-//                 const result = await getPlaylist(playlistId);
-//                 dispatch(setError(""));
-//                 dispatch(
-//                     setplaylist({
-//                         playlistId: result.playlistId,
-//                         data: result,
-//                     })
-//                 );
-//             } catch (e) {
-//                 console.log(e);
-//                 dispatch(
-//                     setError(`${e?.response?.data?.error?.message}` || "Something went wrong")
-//                 );
-//             } finally {
-//                 dispatch(setLoading(false));
-//             }
-//         }
-//     };
-// };

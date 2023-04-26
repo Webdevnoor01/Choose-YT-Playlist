@@ -31,9 +31,17 @@ import SearchCard from "../../search-card";
 import {
   findPlaylistById,
   findPlaylistByTitle,
+  findRecentPlaylistByTitle,
+  findVideosByTitle,
   resetSearchResult,
 } from "../../../store/playlistSlice";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import { findRecentPlaylistIds } from "../../../store/recentPlaylistSlice";
+import {
+  findVideos,
+  resetHistoryResult,
+  setHistory,
+} from "../../../store/historySlice";
 
 /**
  * 
@@ -49,6 +57,8 @@ const SearchBox = ({ open }) => {
   const toggle = useSelector((state) => state.toggle);
   const playlists = useSelector((state) => state.playlist);
   const playlistResult = useSelector((state) => state.playlist.searchResult);
+  const recentPlaylist = useSelector((state) => state.recentPlaylists);
+  const histories = useSelector((state) => state.history.searchResult);
 
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -60,7 +70,6 @@ const SearchBox = ({ open }) => {
   const colors = tokens(theme.palette.mode);
 
   const handleCloseToggle = (e) => {
-    console.log(e.target.className);
     if (e.target.className.includes("childDiv")) {
       return;
     }
@@ -70,6 +79,7 @@ const SearchBox = ({ open }) => {
 
   useEffect(() => {
     if (search !== "" && searchBy === "select" && inWhere === "select") {
+      setSearch("");
       showToast({
         type: "error",
         message: "please select search by & search in",
@@ -85,20 +95,52 @@ const SearchBox = ({ open }) => {
     if (searchBy === "id" && inWhere === "playlist" && search) {
       dispatch(resetSearchResult());
       setTimeout(() => {
-        console.log(search);
         dispatch(findPlaylistById(search));
       }, 700);
     }
+
     if (searchBy === "title" && inWhere === "playlist" && search) {
       dispatch(resetSearchResult());
       setTimeout(() => {
-        console.log(search);
         dispatch(findPlaylistByTitle(search));
       }, 700);
     }
+
+    if (searchBy === "title" && inWhere === "recentPlaylists" && search) {
+      dispatch(resetSearchResult());
+      setTimeout(() => {
+        dispatch(
+          findRecentPlaylistByTitle({
+            search,
+            recentPlaylistIds: Object.keys(recentPlaylist),
+          })
+        );
+      }, 700);
+    }
+
+    if (searchBy === "title" && inWhere === "history" && search) {
+      dispatch(resetHistoryResult());
+      setTimeout(() => {
+        dispatch(findVideos(search));
+      }, 700);
+    }
+
+    if (searchBy === "title" && inWhere === "videos" && search) {
+      dispatch(resetSearchResult());
+      setTimeout(() => {
+        dispatch(findVideosByTitle(search));
+      }, 100);
+    }
   }, [search]);
 
-  const navigateToWatch = (playlistId) => {
+  const navigateToWatch = (
+    playlistId,
+    index = 1,
+    vId,
+    vThumbnail,
+    vTitle,
+    channelName
+  ) => {
     const videoId =
       playlists.items[playlistId].videos[0].videoContentDetails.videoId;
     dispatch(setSearchBoxToggle(!toggle.searchBoxToggle));
@@ -106,13 +148,25 @@ const SearchBox = ({ open }) => {
     navigate({
       pathname: "/watch",
       search: `?${createSearchParams({
-        v: videoId,
+        v: vId || videoId,
         list: playlistId,
-        index: 1,
+        index: index + 1,
       })}`,
     });
+    if (vId) {
+      const historyPayload = {
+        channelName: channelName,
+        playlistId: playlistId,
+        thumbnail: vThumbnail,
+        title: vTitle,
+        videoId: vId,
+        videoIndex: index + 1,
+      };
+      dispatch(setHistory(historyPayload));
+    }
   };
   const playlistResultArr = Object.values(playlistResult.items);
+  const historResultArr = Object.values(histories.items);
   return (
     <Box
       sx={{
@@ -266,6 +320,12 @@ const SearchBox = ({ open }) => {
             </MenuItem>
             <MenuItem
               className='childDiv'
+              value='videos'
+            >
+              in videos
+            </MenuItem>
+            <MenuItem
+              className='childDiv'
               value='recentPlaylists'
             >
               in recent playlist
@@ -281,6 +341,10 @@ const SearchBox = ({ open }) => {
 
         <Box
           sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
             overflowY: "scroll",
             position: "relative",
             height: "82%",
@@ -293,13 +357,51 @@ const SearchBox = ({ open }) => {
           {playlistResultArr.map((playlist) => (
             <SearchCard
               key={shortid.generate()}
-              title={playlist.playlistTitle}
-              thumbnail={playlist.playlistThumbnail.url}
+              title={playlist.playlistTitle || playlist.videoTitle}
+              thumbnail={
+                playlist?.playlistThumbnail?.url || playlist.videoThumbnail.url
+              }
               channelName={playlist.channelName}
               playlistId={playlist.playlistId}
-              onClick={() => navigateToWatch(playlist.playlistId)}
+              onClick={() =>
+                navigateToWatch(
+                  playlist.playlistId,
+                  playlist?.index,
+                  playlist?.videoId,
+                  playlist?.videoThumbnail,
+                  playlist?.videoTitle,
+                  playlist.channelName
+                )
+              }
             />
           ))}
+
+          {historResultArr.map((video) => (
+            <SearchCard
+              key={shortid.generate()}
+              title={video.playlistTitle}
+              thumbnail={video.playlistThumbnail.url}
+              channelName={video.channelName}
+              playlistId={video.playlistId}
+              onClick={() => navigateToWatch(video.playlistId)}
+            />
+          ))}
+
+          {playlistResultArr.length === 0 &&
+            search &&
+            inWhere === "recentPlaylists" && (
+              <h2>Not found any recent playlist</h2>
+            )}
+          {playlistResultArr.length === 0 &&
+            search &&
+            inWhere === "playlist" && <h2>Not found any playlist</h2>}
+          {playlistResultArr.length === 0 &&
+            search &&
+            inWhere === "history" && <h2>No video found</h2>}
+
+          {playlistResult.loading === true &&
+            search &&
+            inWhere === "videos" && <h2>Loading...</h2>}
         </Box>
       </div>
     </Box>
