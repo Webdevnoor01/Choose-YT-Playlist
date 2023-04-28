@@ -32,6 +32,9 @@ const playlistSlice = createSlice({
             if (!action.payload.playlistId) return
             delete state.items[action.payload.playlistId]
         },
+        setPlaylistError: (state, action) => {
+            state.error = "";
+        },
 
         setAsFaroite: (state, action) => {
             state.items[action.payload].isFavorite = true
@@ -109,6 +112,28 @@ const playlistSlice = createSlice({
 
         },
 
+        findFavoritePlaylistByTitle: (state, action) => {
+            const favoritePlaylistArr = Object.values(state.items).filter((playlist) => playlist.isFavorite)
+
+            favoritePlaylistArr.filter((playlist) => {
+                if (playlist.playlistTitle.toLowerCase().includes(action.payload.toLowerCase())) {
+
+                    const playlistObj = {
+                        playlistId: playlist.playlistId,
+                        playlistTitle: playlist.playlistTitle,
+                        playlistThumbnail: playlist.playlistThumbnail,
+                        channelName: playlist.channelTitle
+                    }
+                    if (!state.searchResult.items[playlist.playlistId]) {
+
+                        state.searchResult.items[playlist.playlistId] = playlistObj
+                    }
+
+                }
+            })
+
+        },
+
         findVideosByTitle: (state, action) => {
             state.searchResult.loading = true
             const playlistIds = Object.keys(state.items)
@@ -143,21 +168,27 @@ const playlistSlice = createSlice({
 
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchPlaylist.pending, (state) => {
+        builder.addCase(fetchPlaylist.pending, (state, action) => {
                 state.loading = true;
-                state.error = null;
+                state.error = {
+                    name: "Success",
+                    message: "Successfully fetched playlist data"
+                };
             })
             .addCase(fetchPlaylist.fulfilled, (state, action) => {
                 state.items[action.payload.playlistId] = action.payload;
-                state.error = null;
+                state.error = {
+                    name: "Success",
+                    message: "Successfully fetched playlist data"
+                };;
                 state.loading = false;
                 return state
             }).addCase(fetchPlaylist.rejected, (state, action) => {
-                state.error = action.error.message;
+                state.error = action.error;
                 state.loading = false;
             })
     }
 });
 
-export const { removePlaylist, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle, findRecentPlaylistByTitle, findVideosByTitle } = playlistSlice.actions;
+export const { removePlaylist, setPlaylistError, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle, findRecentPlaylistByTitle, findFavoritePlaylistByTitle, findVideosByTitle } = playlistSlice.actions;
 export default playlistSlice.reducer;

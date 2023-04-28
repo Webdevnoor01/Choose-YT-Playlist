@@ -139,7 +139,7 @@ const Profile = () => {
           >
             <CardMedia
               component='img'
-              src='../images/userProfile.jpg'
+              src='../images/userProfile.png'
               sx={{
                 maxWidth: "100%",
                 borderRadius: "100%",

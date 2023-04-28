@@ -89,6 +89,7 @@ const VideoPlayer = () => {
     };
     dispatch(setHistory(videoHistoryObj));
   };
+  console.log("index: ", query.index);
   return (
     <>
       <Box
@@ -228,7 +229,10 @@ const VideoPlayer = () => {
                   Next:
                 </Typography>
                 <Typography variant='body2'>
-                  {playlist.videos[query.index - 1].videoTitle.slice(0, 35)}...
+                  {query.index === 1
+                    ? playlist.videos[query.index].videoTitle.slice(0, 35)
+                    : playlist.videos[query.index - 1].videoTitle.slice(0, 35)}
+                  ...
                 </Typography>
               </Typography>
               <Typography varient='body2'>

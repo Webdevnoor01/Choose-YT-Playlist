@@ -16,7 +16,7 @@ import { tokens } from "../../../theme";
 // Store
 // actions
 import { setAddPlaylistToggle } from "../../../store/toogleSlice";
-import { fetchPlaylist } from "../../../store/playlistSlice";
+import { fetchPlaylist, setPlaylistError } from "../../../store/playlistSlice";
 
 // Components
 import InputGroup from "../../shared/input-group";
@@ -51,6 +51,7 @@ const AddPlaylistModal = () => {
 
   const onValid = (data) => {
     const { playlistId } = data;
+    // if the playlist is alrady added then the below if block will executed
     if (states.playlist.items[playlistId]) {
       showToast({
         type: "error",
@@ -59,9 +60,12 @@ const AddPlaylistModal = () => {
       dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
       return;
     }
+
+    // if you don't put youtube link then the below if block will executed
     if (!playlistId.includes("youtube.com")) {
       if (playlistId.slice(0, 2) == "PL") {
         dispatch(fetchPlaylist(playlistId));
+
         dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
         return;
       }
@@ -70,9 +74,11 @@ const AddPlaylistModal = () => {
         message: "Please enter valid playlist link or playlist id",
       });
     }
+
+    // if you put youtube link then the below if block will executed
     if (playlistId.includes("youtube.com")) {
       const splitPlaylistId = playlistId.split("=");
-      console.log(splitPlaylistId[1].slice(0, 2));
+
       if (splitPlaylistId[1].slice(0, 2) !== "PL") {
         showToast({
           type: "error",
@@ -81,6 +87,7 @@ const AddPlaylistModal = () => {
         dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
         return;
       }
+
       dispatch(fetchPlaylist(splitPlaylistId[1]));
       dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
     }
