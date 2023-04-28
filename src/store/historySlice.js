@@ -9,7 +9,7 @@ const historySlice = createSlice({
                 isErr: false,
                 message: "No playlist found"
             },
-            items: []
+            items: {}
         }
     },
     reducers: {
@@ -29,13 +29,12 @@ const historySlice = createSlice({
 
             }
 
-            const result = Object.values(state.items).filter(video => {
-                const lowerCaseTitle = video.title.toLowerCase()
-                if (lowerCaseTitle.includes(action.payload.toLowerCase())) {
+            const result = Object.values(state.items).map(video => {
+                if (video.title.toLowerCase().includes(action.payload.toLowerCase())) {
                     const videoObj = {
                         playlistId: video.playlistId,
-                        playlistTitle: video.playlistTitle,
-                        playlistThumbnail: video.playlistThumbnail,
+                        videoTitle: video.title,
+                        videoThumbnail: video.thumbnail,
                         channelName: video.channelName
                     }
                     if (!state.searchResult.items[video.videoId]) {
@@ -46,7 +45,7 @@ const historySlice = createSlice({
             })
         },
         resetHistoryResult: (state, action) => {
-            state.searchResult.items = []
+            state.searchResult.items = {}
         }
     }
 })

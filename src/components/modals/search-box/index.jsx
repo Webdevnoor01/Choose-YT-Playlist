@@ -29,6 +29,7 @@ import { tokens } from "../../../theme";
 import { SearchOutlined } from "@mui/icons-material";
 import SearchCard from "../../search-card";
 import {
+  findFavoritePlaylistByTitle,
   findPlaylistById,
   findPlaylistByTitle,
   findRecentPlaylistByTitle,
@@ -122,7 +123,7 @@ const SearchBox = ({ open }) => {
       dispatch(resetHistoryResult());
       setTimeout(() => {
         dispatch(findVideos(search));
-      }, 700);
+      }, 400);
     }
 
     if (searchBy === "title" && inWhere === "videos" && search) {
@@ -130,6 +131,12 @@ const SearchBox = ({ open }) => {
       setTimeout(() => {
         dispatch(findVideosByTitle(search));
       }, 100);
+    }
+    if (searchBy === "title" && inWhere === "favoritePlaylists" && search) {
+      dispatch(resetSearchResult());
+      setTimeout(() => {
+        dispatch(findFavoritePlaylistByTitle(search));
+      }, 700);
     }
   }, [search]);
 
@@ -150,7 +157,7 @@ const SearchBox = ({ open }) => {
       search: `?${createSearchParams({
         v: vId || videoId,
         list: playlistId,
-        index: index + 1,
+        index: index,
       })}`,
     });
     if (vId) {
@@ -166,7 +173,7 @@ const SearchBox = ({ open }) => {
     }
   };
   const playlistResultArr = Object.values(playlistResult.items);
-  const historResultArr = Object.values(histories.items);
+  const historyResultArr = Object.values(histories.items);
   return (
     <Box
       sx={{
@@ -376,11 +383,11 @@ const SearchBox = ({ open }) => {
             />
           ))}
 
-          {historResultArr.map((video) => (
+          {historyResultArr.map((video) => (
             <SearchCard
               key={shortid.generate()}
-              title={video.playlistTitle}
-              thumbnail={video.playlistThumbnail.url}
+              title={video.videoTitle}
+              thumbnail={video.videoThumbnail}
               channelName={video.channelName}
               playlistId={video.playlistId}
               onClick={() => navigateToWatch(video.playlistId)}
@@ -395,9 +402,14 @@ const SearchBox = ({ open }) => {
           {playlistResultArr.length === 0 &&
             search &&
             inWhere === "playlist" && <h2>Not found any playlist</h2>}
+          {historyResultArr.length === 0 && search && inWhere === "history" && (
+            <h2>No video found</h2>
+          )}
           {playlistResultArr.length === 0 &&
             search &&
-            inWhere === "history" && <h2>No video found</h2>}
+            inWhere === "favoritePlaylists" && (
+              <h2>No favorite playlist found</h2>
+            )}
 
           {playlistResult.loading === true &&
             search &&
