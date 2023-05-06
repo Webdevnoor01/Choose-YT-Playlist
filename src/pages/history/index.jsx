@@ -18,22 +18,18 @@ import { DeleteOutlineOutlined, SearchOutlined } from "@mui/icons-material";
 import { maxWidth } from "@mui/system";
 import { tokens } from "../../theme";
 
-// Custom Components
-// import HistoryCard from "../../history-card";
-import HistoryCard from "../../components/history-card";
+// react-redux
 import { useSelector } from "react-redux";
-import EmptyMessage from "../../components/empty-message";
 
-const playlist = {
-  title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-  thumbnail:
-    "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-  channelName: "Procoder BD",
-  description:
-    "slkdfj dsfjlsdkf djfsafl sdfhl iertkb sdhkj aeri fida ewruio skjfh ifjaoewf fsah ioewf sfd hoi shf ewfio fsajh fasjh feih fhkj feaoij fsdfo ",
-};
+// Custom Components
+import EmptyMessage from "../../components/empty-message";
+import HistoryCard from "../../components/history-card";
+
+// Custome Hooks
+import useCheckAuth from "../../hooks/useCheckAuth";
 
 const History = () => {
+  const { isAuth } = useCheckAuth();
   const states = useSelector((state) => state);
   const historyArr = Object.values(states.history.items);
 

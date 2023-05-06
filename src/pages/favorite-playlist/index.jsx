@@ -12,8 +12,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 // Components
 import PlaylistCard from "../../components/playlist-card";
 import EmptyMessage from "../../components/empty-message";
+import useCheckAuth from "../../hooks/useCheckAuth";
 
 const FavoritePlaylist = () => {
+  const { isAuth } = useCheckAuth();
   const dispatch = useDispatch();
   const playlists = useSelector((state) => state.playlist.items);
   const playlistArr = Object.values(playlists);

@@ -24,17 +24,24 @@ import ButtonUI from "../../components/UI/button";
 // input json
 import inputObj from "./signpup.json";
 
+import useRegister from "../../hooks/useRegister";
+
+import { showToast } from "../../utils/showToast";
+
 const Signup = () => {
   // Form validation schema
+  const { loading, register } = useRegister();
   const schema = yup.object().shape({
     name: yup
       .string()
       .min(4)
       .max(20)
       .required("Your name must be under 4 to 25 charecter"),
-    email: yup.string()
+    email: yup
+      .string()
       .required("Email is required")
       .email("Invalid email address format"),
+    userName: yup.string().required("User Name is required"),
     password: yup
       .string()
       .min(8, "Password must be at least 8 characters long")
@@ -56,27 +63,51 @@ const Signup = () => {
       name: "",
       email: "",
       password: "",
+      userName: "",
     },
     resolver: yupResolver(schema),
   });
+
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const formArr = Object.values(inputObj);
+
   const iconObj = {
     PersonOutlineOutlinedIcon,
     AlternateEmailOutlinedIcon,
     HttpsOutlinedIcon,
   };
 
-  const onValid = (data) => {
-    console.log(data);
-    navigate("/login");
+  const onValid = async (data) => {
+    const registerPayload = {
+      Name: data.name,
+      email: data.email,
+      password: data.password,
+      username: data.userName,
+    };
+    const user = await register(registerPayload);
+
+    if (!user.isError) {
+      showToast({
+        type: "success",
+        message: user.message,
+      });
+      navigate("/login");
+    }
+    if (user.isError) {
+      showToast({
+        type: "error",
+        message: user.message,
+      });
+    }
   };
+
   const onInValid = (errors) => {
     console.log(errors);
   };
+
   return (
     <Box
       component='div'

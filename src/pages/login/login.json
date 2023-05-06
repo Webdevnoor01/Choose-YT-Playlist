@@ -1,9 +1,9 @@
 {
-    "email": {
-        "name": "email",
-        "type": "email",
-        "placeHolder": "example@gmail.com",
-        "label": "Email",
+    "userName": {
+        "name": "userName",
+        "type": "userName",
+        "placeHolder": "mykeljon",
+        "label": "User Name",
         "icon": "AlternateEmailOutlinedIcon"
     },
     "password": {

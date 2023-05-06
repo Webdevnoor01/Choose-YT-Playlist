@@ -1,5 +1,5 @@
 // react-router-dom
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // from store
 import { useSelector, useDispatch } from "react-redux";
@@ -36,10 +36,13 @@ import { useProSidebar } from "react-pro-sidebar";
 // Components
 import ButtonUI from "../UI/button";
 import ProfileAction from "../UI/profile-action";
+import { setUserProfile } from "../../store/userSlice";
+import { showToast } from "../../utils/showToast";
 
 const TopBar = ({ auth }) => {
   const states = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { collapseSidebar, collapsed } = useProSidebar(false);
   const theme = useTheme();
@@ -64,6 +67,23 @@ const TopBar = ({ auth }) => {
   const handleMode = () => {
     const newMode = states.mode.value === "dark" ? "light" : "dark";
     dispatch(setMode(newMode));
+  };
+
+  const handleLogOut = async (popupState) => {
+    showToast({
+      type: "success",
+      message: "successfully logged out!",
+    });
+    popupState.close();
+    await localStorage.removeItem("authToken");
+    dispatch(
+      setUserProfile({
+        email: "",
+        namea: "",
+        isAuth: false,
+      })
+    );
+    navigate("/login");
   };
 
   return (
@@ -267,8 +287,7 @@ const TopBar = ({ auth }) => {
                       <ProfileAction
                         text={"logout"}
                         Icon={LogoutOutlinedIcon}
-                        to='/login'
-                        onClick={() => popupState.close()}
+                        onClick={() => handleLogOut(popupState)}
                       />
                     </Box>
                   </Popover>
@@ -282,13 +301,13 @@ const TopBar = ({ auth }) => {
           <>
             <ButtonUI
               text='login'
+              to='/login'
               style={{
                 backgroundColor: colors.blueAccent[500],
                 "&:hover": {
                   backgroundColor: colors.blueAccent[600],
                 },
               }}
-              to='/login'
             />
 
             <ButtonUI

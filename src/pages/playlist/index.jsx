@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 // react, redux
 import { useSelector, useDispatch } from "react-redux";
@@ -20,11 +22,15 @@ import { tokens } from "../../theme";
 
 // Utilities
 import { showToast } from "../../utils/showToast";
+import useCheckAuth from "../../hooks/useCheckAuth";
 
 const Playlist = () => {
+  const { isAuth } = useCheckAuth();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const user = useSelector((state) => state.user);
   const playlists = useSelector((state) => state.playlist);
   const playlistArr = Object.values(playlists.items);
 
@@ -62,6 +68,13 @@ const Playlist = () => {
       },
     },
   ];
+
+  useEffect(() => {
+    if (isAuth) {
+      console.log("navigating to home page");
+      navigate("/");
+    }
+  }, [user.isAuth]);
   return (
     <>
       {playlistArr.length === 0 && !playlists?.loading && (

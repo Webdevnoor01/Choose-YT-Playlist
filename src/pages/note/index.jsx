@@ -1,15 +1,13 @@
 // react
 import React from "react";
 
-
 // react-redux
 import { useSelector } from "react-redux";
 
 // react-router-dom
 
 // third-party libraries
-import * as qs from "query-string"
-
+import * as qs from "query-string";
 
 // MUI hooks
 import { useTheme } from "@mui/material/styles";
@@ -20,17 +18,19 @@ import { Box, CardMedia, Typography } from "@mui/material";
 // Theme settings
 import { tokens } from "../../theme";
 
+// Custome Hooks
+import useCheckAuth from "../../hooks/useCheckAuth";
+
 const Note = () => {
+  const {} = useCheckAuth();
   const theme = useTheme();
-  const {noteId} = qs.default.parse(location.search)
-  const currentNote = useSelector(state => state.notes[noteId])
-  console.log(currentNote)
+  const { noteId } = qs.default.parse(location.search);
+  const currentNote = useSelector((state) => state.notes[noteId]);
 
   const colors = tokens(theme.palette.mode);
 
   // return <h2>Loading</h2>
   return (
-
     <Box
       sx={{
         height: "100vh",
@@ -40,7 +40,7 @@ const Note = () => {
       <Box
         sx={{
           width: "100%",
-          height:"25rem",
+          height: "25rem",
           [theme.breakpoints.down("md")]: {
             height: "10rem",
           },
@@ -59,8 +59,8 @@ const Note = () => {
       <Box
         sx={{
           backgroundColor: colors.pinkAccent[500],
-          display:"flex",
-          justifyContent:"space-between"
+          display: "flex",
+          justifyContent: "space-between",
         }}
       >
         <Typography
