@@ -1,20 +1,18 @@
 import React from "react";
 
+// react-redux
+import { useSelector } from "react-redux";
 // MUI Components
 import { Box } from "@mui/material";
+
+// Custome components
 import NoteCard from "../../components/note-card";
-import { useSelector } from "react-redux";
 import EmptyMessage from "../../components/empty-message";
-const playlist = {
-  title: "একজন ডেভেলপার হিসেবে কিভাবে চাকরি পাবেন? How to get hired?",
-  thumbnail:
-    "https://i.ytimg.com/vi/j37Yp_aJCDc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATvQ12h3WTl_-EsvaHNBonY4JEog",
-  channelName: "Procoder BD",
-  videos: "50",
-};
+import useCheckAuth from "../../hooks/useCheckAuth";
+
 const Notes = () => {
+  const { isAuth } = useCheckAuth();
   const notes = useSelector((state) => state.notes);
-  console.log(notes);
   const noteArr = Object.values(notes);
   return (
     <Box

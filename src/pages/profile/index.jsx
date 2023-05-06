@@ -1,3 +1,4 @@
+import { useState } from "react";
 // MUI Components
 import { Box, CardMedia, Typography } from "@mui/material";
 
@@ -9,8 +10,10 @@ import { tokens } from "../../theme/index";
 
 // Components
 import ButtonUI from "../../components/UI/button";
-import { useEffect, useState } from "react";
 import ProfileEdit from "../../components/profile-edit";
+
+// Custome Hooks
+import useCheckAuth from "../../hooks/useCheckAuth";
 
 const profileEditObj = {
   userInfo: {
@@ -66,6 +69,7 @@ const profileEditObj = {
 };
 
 const Profile = () => {
+  const { isAuth } = useCheckAuth();
   const [profileEditComponent, setProfileEditComponent] = useState("userInfo");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

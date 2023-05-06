@@ -1,5 +1,5 @@
 // React Hooks
-import { useState, Suspense, lazy } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 // react-redux
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,6 +16,7 @@ import {
 // third-party libraries
 import ReactPlayer from "react-player/youtube";
 import * as qs from "query-string";
+import shortid from "shortid";
 
 // MUI Hooks
 import { useTheme } from "@mui/material/styles";
@@ -37,10 +38,13 @@ import AddNote from "../../components/modals/add-note";
 
 // Components
 import ButtonUI from "../../components/UI/button";
-import { useEffect } from "react";
-import shortid from "shortid";
+
+// Custome Hooks
+import useCheckAuth from "../../hooks/useCheckAuth";
 
 const VideoPlayer = () => {
+  const { isAuth } = useCheckAuth();
+
   const query = qs.default.parse(location.search);
   const playlist = useSelector((states) => states.playlist.items[query.list]);
   const notes = useSelector((states) => states.notes);

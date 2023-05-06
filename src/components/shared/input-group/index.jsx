@@ -39,7 +39,6 @@ const InputGroup = ({
         }`}
         borderRadius='.5rem'
         color={colors.light[500]}
-        m=' 0.3rem 0px 1rem'
         p='.1rem .5rem .1rem 0'
         width={`${fullWidth ? 100 : null}%`}
         sx={{
@@ -103,16 +102,17 @@ const InputGroup = ({
       </Box>
       <Box
         sx={{
-          minHeight: "1.5rem",
+          minHeight: "1rem",
         }}
       >
         {error && (
           <Typography
             sx={{
               color: "#ff1706",
-              fontSize: "1rem",
+              fontSize: ".8rem",
               fontWeight: "bold",
-              p: ".2rem 0",
+              // p: ".2rem 0",
+              letterSpacing: ".5px",
             }}
           >
             {error}

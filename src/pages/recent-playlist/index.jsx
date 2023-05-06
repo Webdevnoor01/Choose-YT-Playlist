@@ -19,7 +19,11 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import PlaylistCard from "../../components/playlist-card";
 import EmptyMessage from "../../components/empty-message";
 
+// Custome Hooks
+import useCheckAuth from "../../hooks/useCheckAuth";
+
 const RecentPlaylist = () => {
+  const { isAuth } = useCheckAuth();
   const dispatch = useDispatch();
   const recentPlaylists = useSelector((state) => state.recentPlaylists);
   const playlists = useSelector((state) => state.playlist.items);

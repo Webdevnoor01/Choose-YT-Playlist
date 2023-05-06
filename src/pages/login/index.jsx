@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -30,16 +30,24 @@ import * as yup from "yup";
 // From input json
 import inputObj from "./login.json";
 
+// Custome Hooks
+import useCheckAuth from "../../hooks/useCheckAuth";
+import useLogin from "../../hooks/useLogin";
+
+// Utilities
+import { showToast } from "../../utils/showToast";
 const Login = () => {
-  // manage state
-  const state = useSelector((state) =>state.user)
-  const dispatch = useDispatch()
+  const state = useSelector((state) => state.user);
+  const { isAuth } = useCheckAuth();
+  const user = useSelector((state) => state.user);
+  const { login, loading, error: loginERror } = useLogin();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const schema = yup.object().shape({
-    email: yup.string()
-      .email("Invalid email address format")
-      .required("Email is required"),
-    password: yup.string()
+    userName: yup.string().required("User Name is required"),
+    password: yup
+      .string()
       .min(8, "Password must be at least 8 characters long")
       .max(32, "Password cannot be longer than 32 characters")
       .matches(
@@ -54,15 +62,12 @@ const Login = () => {
     control,
   } = useForm({
     defaultValues: {
-      email: "",
+      userName: "",
       password: "",
     },
     resolver: yupResolver(schema),
   });
-  const navigate = useNavigate();
   const theme = useTheme();
-
-
 
   const colors = tokens(theme.palette.mode);
 
@@ -72,14 +77,49 @@ const Login = () => {
     HttpsOutlinedIcon,
   };
 
-  const onValid = (data) => {
-    console.log(data);
-    dispatch(setUserProfile({email:data.email}))
-    navigate("/");
+  const onValid = async (data) => {
+    // console.log(data);
+    const loginPayload = {
+      password: data.password,
+      identifier: data.userName,
+    };
+    const user = await login(loginPayload);
+    console.log("user: ", user);
+    if (!user.isError) {
+      showToast({
+        type: "success",
+        message: "Loggedin successfully",
+      });
+      dispatch(
+        setUserProfile({
+          name: user.Name,
+          email: user.email,
+          isAuth: user.isAuth,
+        })
+      );
+      navigate("/");
+    }
+    if (user.isError) {
+      if (user.isError) {
+        showToast({
+          type: "error",
+          message: "Invalid userName or password",
+        });
+      }
+    }
   };
+
   const onInValid = (errors) => {
     console.log(errors);
   };
+
+  useEffect(() => {
+    if (isAuth) {
+      console.log("navigating to home page");
+      navigate("/");
+    }
+  }, [isAuth]);
+
   return (
     <Box
       component='div'
@@ -139,7 +179,8 @@ const Login = () => {
         ))}
 
         <ButtonUI
-          text='login'
+          text={loading ? "loading..." : "login"}
+          disable={loading}
           type='submit'
           style={{
             p: ".6rem",
