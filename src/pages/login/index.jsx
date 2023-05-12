@@ -33,12 +33,14 @@ import inputObj from "./login.json";
 // Custome Hooks
 import useCheckAuth from "../../hooks/useCheckAuth";
 import useLogin from "../../hooks/useLogin";
+import useUserInit from "../../hooks/useUserInit";
 
 // Utilities
 import { showToast } from "../../utils/showToast";
 const Login = () => {
-  const state = useSelector((state) => state.user);
+  const { init } = useUserInit();
   const { isAuth } = useCheckAuth();
+  const state = useSelector((state) => state.user);
   const user = useSelector((state) => state.user);
   const { login, loading, error: loginERror } = useLogin();
   const navigate = useNavigate();
@@ -86,6 +88,7 @@ const Login = () => {
     const user = await login(loginPayload);
     console.log("user: ", user);
     if (!user.isError) {
+      init();
       showToast({
         type: "success",
         message: "Loggedin successfully",

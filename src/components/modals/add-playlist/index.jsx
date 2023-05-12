@@ -28,6 +28,7 @@ import { Box } from "@mui/material";
 
 // Uitilities
 import { showToast } from "../../../utils/showToast";
+import createPlaylist from "../../../api/createPlaylist";
 
 const AddPlaylistModal = () => {
   const {
@@ -49,7 +50,33 @@ const AddPlaylistModal = () => {
     dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
   };
 
-  const onValid = (data) => {
+  const addPlaylistIntoDB = async ({ payload }) => {
+    const token = await localStorage.getItem("authToken");
+    console.log(payload);
+    try {
+      const playlistPayload = {
+        data: {
+          playlistId: payload.playlistId,
+          playlistTitle: payload.playlistTitle,
+          playlistDescription: payload.playlistDescription,
+          playlistThumbnail: {
+            url: payload.playlistThumbnail.url,
+            height: payload.playlistThumbnail.height,
+            width: payload.playlistThumbnail.width,
+          },
+          videos: {
+            items: payload.videos,
+          },
+        },
+      };
+      const playlist = await createPlaylist(playlistPayload, token);
+      console.log("playlist added into db: ", playlist);
+    } catch (e) {
+      console.log("playlistDBErr: ", e);
+    }
+  };
+
+  const onValid = async (data) => {
     const { playlistId } = data;
     // if the playlist is alrady added then the below if block will executed
     if (states.playlist.items[playlistId]) {
@@ -64,9 +91,14 @@ const AddPlaylistModal = () => {
     // if you don't put youtube link then the below if block will executed
     if (!playlistId.includes("youtube.com")) {
       if (playlistId.slice(0, 2) == "PL") {
-        dispatch(fetchPlaylist(playlistId));
-
+        const fetchedPlaylist = await dispatch(fetchPlaylist(playlistId));
+        console.log(
+          "fetched-playlist: ",
+          fetchedPlaylist.payload,
+          typeof fetchedPlaylist.payload
+        );
         dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+        addPlaylistIntoDB(fetchedPlaylist);
         return;
       }
       showToast({
@@ -88,8 +120,14 @@ const AddPlaylistModal = () => {
         return;
       }
 
-      dispatch(fetchPlaylist(splitPlaylistId[1]));
+      const fetchedPlaylist = await dispatch(fetchPlaylist(playlistId));
+      console.log(
+        "fetched-playlist: ",
+        fetchedPlaylist,
+        typeof fetchedPlaylist.payload
+      );
       dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
+      addPlaylistIntoDB(fetchedPlaylist.payload);
     }
   };
   const onInValid = (errors) => {

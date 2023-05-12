@@ -1,7 +1,17 @@
 import React from "react";
 import { Box, useMediaQuery } from "@mui/material";
+import { setPlaylist } from "../../store/playlistSlice";
+import getPlaylists from "../../api/getPlaylists";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import useUserInit from "../../hooks/useUserInit";
 const Loading = () => {
   const isCustom = useMediaQuery("( (max-width: 768px)");
+  const { init } = useUserInit();
+
+  useEffect(() => {
+    init();
+  }, []);
   return (
     <Box
       sx={{

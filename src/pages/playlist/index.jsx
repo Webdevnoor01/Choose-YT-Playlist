@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 // Actions
-import { removePlaylist, setAsFaroite } from "../../store/playlistSlice";
+import {
+  removePlaylist,
+  setAsFaroite,
+  setPlaylist,
+} from "../../store/playlistSlice";
 
 // MUI components
 import { Box, Typography } from "@mui/material";
@@ -33,8 +37,6 @@ const Playlist = () => {
   const user = useSelector((state) => state.user);
   const playlists = useSelector((state) => state.playlist);
   const playlistArr = Object.values(playlists.items);
-
-  // The gridMinMaxObj is used to add grid size unit in grid minmax
   const gridMinMaxObj = {
     20: "px",
     1: "fr",

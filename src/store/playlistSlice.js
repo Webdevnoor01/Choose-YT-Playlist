@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import getPlaylist from "../api";
+import createPlaylist from "../api/createPlaylist";
 export const INIT_STATE = {
     error: "",
     loading: false,
@@ -19,6 +20,7 @@ export const INIT_STATE = {
 export const fetchPlaylist = createAsyncThunk("user/playlist",
     async(userId) => {
         const response = await getPlaylist(userId)
+            // const playlist = await createPlaylist()
         if (response.error) throw new Error(response.message)
         return response
     }
@@ -28,6 +30,9 @@ const playlistSlice = createSlice({
     name: "playlist",
     initialState: INIT_STATE,
     reducers: {
+        setPlaylist: (state, action) => {
+            state.items = action.payload
+        },
         removePlaylist: (state, action) => {
             if (!action.payload.playlistId) return
             delete state.items[action.payload.playlistId]
@@ -190,5 +195,5 @@ const playlistSlice = createSlice({
     }
 });
 
-export const { removePlaylist, setPlaylistError, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle, findRecentPlaylistByTitle, findFavoritePlaylistByTitle, findVideosByTitle } = playlistSlice.actions;
+export const { setPlaylist, removePlaylist, setPlaylistError, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle, findRecentPlaylistByTitle, findFavoritePlaylistByTitle, findVideosByTitle } = playlistSlice.actions;
 export default playlistSlice.reducer;
