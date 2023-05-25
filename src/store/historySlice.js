@@ -19,7 +19,7 @@ const historySlice = createSlice({
         },
         deleteHistory: (state, action) => {
             if (!action.payload.videoId) return
-            delete state[action.payload.videoId]
+            delete state.items[action.payload.videoId]
         },
         findVideos: (state, action) => {
             if (Object.keys(state.searchResult.items).length === 0) {

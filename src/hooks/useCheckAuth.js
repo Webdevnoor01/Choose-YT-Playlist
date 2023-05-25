@@ -18,13 +18,17 @@ const useCheckAuth = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const token = localStorage.getItem("authToken")
 
     useEffect(() => {
 
         async function fetchUser(token) {
             try {
                 const response = await getUser(token)
-                dispatch(setUserProfile(response.user))
+                if (response.user) {
+
+                    dispatch(setUserProfile(response.user))
+                }
             } catch (e) {
 
                 console.log("fetUserError: ", e)
@@ -32,7 +36,6 @@ const useCheckAuth = () => {
         }
         async function checkAuth() {
 
-            const token = await localStorage.getItem("authToken")
             if (token) {
                 fetchUser(token)
             } else {
@@ -43,7 +46,7 @@ const useCheckAuth = () => {
         }
         checkAuth()
 
-    }, [navigate])
+    }, [navigate, token])
     return {
         isAuth: useSelector(state => state.user.isAuth)
     }

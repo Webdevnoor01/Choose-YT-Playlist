@@ -35,6 +35,7 @@ const History = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  console.log("historyArr: ", historyArr);
   return (
     <>
       <Box

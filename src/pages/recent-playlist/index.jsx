@@ -29,7 +29,6 @@ const RecentPlaylist = () => {
   const playlists = useSelector((state) => state.playlist.items);
   const recentPlaylistArr = Object.keys(recentPlaylists);
 
-  console.log("recentPlaylists: ", recentPlaylistArr);
   // The gridMinMaxObj is used to add grid size unit in grid minmax
   const gridMinMaxObj = {
     20: "px",
@@ -87,7 +86,7 @@ const RecentPlaylist = () => {
           channelName={playlists[playlistId].channelTitle}
           thumbnail={playlists[playlistId].playlistThumbnail.url}
           title={playlists[playlistId].playlistTitle}
-          videos={playlists[playlistId].videos.length}
+          videos={playlists[playlistId].videos.items.length}
           catagory='recentPlaylist'
           moreOptions={recentPlaylistMoreOption}
         />

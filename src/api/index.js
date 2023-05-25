@@ -25,6 +25,7 @@ const getPlaylist = async (playlistId) => {
     const url = `https://www.googleapis.com/youtube/v3/playlists?part=id,contentDetails,snippet&id=${playlistId}&key=${apiKey}`;
 
     const { data } = await axios.get(url);
+    console.log("data: ", data)
     const {
       title: playlistTitle,
       description: playlistDescription,

@@ -64,7 +64,8 @@ const AddNote = ({ open, scroll, handleClickOpen, handleClose }) => {
 
   // current video and channelTitle from redux store.
   const currentVideo = useSelector(
-    (state) => state.playlist.items[playlistId].videos[index - 1].videoThumbnail
+    (state) =>
+      state.playlist.items[playlistId].videos.items[index - 1].videoThumbnail
   );
   const channleTitle = useSelector(
     (state) => state.playlist.items[playlistId].channleTitle

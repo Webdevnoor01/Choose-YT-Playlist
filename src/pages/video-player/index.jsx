@@ -64,7 +64,7 @@ const VideoPlayer = () => {
     setOpen(false);
   };
   useEffect(() => {
-    const video = playlist.videos[query.index - 1];
+    const video = playlist.videos.items[query.index - 1];
     const videoHistoryObj = {
       playlistId: playlist.playlistId,
       videoId: video.videoContentDetails.videoId,
@@ -81,7 +81,7 @@ const VideoPlayer = () => {
     setSearchParams(
       createSearchParams({ v: videoId, list: query.list, index: videoIndex })
     );
-    const video = playlist.videos[videoIndex - 1];
+    const video = playlist.videos.items[videoIndex - 1];
     const videoHistoryObj = {
       playlistId: playlist.playlistId,
       videoId: video.videoContentDetails.videoId,
@@ -93,7 +93,6 @@ const VideoPlayer = () => {
     };
     dispatch(setHistory(videoHistoryObj));
   };
-  console.log("index: ", query.index);
   return (
     <>
       <Box
@@ -234,14 +233,17 @@ const VideoPlayer = () => {
                 </Typography>
                 <Typography variant='body2'>
                   {query.index === 1
-                    ? playlist.videos[query.index].videoTitle.slice(0, 35)
-                    : playlist.videos[query.index - 1].videoTitle.slice(0, 35)}
+                    ? playlist.videos.items[query.index].videoTitle.slice(0, 35)
+                    : playlist.videos.items[query.index - 1].videoTitle.slice(
+                        0,
+                        35
+                      )}
                   ...
                 </Typography>
               </Typography>
               <Typography varient='body2'>
                 {playlist.playlistTitle.slice(0, 24)}...{query.index}/
-                {playlist.videos.length}
+                {playlist.videos.items.length}
               </Typography>
             </Box>
 
@@ -267,7 +269,7 @@ const VideoPlayer = () => {
           >
             <VideoList
               channelTitle={playlist.channelTitle}
-              videos={playlist.videos}
+              videos={playlist.videos.items}
               onVideoClick={handleVideoClick}
             />
           </Box>

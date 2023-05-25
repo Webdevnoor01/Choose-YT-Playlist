@@ -10,7 +10,6 @@ async function getPlaylists(token) {
                 "Authorization": `Bearer ${token}`
             }
         })
-        console.log("data: ", playlist)
         const playlistObj = playlist.data.data.reduce((acc, curr) => {
 
             acc[curr.attributes.playlistId] = {

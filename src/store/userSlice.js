@@ -13,7 +13,6 @@ const userSlice = createSlice({
     initialState: USER_INITIAL_STATE,
     reducers: {
         setUserProfile: (state, action) => {
-            console.log("payload: ", action)
             state.email = action.payload.email
             state.name = action.payload.Name
             state.isAuth = action.payload.isAuth

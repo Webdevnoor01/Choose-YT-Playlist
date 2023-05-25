@@ -24,14 +24,19 @@ import PlaylistCard from "../../components/playlist-card";
 import EmptyMessage from "../../components/empty-message";
 import { tokens } from "../../theme";
 
+// third-party libraries
+import shortid from "shortid";
+
 // Utilities
 import { showToast } from "../../utils/showToast";
 import useCheckAuth from "../../hooks/useCheckAuth";
+import useUserInit from "../../hooks/useUserInit";
 
 const Playlist = () => {
   const { isAuth } = useCheckAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { init } = useUserInit();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const user = useSelector((state) => state.user);
@@ -72,8 +77,10 @@ const Playlist = () => {
   ];
 
   useEffect(() => {
+    init();
+  }, []);
+  useEffect(() => {
     if (isAuth) {
-      console.log("navigating to home page");
       navigate("/");
     }
   }, [user.isAuth]);
@@ -104,6 +111,7 @@ const Playlist = () => {
         {playlistArr.length > 0 &&
           playlistArr.map((playlist) => (
             <PlaylistCard
+              key={shortid.generate()}
               title={playlist.playlistTitle}
               thumbnail={playlist.playlistThumbnail.url}
               channelName={playlist.channelTitle}

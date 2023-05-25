@@ -20,7 +20,6 @@ const toggleSlice = createSlice({
             state.addPlaylistToggle = action.payload
         },
         setSearchBoxToggle: (state, action) => {
-            console.log("setSearchBoxToggle: ", action.payload)
             state.searchBoxToggle = action.payload
         }
     }

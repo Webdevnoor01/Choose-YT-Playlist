@@ -86,29 +86,36 @@ const Login = () => {
       identifier: data.userName,
     };
     const user = await login(loginPayload);
-    console.log("user: ", user);
-    if (!user.isError) {
-      init();
-      showToast({
-        type: "success",
-        message: "Loggedin successfully",
-      });
-      dispatch(
-        setUserProfile({
-          name: user.Name,
-          email: user.email,
-          isAuth: user.isAuth,
-        })
-      );
-      navigate("/");
-    }
-    if (user.isError) {
-      if (user.isError) {
+    if (user) {
+      if (!user.isError) {
+        // init();
         showToast({
-          type: "error",
-          message: "Invalid userName or password",
+          type: "success",
+          message: "Loggedin successfully",
         });
+        dispatch(
+          setUserProfile({
+            name: user.Name,
+            email: user.email,
+            isAuth: user.isAuth,
+          })
+        );
+        navigate("/");
       }
+    }
+
+    if (!user) {
+      showToast({
+        type: "error",
+        message: "Invalid userName or password",
+      });
+    }
+
+    if (user?.isError) {
+      showToast({
+        type: "error",
+        message: "Invalid userName or password",
+      });
     }
   };
 
@@ -118,7 +125,6 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuth) {
-      console.log("navigating to home page");
       navigate("/");
     }
   }, [isAuth]);
