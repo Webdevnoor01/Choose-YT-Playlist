@@ -16,6 +16,9 @@ const userSlice = createSlice({
             state.email = action.payload.email
             state.name = action.payload.Name
             state.isAuth = action.payload.isAuth
+            state.playlists = action.payload.playlist
+            state.history = action.payload.history
+            state.notes = action.payload.notes
                 // return state;
         },
         setIsAuth: (state, action) => {

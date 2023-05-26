@@ -93,13 +93,7 @@ const Login = () => {
           type: "success",
           message: "Loggedin successfully",
         });
-        dispatch(
-          setUserProfile({
-            name: user.Name,
-            email: user.email,
-            isAuth: user.isAuth,
-          })
-        );
+        dispatch(setUserProfile(user));
         navigate("/");
       }
     }
