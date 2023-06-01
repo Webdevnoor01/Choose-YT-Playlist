@@ -86,6 +86,7 @@ const Login = () => {
       identifier: data.userName,
     };
     const user = await login(loginPayload);
+    console.log("user: ", user);
     if (user) {
       if (!user.isError) {
         // init();
@@ -93,13 +94,7 @@ const Login = () => {
           type: "success",
           message: "Loggedin successfully",
         });
-        dispatch(
-          setUserProfile({
-            name: user.Name,
-            email: user.email,
-            isAuth: user.isAuth,
-          })
-        );
+        dispatch(setUserProfile(user));
         navigate("/");
       }
     }

@@ -86,7 +86,7 @@ const RecentPlaylist = () => {
           channelName={playlists[playlistId].channelTitle}
           thumbnail={playlists[playlistId].playlistThumbnail.url}
           title={playlists[playlistId].playlistTitle}
-          videos={playlists[playlistId].videos.items.length}
+          videos={playlists[playlistId].videos.length}
           catagory='recentPlaylist'
           moreOptions={recentPlaylistMoreOption}
         />
