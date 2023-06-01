@@ -64,10 +64,11 @@ const AddPlaylistModal = () => {
             height: payload.playlistThumbnail.height,
             width: payload.playlistThumbnail.width,
           },
-          videos:payload.videos
+          videos: payload.videos,
         },
       };
       const playlist = await createPlaylist(playlistPayload, token);
+      console.log(playlist);
     } catch (e) {
       console.log("playlistDBErr: ", e);
     }
@@ -89,6 +90,7 @@ const AddPlaylistModal = () => {
     if (!playlistId.includes("youtube.com")) {
       if (playlistId.slice(0, 2) == "PL") {
         const fetchedPlaylist = await dispatch(fetchPlaylist(playlistId));
+        console.log("fetched-playlist: ", fetchedPlaylist);
         dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
         addPlaylistIntoDB(fetchedPlaylist);
         return;

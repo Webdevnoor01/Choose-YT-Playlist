@@ -64,7 +64,7 @@ const VideoPlayer = () => {
     setOpen(false);
   };
   useEffect(() => {
-    const video = playlist.videos.items[query.index - 1];
+    const video = playlist.videos[query.index - 1];
     const videoHistoryObj = {
       playlistId: playlist.playlistId,
       videoId: video.videoContentDetails.videoId,
@@ -233,17 +233,14 @@ const VideoPlayer = () => {
                 </Typography>
                 <Typography variant='body2'>
                   {query.index === 1
-                    ? playlist.videos.items[query.index].videoTitle.slice(0, 35)
-                    : playlist.videos.items[query.index - 1].videoTitle.slice(
-                        0,
-                        35
-                      )}
+                    ? playlist.videos[query.index].videoTitle.slice(0, 35)
+                    : playlist.videos[query.index - 1].videoTitle.slice(0, 35)}
                   ...
                 </Typography>
               </Typography>
               <Typography varient='body2'>
                 {playlist.playlistTitle.slice(0, 24)}...{query.index}/
-                {playlist.videos.items.length}
+                {playlist.videos.length}
               </Typography>
             </Box>
 
@@ -269,7 +266,7 @@ const VideoPlayer = () => {
           >
             <VideoList
               channelTitle={playlist.channelTitle}
-              videos={playlist.videos.items}
+              videos={playlist.videos}
               onVideoClick={handleVideoClick}
             />
           </Box>

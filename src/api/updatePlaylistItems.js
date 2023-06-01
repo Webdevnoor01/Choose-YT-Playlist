@@ -2,9 +2,9 @@ import axios from "axios";
 
 const userUrl =
     import.meta.env.VITE_USER_API
-async function createPlaylist(payload, token) {
+async function updatePlaylistItems(userId, payload, token) {
     try {
-        const response = await axios.post(`${userUrl}/playlists`, payload, {
+        const response = await axios.post(`${userUrl}/users/${userId}`, payload, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
@@ -12,7 +12,7 @@ async function createPlaylist(payload, token) {
 
         if (!response.data.error) {
             return {
-                playlist: response.data
+                playlistItems: response.data.playlist.items
             }
         }
     } catch (e) {
@@ -23,4 +23,4 @@ async function createPlaylist(payload, token) {
     }
 }
 
-export default createPlaylist
+export default updatePlaylistItems
