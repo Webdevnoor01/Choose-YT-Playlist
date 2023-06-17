@@ -29,6 +29,10 @@ import { Box } from "@mui/material";
 // Uitilities
 import { showToast } from "../../../utils/showToast";
 import createPlaylist from "../../../api/createPlaylist";
+import {
+  setPlaylistItems,
+  setUserPlaylistItems,
+} from "../../../store/userSlice";
 
 const AddPlaylistModal = () => {
   const {
@@ -51,9 +55,9 @@ const AddPlaylistModal = () => {
   };
 
   const addPlaylistIntoDB = async ({ payload }) => {
-    console.log(payload);
     const token = await localStorage.getItem("authToken");
     try {
+      console.log("payload");
       const playlistPayload = {
         data: {
           playlistId: payload.playlistId,
@@ -67,8 +71,18 @@ const AddPlaylistModal = () => {
           videos: payload.videos,
         },
       };
-      const playlist = await createPlaylist(playlistPayload, token);
-      console.log(playlist);
+      const data = await createPlaylist(playlistPayload, token);
+
+      console.log("data: ", data);
+      const newPlaylistItem = await dispatch(
+        setPlaylistItems({
+          token,
+          playlistId: data.playlist.data.id,
+        })
+      );
+      console.log("newPlaylistItem: ", newPlaylistItem.payload);
+      dispatch(setUserPlaylistItems(newPlaylistItem.payload));
+      console.log("playlist ", data.playlist.data.id);
     } catch (e) {
       console.log("playlistDBErr: ", e);
     }
@@ -115,7 +129,7 @@ const AddPlaylistModal = () => {
       }
 
       const fetchedPlaylist = await dispatch(fetchPlaylist(splitPlaylistId[1]));
-
+      console.log("fetchedPlaylsit: ", fetchPlaylist);
       dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
       addPlaylistIntoDB(fetchedPlaylist);
     }
@@ -154,22 +168,19 @@ const AddPlaylistModal = () => {
           },
         }}
       >
-        <DialogTitle id='scroll-dialog-title'>Add Playlist</DialogTitle>
+        <DialogTitle id="scroll-dialog-title">Add Playlist</DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText
-            id='scroll-dialog-description'
-            tabIndex={-1}
-          >
+          <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <Box>
               <Controller
-                name='playlistId'
+                name="playlistId"
                 control={control}
                 render={(field) => (
                   <InputGroup
                     label={"Playlist"}
                     type={"text"}
-                    name='playlistId'
-                    placeHolder='Enter valid playlist link or playlist id'
+                    name="playlistId"
+                    placeHolder="Enter valid playlist link or playlist id"
                     fullWidth={true}
                     {...field}
                     error={errors["playlistId"]?.message}
@@ -182,7 +193,7 @@ const AddPlaylistModal = () => {
 
         <DialogActions>
           <ButtonUI
-            text='cancel'
+            text="cancel"
             style={{
               p: ".5rem 1rem",
               backgroundColor: colors.pinkAccent[500],
@@ -194,8 +205,8 @@ const AddPlaylistModal = () => {
             onClick={handleCloseToggle}
           />
           <ButtonUI
-            text='save'
-            type='submit'
+            text="save"
+            type="submit"
             onClick={handleSubmit(onValid, onInValid)}
             style={{
               p: ".5rem 1rem",

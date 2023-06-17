@@ -63,6 +63,7 @@ const PlaylistCard = ({
 
   const { items: playlists } = state;
   const navigateToWatch = () => {
+    console.log(playlists);
     const videoId = playlists[playlistId].videos[0].videoContentDetails.videoId;
     if (!recentPlaylists.playlistId) {
       dispatch(
@@ -97,10 +98,10 @@ const PlaylistCard = ({
       }}
     >
       <CardMedia
-        component='img'
+        component="img"
         sx={{ height: "auto" }}
         image={thumbnail}
-        title='green iguana'
+        title="green iguana"
         onClick={navigateToWatch}
       />
       <CardContent
@@ -111,8 +112,8 @@ const PlaylistCard = ({
       >
         <Tooltip title={title}>
           <Typography
-            variant='body2'
-            color='text.secondary'
+            variant="body2"
+            color="text.secondary"
             InfoText={title}
             textOverflow={title}
             onClick={navigateToWatch}
@@ -122,10 +123,7 @@ const PlaylistCard = ({
         </Tooltip>
 
         {/* After clicking the more icon on playlist card thsi belowo PopupState component will render */}
-        <PopupState
-          variant='popover'
-          popupId='playlistCardMenu'
-        >
+        <PopupState variant="popover" popupId="playlistCardMenu">
           {(popupState) => (
             <>
               <IconButton {...bindTrigger(popupState)}>
@@ -174,7 +172,7 @@ const PlaylistCard = ({
                     >
                       <IconButton> {option.Icon} </IconButton>
                       <Typography
-                        variant='body2'
+                        variant="body2"
                         sx={{
                           color: colors.gray[100],
                         }}
@@ -210,7 +208,7 @@ const PlaylistCard = ({
             <YouTubeIcon />
           </IconButton>
           <Typography
-            variant='subtitle1'
+            variant="subtitle1"
             sx={{
               fontSize: ".8rem",
               color: colors.gray[100],
@@ -229,14 +227,14 @@ const PlaylistCard = ({
             }}
             onClick={navigateToWatch}
           >
-            <Typography varient='body1'> Videos: </Typography>
-            <Typography varient='body2'> {videos} </Typography>
+            <Typography varient="body1"> Videos: </Typography>
+            <Typography varient="body2"> {videos} </Typography>
           </Box>
         )}
         {catagory === "recentPlaylist" && (
           <Box>
             <Typography
-              variant='body2'
+              variant="body2"
               sx={{
                 fontSize: ".8rem",
               }}
@@ -273,9 +271,9 @@ const PlaylistCard = ({
             display: "flex",
           }}
         >
-          <IconButton aria-label='Start learning'>
+          <IconButton aria-label="Start learning">
             <PlayCircleFilledWhiteOutlinedIcon
-              fontSize='1rem'
+              fontSize="1rem"
               sx={{
                 color: colors.pinkAccent[500],
                 "&:hover": {
@@ -285,9 +283,9 @@ const PlaylistCard = ({
             />
           </IconButton>
           <Typography
-            variant='body2'
+            variant="body2"
             fontFamily="'Roboto', sans-serif"
-            fontWeight='bold'
+            fontWeight="bold"
           >
             Start Learning
           </Typography>

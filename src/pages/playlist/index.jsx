@@ -42,6 +42,7 @@ const Playlist = () => {
   const user = useSelector((state) => state.user);
   const playlists = useSelector((state) => state.playlist);
   const playlistArr = Object.values(playlists.items);
+
   const gridMinMaxObj = {
     20: "px",
     1: "fr",
@@ -77,8 +78,10 @@ const Playlist = () => {
   ];
 
   useEffect(() => {
-    init();
-  }, []);
+    if (user.playlists?.items) {
+      init(user.playlists.items);
+    }
+  }, [user.playlists?.items]);
   useEffect(() => {
     if (isAuth) {
       navigate("/");
@@ -87,10 +90,7 @@ const Playlist = () => {
   return (
     <>
       {playlistArr.length === 0 && !playlists?.loading && (
-        <EmptyMessage
-          message='No playlist Available'
-          btnTxt='Add Playlist'
-        />
+        <EmptyMessage message="No playlist Available" btnTxt="Add Playlist" />
       )}
       <Box
         sx={{
@@ -109,15 +109,16 @@ const Playlist = () => {
         }}
       >
         {playlistArr.length > 0 &&
+          !playlists.items.isError &&
           playlistArr.map((playlist) => (
             <PlaylistCard
               key={shortid.generate()}
               title={playlist.playlistTitle}
-              thumbnail={playlist.playlistThumbnail.url}
+              thumbnail={playlist.playlistThumbnail?.url}
               channelName={playlist.channelTitle}
               videos={playlist.videos.length}
               playlistId={playlist.playlistId}
-              catagory='playlist'
+              catagory="playlist"
               moreOptions={playlistMoreOption}
             />
           ))}
@@ -134,7 +135,7 @@ const Playlist = () => {
               borderRadius: ".5rem",
             }}
           >
-            <Typography variant='body1'>Loading...</Typography>{" "}
+            <Typography variant="body1">Loading...</Typography>{" "}
           </Box>
         )}
       </Box>

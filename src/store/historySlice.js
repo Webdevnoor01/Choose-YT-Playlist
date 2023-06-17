@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+const INIT_HISTORY ={
+    items: {},
+    searchResult: {
+        resultError: {
+            isErr: false,
+            message: "No playlist found"
+        },
+        items: {}
+    }
+}
 const historySlice = createSlice({
     name: "history",
-    initialState: {
-        items: {},
-        searchResult: {
-            resultError: {
-                isErr: false,
-                message: "No playlist found"
-            },
-            items: {}
-        }
-    },
+    initialState: INIT_HISTORY ,
     reducers: {
         setHistory: (state, action) => {
             if (state[action.payload.videoId]) return
@@ -46,10 +46,13 @@ const historySlice = createSlice({
         },
         resetHistoryResult: (state, action) => {
             state.searchResult.items = {}
+        },
+        resetHistory: (state, aciton) =>{
+            state = INIT_HISTORY
         }
     }
 })
 
-export const { setHistory, deleteHistory, findVideos, resetHistoryResult } = historySlice.actions
+export const { setHistory, deleteHistory, findVideos, resetHistoryResult, resetHistory } = historySlice.actions
 
 export default historySlice.reducer

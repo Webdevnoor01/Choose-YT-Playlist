@@ -4,6 +4,7 @@ import shortid from "shortid";
 import PlaylistSkeletonAnimation from "../playlist-skeleton-animation";
 const PlaylistsSkeletonAnimation = () => {
   const items = [1, 2, 3, 4, 5, 6];
+
   return (
     <Box
       sx={{

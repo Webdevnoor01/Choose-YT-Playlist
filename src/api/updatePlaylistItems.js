@@ -4,7 +4,7 @@ const userUrl =
     import.meta.env.VITE_USER_API
 async function updatePlaylistItems(userId, payload, token) {
     try {
-        const response = await axios.post(`${userUrl}/users/${userId}`, payload, {
+        const response = await axios.put(`${userUrl}/users/${userId}`, payload, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }

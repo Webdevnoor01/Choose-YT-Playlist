@@ -1,12 +1,10 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice,  } from "@reduxjs/toolkit";
+
 import getPlaylist from "../api";
-import createPlaylist from "../api/createPlaylist";
 export const INIT_STATE = {
     error: "",
     loading: false,
-    items: {
-
-    },
+    items: {},
     searchResult: {
         loading: false,
         resultError: {
@@ -18,11 +16,16 @@ export const INIT_STATE = {
 };
 
 export const fetchPlaylist = createAsyncThunk("user/playlist",
-    async(userId) => {
-        const response = await getPlaylist(userId)
-            // const playlist = await createPlaylist()
-        if (response.error) throw new Error(response.message)
-        return response
+    async(userId, { rejectWithValue, fulfillWithValue}) => {
+        try {
+            
+            const response = await getPlaylist(userId)
+                // const playlist = await createPlaylist()
+            if (response.error) throw new Error(response.message)
+            return fulfillWithValue(response)
+        } catch (error) {
+            rejectWithValue(error)
+        }
     }
 )
 
@@ -31,7 +34,7 @@ const playlistSlice = createSlice({
     initialState: INIT_STATE,
     reducers: {
         setPlaylist: (state, action) => {
-            state.items = action.payload
+            state.items= action.payload
         },
         removePlaylist: (state, action) => {
             if (!action.payload.playlistId) return
@@ -39,6 +42,9 @@ const playlistSlice = createSlice({
         },
         setPlaylistError: (state, action) => {
             state.error = "";
+        },
+        setPlsylitLoading:(state, action) =>{
+            state.loading = action.payload
         },
 
         setAsFaroite: (state, action) => {
@@ -169,6 +175,9 @@ const playlistSlice = createSlice({
         },
         resetSearchResult: (state, action) => {
             state.searchResult.items = {}
+        },
+        resetPlaylist: (state, action) =>{
+            state = INIT_STATE
         }
 
     },
@@ -181,6 +190,7 @@ const playlistSlice = createSlice({
                 };
             })
             .addCase(fetchPlaylist.fulfilled, (state, action) => {
+                
                 state.items[action.payload.playlistId] = action.payload;
                 state.error = {
                     name: "Success",
@@ -195,5 +205,5 @@ const playlistSlice = createSlice({
     }
 });
 
-export const { setPlaylist, removePlaylist, setPlaylistError, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle, findRecentPlaylistByTitle, findFavoritePlaylistByTitle, findVideosByTitle } = playlistSlice.actions;
+export const { setPlaylist, removePlaylist, setPlaylistError, setAsFaroite, removeFromFavorite, findPlaylistById, resetSearchResult, findPlaylistByTitle, findRecentPlaylistByTitle, findFavoritePlaylistByTitle, findVideosByTitle, resetPlaylist, setPlsylitLoading } = playlistSlice.actions;
 export default playlistSlice.reducer;

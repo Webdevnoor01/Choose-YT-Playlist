@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUserProfile } from "../../store/userSlice";
 
 // React router dom
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // Mui
 import { useTheme } from "@mui/material/styles";
@@ -38,6 +38,7 @@ import useUserInit from "../../hooks/useUserInit";
 // Utilities
 import { showToast } from "../../utils/showToast";
 const Login = () => {
+  const location = useLocation();
   const { init } = useUserInit();
   const { isAuth } = useCheckAuth();
   const state = useSelector((state) => state.user);
@@ -89,11 +90,14 @@ const Login = () => {
     console.log("user: ", user);
     if (user) {
       if (!user.isError) {
-        // init();
+        init(user.playlist.items);
         showToast({
           type: "success",
           message: "Loggedin successfully",
         });
+        location.state = {
+          prevLocation: location.pathname,
+        };
         dispatch(setUserProfile(user));
         navigate("/");
       }
@@ -126,7 +130,7 @@ const Login = () => {
 
   return (
     <Box
-      component='div'
+      component="div"
       sx={{
         display: "flex",
         justifyContent: "space-between",
@@ -143,7 +147,7 @@ const Login = () => {
       }}
     >
       <Box
-        component='form'
+        component="form"
         onSubmit={handleSubmit(onValid, onInValid)}
         sx={{
           width: "55%",
@@ -153,14 +157,14 @@ const Login = () => {
         }}
       >
         <Box
-          component='div'
+          component="div"
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Typography variant='h5'>Login to your account</Typography>
+          <Typography variant="h5">Login to your account</Typography>
         </Box>
 
         {formArr.map((formInput) => (
@@ -185,7 +189,7 @@ const Login = () => {
         <ButtonUI
           text={loading ? "loading..." : "login"}
           disable={loading}
-          type='submit'
+          type="submit"
           style={{
             p: ".6rem",
             "&:hover": {
@@ -197,7 +201,7 @@ const Login = () => {
       </Box>
 
       <Box
-        component='div'
+        component="div"
         sx={{
           width: "40%",
           [theme.breakpoints.down("md")]: {
@@ -205,10 +209,7 @@ const Login = () => {
           },
         }}
       >
-        <CardMedia
-          component='img'
-          src='../../images/signup_bg_2.png'
-        />
+        <CardMedia component="img" src="../../images/signup_bg_2.png" />
       </Box>
     </Box>
   );

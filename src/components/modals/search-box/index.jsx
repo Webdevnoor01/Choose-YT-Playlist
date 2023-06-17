@@ -173,6 +173,7 @@ const SearchBox = ({ open }) => {
     }
   };
   const playlistResultArr = Object.values(playlistResult.items);
+  console.log("palylistArr: ", playlistResultArr);
   const historyResultArr = Object.values(histories.items);
   return (
     <Box
@@ -221,7 +222,7 @@ const SearchBox = ({ open }) => {
         }}
       >
         <Box
-          className='childDiv'
+          className="childDiv"
           component={"header"}
           style={{
             minHeight: "5rem",
@@ -234,7 +235,7 @@ const SearchBox = ({ open }) => {
             flexWrap: "wrap",
           }}
         >
-          <IconButton className='childDiv'>
+          <IconButton className="childDiv">
             <SearchOutlined
               sx={{
                 color: colors.blueAccent[500],
@@ -244,7 +245,7 @@ const SearchBox = ({ open }) => {
           </IconButton>
 
           <input
-            className='childDiv'
+            className="childDiv"
             style={{
               p: "2rem 0",
               maxWidth: "80%",
@@ -262,7 +263,7 @@ const SearchBox = ({ open }) => {
                 width: "80%",
               },
             }}
-            placeholder='Search...'
+            placeholder="Search..."
             onChange={(e) => setSearch(e.target.value)}
           />
 
@@ -277,22 +278,13 @@ const SearchBox = ({ open }) => {
             }}
             onChange={(e) => setSearchBy(e.target.value)}
           >
-            <MenuItem
-              className='childDiv'
-              value='select'
-            >
+            <MenuItem className="childDiv" value="select">
               select search by
             </MenuItem>
-            <MenuItem
-              className='childDiv'
-              value='id'
-            >
+            <MenuItem className="childDiv" value="id">
               search by Id
             </MenuItem>
-            <MenuItem
-              className='childDiv'
-              value='title'
-            >
+            <MenuItem className="childDiv" value="title">
               search by title
             </MenuItem>
           </Select>
@@ -307,40 +299,22 @@ const SearchBox = ({ open }) => {
             }}
             onChange={(e) => setInWhere(e.target.value)}
           >
-            <MenuItem
-              className='childDiv'
-              value='select'
-            >
+            <MenuItem className="childDiv" value="select">
               select search in
             </MenuItem>
-            <MenuItem
-              className='childDiv'
-              value='playlist'
-            >
+            <MenuItem className="childDiv" value="playlist">
               in playlist
             </MenuItem>
-            <MenuItem
-              className='childDiv'
-              value='history'
-            >
+            <MenuItem className="childDiv" value="history">
               in history
             </MenuItem>
-            <MenuItem
-              className='childDiv'
-              value='videos'
-            >
+            <MenuItem className="childDiv" value="videos">
               in videos
             </MenuItem>
-            <MenuItem
-              className='childDiv'
-              value='recentPlaylists'
-            >
+            <MenuItem className="childDiv" value="recentPlaylists">
               in recent playlist
             </MenuItem>
-            <MenuItem
-              className='childDiv'
-              value='favoritePlaylists'
-            >
+            <MenuItem className="childDiv" value="favoritePlaylists">
               in favorite playlist
             </MenuItem>
           </Select>
@@ -366,7 +340,7 @@ const SearchBox = ({ open }) => {
               key={shortid.generate()}
               title={playlist.playlistTitle || playlist.videoTitle}
               thumbnail={
-                playlist?.playlistThumbnail?.url || playlist.videoThumbnail.url
+                playlist?.playlistThumbnail?.url || playlist.videoThumbnail?.url
               }
               channelName={playlist.channelName}
               playlistId={playlist.playlistId}

@@ -36,8 +36,11 @@ import { useProSidebar } from "react-pro-sidebar";
 // Components
 import ButtonUI from "../UI/button";
 import ProfileAction from "../UI/profile-action";
-import { setUserProfile } from "../../store/userSlice";
+import { resetUser, setUserProfile } from "../../store/userSlice";
 import { showToast } from "../../utils/showToast";
+import { resetPlaylist } from "../../store/playlistSlice";
+import { resetRecentPlaylist } from "../../store/recentPlaylistSlice";
+import { resetHistory } from "../../store/historySlice";
 
 const TopBar = ({ auth }) => {
   const states = useSelector((state) => state);
@@ -83,50 +86,58 @@ const TopBar = ({ auth }) => {
         isAuth: false,
       })
     );
+    dispatch(resetUser());
+    dispatch(resetPlaylist());
+    dispatch(resetRecentPlaylist());
+    dispatch(resetHistory());
     navigate("/login");
   };
+  console.log("auth: ", states.user.isAuth);
 
   return (
     <Box
       display={"flex"}
-      justifyContent='space-between'
+      justifyContent="space-between"
       p={".3rem"}
       backgroundColor={colors.secondary[500]}
       color={colors.gray[100]}
       boxShadow={theme.shadows[1]}
-      position='fixed'
-      width='100vw'
-      mb='2rem'
+      position="fixed"
+      width="100vw"
+      mb="2rem"
     >
       <Box
-        display='flex'
-        justifyContent='space-between'
-        alignItems='center'
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
         zIndex={"2000 !important"}
       >
-        <IconButton
-          onClick={handleMenuToggle}
-          sx={{
-            [theme.breakpoints.down("md")]: {
-              display: "none",
-            },
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
+        {states.user.isAuth && (
+          <IconButton
+            onClick={handleMenuToggle}
+            sx={{
+              [theme.breakpoints.down("md")]: {
+                display: "none",
+              },
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+
         <Link
-          component='div'
+          component="div"
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
           }}
-          to='/'
+          to="/"
         >
           <Box
-            component='img'
-            src='../../images/logo.png'
+            component="img"
+            src="../../images/logo.png"
             sx={{
               height: "2rem",
               [theme.breakpoints.down("md")]: {
@@ -137,15 +148,15 @@ const TopBar = ({ auth }) => {
         </Link>
       </Box>
 
-      {!auth && (
+      {states.user.isAuth && (
         <Box
-          display='flex'
-          justifyContent='space-between'
-          alignItems='center'
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
           backgroundColor={colors.primary[500]}
-          borderRadius='3px'
-          p='0 1rem'
-          gap='2'
+          borderRadius="3px"
+          p="0 1rem"
+          gap="2"
           color={colors.gray[500]}
           sx={{
             [theme.breakpoints.down("md")]: {
@@ -154,7 +165,7 @@ const TopBar = ({ auth }) => {
           }}
         >
           <InputBase
-            placeholder='Search playlist'
+            placeholder="Search playlist"
             sx={{
               color: colors.gray[200],
               [theme.breakpoints.down("md")]: {
@@ -170,28 +181,30 @@ const TopBar = ({ auth }) => {
       )}
 
       <Box
-        display='flex'
-        justifyContent='space-between'
-        alignItems='center'
-        gap='1.5rem'
-        pr='1rem'
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        gap="1.5rem"
+        pr="1rem"
         sx={{
           [theme.breakpoints.down("md")]: {
             gap: ".3rem",
           },
         }}
       >
-        <ButtonUI
-          text='add playlist'
-          onClick={handleTogglePlaylist}
-          mdNone={true}
-          style={{
-            backgroundColor: colors.pinkAccent[500],
-            "&:hover": {
-              backgroundColor: colors.pinkAccent[600],
-            },
-          }}
-        />
+        {states.user.isAuth && (
+          <ButtonUI
+            text="add playlist"
+            onClick={handleTogglePlaylist}
+            mdNone={true}
+            style={{
+              backgroundColor: colors.pinkAccent[500],
+              "&:hover": {
+                backgroundColor: colors.pinkAccent[600],
+              },
+            }}
+          />
+        )}
 
         {!auth && (
           <IconButton
@@ -220,7 +233,7 @@ const TopBar = ({ auth }) => {
         {!auth && (
           <>
             <Typography
-              variant='subtitle1'
+              variant="subtitle1"
               color={colors.gray[200]}
               sx={{
                 wordBreak: "unset",
@@ -232,8 +245,8 @@ const TopBar = ({ auth }) => {
               Abdun Nooor
             </Typography>
             <PopupState
-              variant='popover'
-              popupId='userPopupMenu'
+              variant="popover"
+              popupId="userPopupMenu"
               sx={{
                 zIndex: "1 !important",
               }}
@@ -281,7 +294,7 @@ const TopBar = ({ auth }) => {
                       <ProfileAction
                         text={"profile"}
                         Icon={AccountBoxOutlinedIcon}
-                        to='/profile'
+                        to="/profile"
                         onClick={() => popupState.close()}
                       />
                       <ProfileAction
@@ -300,8 +313,8 @@ const TopBar = ({ auth }) => {
         {auth && (
           <>
             <ButtonUI
-              text='login'
-              to='/login'
+              text="login"
+              to="/login"
               style={{
                 backgroundColor: colors.blueAccent[500],
                 "&:hover": {
@@ -311,14 +324,14 @@ const TopBar = ({ auth }) => {
             />
 
             <ButtonUI
-              text='signup'
+              text="signup"
               style={{
                 backgroundColor: colors.pinkAccent[500],
                 "&:hover": {
                   backgroundColor: colors.pinkAccent[600],
                 },
               }}
-              to='/signup'
+              to="/signup"
             />
           </>
         )}

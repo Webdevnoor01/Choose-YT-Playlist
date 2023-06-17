@@ -86,6 +86,15 @@ const Signup = () => {
       email: data.email,
       password: data.password,
       username: data.userName,
+      playlists: {
+        items: [],
+      },
+      history: {
+        items: [],
+      },
+      notes: {
+        items: [],
+      },
     };
     const user = await register(registerPayload);
 
@@ -110,7 +119,7 @@ const Signup = () => {
 
   return (
     <Box
-      component='div'
+      component="div"
       sx={{
         display: "flex",
         justifyContent: "space-between",
@@ -127,7 +136,7 @@ const Signup = () => {
       }}
     >
       <Box
-        component='form'
+        component="form"
         onSubmit={handleSubmit(onValid, onInValid)}
         sx={{
           width: "55%",
@@ -137,14 +146,14 @@ const Signup = () => {
         }}
       >
         <Box
-          component='div'
+          component="div"
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Typography variant='h5'>Create Your Account</Typography>
+          <Typography variant="h5">Create Your Account</Typography>
         </Box>
 
         {formArr.map((formItem, i) => (
@@ -168,8 +177,8 @@ const Signup = () => {
         ))}
 
         <ButtonUI
-          text='signup'
-          type='submit'
+          text="signup"
+          type="submit"
           style={{
             p: ".6rem 0",
             width: "100%",
@@ -181,7 +190,7 @@ const Signup = () => {
       </Box>
 
       <Box
-        component='div'
+        component="div"
         sx={{
           width: "40%",
           [theme.breakpoints.down("md")]: {
@@ -189,10 +198,7 @@ const Signup = () => {
           },
         }}
       >
-        <CardMedia
-          component='img'
-          src='../../images/signup_bg_2.png'
-        />
+        <CardMedia component="img" src="../../images/signup_bg_2.png" />
       </Box>
     </Box>
   );

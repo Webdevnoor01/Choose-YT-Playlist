@@ -14,10 +14,12 @@ const recentPlaylistSlice = createSlice({
         findRecentPlaylistIds: (state, action) => {
             return Object.keys(state)
         },
-
+        resetRecentPlaylist: (state, action)=> {
+            state = {}
+        }
     }
 })
 
-export const { setRecentPlaylist, removeRecentPlaylist, findRecentPlaylistIds } = recentPlaylistSlice.actions
+export const { setRecentPlaylist, removeRecentPlaylist, findRecentPlaylistIds, resetRecentPlaylist } = recentPlaylistSlice.actions
 
 export default recentPlaylistSlice.reducer
