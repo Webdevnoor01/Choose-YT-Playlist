@@ -56,8 +56,8 @@ const AddPlaylistModal = () => {
 
   const addPlaylistIntoDB = async ({ payload }) => {
     const token = await localStorage.getItem("authToken");
+    console.log("payload: ", payload);
     try {
-      console.log("payload");
       const playlistPayload = {
         data: {
           playlistId: payload.playlistId,
@@ -72,17 +72,13 @@ const AddPlaylistModal = () => {
         },
       };
       const data = await createPlaylist(playlistPayload, token);
-
-      console.log("data: ", data);
-      const newPlaylistItem = await dispatch(
+      dispatch(
         setPlaylistItems({
           token,
-          playlistId: data.playlist.data.id,
+          playlistId: payload.playlistId,
         })
       );
-      console.log("newPlaylistItem: ", newPlaylistItem.payload);
-      dispatch(setUserPlaylistItems(newPlaylistItem.payload));
-      console.log("playlist ", data.playlist.data.id);
+      dispatch(setUserPlaylistItems(payload.playlistId));
     } catch (e) {
       console.log("playlistDBErr: ", e);
     }
@@ -129,7 +125,7 @@ const AddPlaylistModal = () => {
       }
 
       const fetchedPlaylist = await dispatch(fetchPlaylist(splitPlaylistId[1]));
-      console.log("fetchedPlaylsit: ", fetchPlaylist);
+      console.log("fetchedPlaylsit: ", fetchedPlaylist);
       dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
       addPlaylistIntoDB(fetchedPlaylist);
     }

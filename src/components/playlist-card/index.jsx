@@ -63,7 +63,6 @@ const PlaylistCard = ({
 
   const { items: playlists } = state;
   const navigateToWatch = () => {
-    console.log(playlists);
     const videoId = playlists[playlistId].videos[0].videoContentDetails.videoId;
     if (!recentPlaylists.playlistId) {
       dispatch(

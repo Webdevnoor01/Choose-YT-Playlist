@@ -41,11 +41,14 @@ import ButtonUI from "../../components/UI/button";
 
 // Custome Hooks
 import useCheckAuth from "../../hooks/useCheckAuth";
+import useUserInit from "../../hooks/useUserInit";
 
 const VideoPlayer = () => {
   const { isAuth } = useCheckAuth();
+  const { init, initUser } = useUserInit();
 
   const query = qs.default.parse(location.search);
+  const user = useSelector((state) => state.user);
   const playlist = useSelector((states) => states.playlist.items[query.list]);
   const notes = useSelector((states) => states.notes);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -63,18 +66,34 @@ const VideoPlayer = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   useEffect(() => {
-    const video = playlist.videos[query.index - 1];
-    const videoHistoryObj = {
-      playlistId: playlist.playlistId,
-      videoId: video.videoContentDetails.videoId,
-      videoIndex: query.index,
-      thumbnail: video.videoThumbnail.url,
-      title: video.videoTitle,
-      channelName: playlist.channelTitle,
-      watchedTime: 0,
-    };
-    dispatch(setHistory(videoHistoryObj));
+    console.log(user.playlists.items.length);
+    async function fetchUser() {
+      console.log("userInit called in videoPlayser");
+      const user = await initUser();
+      console.log(user);
+      init(user.playlist?.items);
+    }
+    if (user.playlists.items.length === 0) {
+      fetchUser();
+    }
+  }, []);
+  // console.log(playlist.items[query.list]);
+  useEffect(() => {
+    if (playlist?.videos) {
+      const video = playlist.videos[query.index - 1];
+      const videoHistoryObj = {
+        playlistId: playlist.playlistId,
+        videoId: video.videoContentDetails.videoId,
+        videoIndex: query.index,
+        thumbnail: video.videoThumbnail.url,
+        title: video.videoTitle,
+        channelName: playlist.channelTitle,
+        watchedTime: 0,
+      };
+      dispatch(setHistory(videoHistoryObj));
+    }
   }, [query.list]);
 
   const handleVideoClick = (videoId, videoIndex) => {
@@ -118,11 +137,13 @@ const VideoPlayer = () => {
             url={`https://www.youtube.com/watch?v=${query.v}list=${
               query.list
             }&index=${query.index - 1}`}
-            height='100%'
-            width='100%'
+            height="100%"
+            width="100%"
             controls={true}
             playIcon={true}
             playing={true}
+            onProgress={(e) => console.log(e)}
+            onPause={(e) => console.log(e)}
           />
         </Box>
 
@@ -145,7 +166,7 @@ const VideoPlayer = () => {
             }}
           >
             <ButtonUI
-              text='add note'
+              text="add note"
               onClick={() => setOpen(!open)}
               style={{
                 backgroundColor: colors.pinkAccent[500],
@@ -218,29 +239,26 @@ const VideoPlayer = () => {
             {/* list info */}
             <Box>
               <Typography
-                varient='body1'
+                varient="body1"
                 sx={{
                   display: "flex",
                   justifyContent: "flex-start",
                   alignItems: "cneter",
                 }}
               >
-                <Typography
-                  variant='body2'
-                  fontWeight='bold'
-                >
+                <Typography variant="body2" fontWeight="bold">
                   Next:
                 </Typography>
-                <Typography variant='body2'>
+                <Typography variant="body2">
                   {query.index === 1
                     ? playlist.videos[query.index].videoTitle.slice(0, 35)
-                    : playlist.videos[query.index - 1].videoTitle.slice(0, 35)}
+                    : playlist?.videos[query.index - 1].videoTitle.slice(0, 35)}
                   ...
                 </Typography>
               </Typography>
-              <Typography varient='body2'>
-                {playlist.playlistTitle.slice(0, 24)}...{query.index}/
-                {playlist.videos.length}
+              <Typography varient="body2">
+                {playlist?.playlistTitle.slice(0, 24)}...{query.index}/
+                {playlist?.videos.length}
               </Typography>
             </Box>
 
@@ -265,18 +283,14 @@ const VideoPlayer = () => {
             }}
           >
             <VideoList
-              channelTitle={playlist.channelTitle}
-              videos={playlist.videos}
+              channelTitle={playlist?.channelTitle}
+              videos={playlist?.videos}
               onVideoClick={handleVideoClick}
             />
           </Box>
         </Box>
 
-        <AddNote
-          open={open}
-          scroll={scroll}
-          handleClose={handleClose}
-        />
+        <AddNote open={open} scroll={scroll} handleClose={handleClose} />
       </Box>
     </>
   );

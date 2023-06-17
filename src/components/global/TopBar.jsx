@@ -92,7 +92,6 @@ const TopBar = ({ auth }) => {
     dispatch(resetHistory());
     navigate("/login");
   };
-  console.log("auth: ", states.user.isAuth);
 
   return (
     <Box

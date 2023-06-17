@@ -64,10 +64,11 @@ const AddNote = ({ open, scroll, handleClickOpen, handleClose }) => {
 
   // current video and channelTitle from redux store.
   const currentVideo = useSelector(
-    (state) => state.playlist.items[playlistId].videos[index - 1].videoThumbnail
+    (state) =>
+      state.playlist.items[playlistId]?.videos[index - 1].videoThumbnail
   );
   const channleTitle = useSelector(
-    (state) => state.playlist.items[playlistId].channleTitle
+    (state) => state.playlist.items[playlistId]?.channleTitle
   );
   const dispatch = useDispatch();
 
@@ -133,8 +134,8 @@ const AddNote = ({ open, scroll, handleClickOpen, handleClose }) => {
         open={open}
         onClose={handleClose}
         scroll={scroll}
-        aria-labelledby='scroll-dialog-title'
-        aria-describedby='scroll-dialog-description'
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
         sx={{
           width: "80%",
           height: "90%",
@@ -157,20 +158,17 @@ const AddNote = ({ open, scroll, handleClickOpen, handleClose }) => {
           },
         }}
       >
-        <DialogTitle id='scroll-dialog-title'>Add Note</DialogTitle>
+        <DialogTitle id="scroll-dialog-title">Add Note</DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText
-            id='scroll-dialog-description'
-            tabIndex={-1}
-          >
+          <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <Controller
-              name='noteData'
+              name="noteData"
               control={control}
               render={(fields) => (
                 <TextareaAutosize
-                  aria-label='empty textarea'
-                  placeholder='Enter your note'
-                  name='noteData'
+                  aria-label="empty textarea"
+                  placeholder="Enter your note"
+                  name="noteData"
                   style={{
                     width: "100%",
                     height: "100%",
@@ -191,9 +189,9 @@ const AddNote = ({ open, scroll, handleClickOpen, handleClose }) => {
 
         <DialogActions>
           <ButtonUI
-            text='cancel'
+            text="cancel"
             onClick={handleClose}
-            type='submit'
+            type="submit"
             style={{
               p: ".5rem 1rem",
               backgroundColor: colors.pinkAccent[500],
@@ -204,7 +202,7 @@ const AddNote = ({ open, scroll, handleClickOpen, handleClose }) => {
             }}
           />
           <ButtonUI
-            text='save'
+            text="save"
             onClick={handleSubmit(onValid, onInValid)}
             style={{
               p: ".5rem 1rem",

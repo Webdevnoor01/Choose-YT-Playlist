@@ -81,7 +81,7 @@ const Playlist = () => {
     if (user.playlists?.items) {
       init(user.playlists.items);
     }
-  }, [user.playlists?.items]);
+  }, [user.isAuth]);
   useEffect(() => {
     if (isAuth) {
       navigate("/");

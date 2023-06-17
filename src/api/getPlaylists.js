@@ -11,7 +11,7 @@ async function getPlaylists(token, playlistIds) {
         },
       });
       const finalPlaylist = playlist.data.data.reduce((acc, curr) => {
-        if (playlistIds.includes(curr.id)) {
+        if (playlistIds.includes(curr.attributes.playlistId)) {
           acc[curr.attributes.playlistId] = curr.attributes;
         }
         return acc;

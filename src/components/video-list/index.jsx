@@ -15,69 +15,67 @@ const VideoList = ({ videos, channelTitle, onVideoClick }) => {
   const colors = tokens(theme.palette.mode);
   return (
     <>
-      {videos.map((video) => (
-        <Card
-          key={Date.now() * Math.random()}
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: ".5rem",
-            cursor: "pointer",
-            backgroundColor: colors.secondary[500],
-            [theme.breakpoints.down("md")]: {
-              minHeight: "5rem",
-            },
-          }}
-          onClick={() =>
-            onVideoClick(video.videoContentDetails.videoId, video.index)
-          }
-        >
-          <Box
+      {videos &&
+        videos.map((video) => (
+          <Card
+            key={Date.now() * Math.random()}
             sx={{
-              width: "41%",
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "space-between",
               alignItems: "center",
+              marginBottom: ".5rem",
+              cursor: "pointer",
+              backgroundColor: colors.secondary[500],
               [theme.breakpoints.down("md")]: {
-                minWidth: "45%",
+                minHeight: "5rem",
               },
             }}
+            onClick={() =>
+              onVideoClick(video.videoContentDetails.videoId, video.index)
+            }
           >
-            <CardMedia
-              component='img'
-              sx={{ width: "100%" }}
-              image={video.videoThumbnail?.url}
-              alt='Live from space album cover'
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              "& .css-pfmexh-MuiCardContent-root:last-child": {
-                pb: "0",
-              },
-            }}
-          >
-            <CardContent sx={{ flex: "1 0 auto", p: "0 1rem" }}>
-              <Typography
-                variant='body2'
-                fontSize='.8rem'
-              >
-                {video.videoTitle?.slice(0, 50)}
-              </Typography>
-              <Typography
-                variant='subtitle1'
-                color='text.secondary'
-                component='div'
-              >
-                {channelTitle}
-              </Typography>
-            </CardContent>
-          </Box>
-        </Card>
-      ))}
+            <Box
+              sx={{
+                width: "41%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                [theme.breakpoints.down("md")]: {
+                  minWidth: "45%",
+                },
+              }}
+            >
+              <CardMedia
+                component="img"
+                sx={{ width: "100%" }}
+                image={video.videoThumbnail?.url}
+                alt="Live from space album cover"
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                "& .css-pfmexh-MuiCardContent-root:last-child": {
+                  pb: "0",
+                },
+              }}
+            >
+              <CardContent sx={{ flex: "1 0 auto", p: "0 1rem" }}>
+                <Typography variant="body2" fontSize=".8rem">
+                  {video.videoTitle?.slice(0, 50)}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                >
+                  {channelTitle}
+                </Typography>
+              </CardContent>
+            </Box>
+          </Card>
+        ))}
     </>
   );
 };

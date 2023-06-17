@@ -3,17 +3,29 @@ import getPlaylists from "../api/getPlaylists";
 import { setPlaylist, setPlsylitLoading } from "../store/playlistSlice";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import getUser from "../api/getUser";
+import { setUserProfile } from "../store/userSlice";
 
 const useUserInit = () => {
   const user = useSelector((state) => state.user);
   const location = useLocation();
   const dispatch = useDispatch();
   const [isInit, setIsInit] = useState(false);
-  useEffect(() => {
-    if (user?.isAuth === true) {
-      init(user.playlists?.items);
+  // useEffect(() => {
+  //   if (user?.isAuth === true) {
+  //     init(user.playlists?.items);
+  //   }
+  // }, [user?.id]);
+  async function initUser(){
+    const token = localStorage.getItem("authToken")
+    try {
+      const data = await getUser(token)
+      dispatch(setUserProfile(data.user))
+      return data.user
+    } catch (error) {
+      console.log('initUser:Error->', error)
     }
-  }, [user?.id]);
+  }
   function init(userPlaylistItems) {
     try {
       dispatch(setPlsylitLoading(true));
@@ -41,6 +53,7 @@ const useUserInit = () => {
 
   return {
     init,
+    initUser
   };
 };
 

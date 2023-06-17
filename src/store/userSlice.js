@@ -22,9 +22,7 @@ export const setPlaylistItems = createAsyncThunk(
   "user/updatePlaylistItems",
   async (data) => {
     const { user } = await getUser(data.token);
-    console.log("user: ", data)
     const newPlaylistItems = [...user.playlist.items, data.playlistId];
-    console.log("newItems: ", newPlaylistItems, )
     const updatePlsylist = await updatePlaylistItems(
       user.id,
       {
@@ -58,7 +56,7 @@ const userSlice = createSlice({
       state.isAuth = action.payload;
     },
     setUserPlaylistItems: (state, action) => {
-      state.playlists.items = action.payload;
+      state.playlists.items.push(action.payload);
     },
     resetUser: (state, action) =>{
       state = USER_INITIAL_STATE
