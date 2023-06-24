@@ -5,19 +5,19 @@
 ### Objective
 Developed and launched a dynamic website that allows users to create custom playlists and watch YouTube videos seamlessly, enhancing the learning experience and providing convenient access to educational content.
 
-### Role and Responsibilities
+Role and Responsibilities
 
   -Solely developed and implemented the entire project, from concept to deployment.
   -Utilized a range of technologies, including HTML, CSS, JavaScript, and Python, to build the website and integrate YouTube's API for       playlist management and video playback.
   -Ensured responsive design and user-friendly interface.
 
-### Skills Utilized and Developed
+Skills Utilized and Developed
 
   -Demonstrated proficiency in web development languages such as HTML, CSS, and JavaScript.
   -Gained experience in working with APIs, specifically YouTube's API, to fetch and display playlist information.
   -Developed problem-solving and debugging skills while building playlist management and video playback features.
 
-### Impact and Outcomes
+Impact and Outcomes
 
   -Enabled users to easily sign up, log in, and update their profiles for a personalized experience.
   -Implemented playlist functionality that allowed users to add any YouTube playlist using a playlist ID or link.
