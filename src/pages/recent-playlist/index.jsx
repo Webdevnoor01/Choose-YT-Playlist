@@ -34,9 +34,7 @@ const RecentPlaylist = () => {
     20: "px",
     1: "fr",
   };
-  const removePlaylist = (playlistId) => {
-    dispatch(removeRecentPlaylist(playlistId));
-  };
+
   const recentPlaylistMoreOption = [
     {
       title: "Remove from recent playlist",

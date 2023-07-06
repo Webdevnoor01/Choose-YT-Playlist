@@ -36,7 +36,7 @@ const Playlist = () => {
   const { isAuth } = useCheckAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { init } = useUserInit();
+  const { init, initUser } = useUserInit();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const user = useSelector((state) => state.user);
@@ -77,11 +77,14 @@ const Playlist = () => {
     },
   ];
 
-  useEffect(() => {
+  useEffect( async () => {
+    const user = await initUser()
+    console.log("userInit", user)
     if (user.playlists?.items) {
       init(user.playlists.items);
     }
   }, [user.isAuth]);
+
   useEffect(() => {
     if (isAuth) {
       navigate("/");

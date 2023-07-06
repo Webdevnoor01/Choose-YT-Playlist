@@ -9,10 +9,12 @@ const useLogin = () => {
     const navigate = useNavigate()
 
     async function login(payload) {
+        console.log("login called")
         try {
             setLoading(true)
             setError({})
             const data = await getLogin(payload)
+            
             if (data.isError) {
                 setError({...data })
                 setLoading(false)

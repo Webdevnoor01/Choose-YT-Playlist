@@ -5,17 +5,13 @@ const userUrl =
     import.meta.env.VITE_USER_API
 async function getLogin(payload) {
     try {
+        console.log("getLogin called")
         const response = await axios.post(authUrl, payload)
         const { data } = response
+        console.log("data:", data)
+
 
         if (!data.error) {
-            const user = await axios.put(`${userUrl}/users/${data.user.id}`, {
-                isAuth: true
-            }, {
-                headers: {
-                    "Authorization": `BEARER ${data.jwt}`
-                }
-            })
             return {
                 token: data.jwt,
                 user: data.user

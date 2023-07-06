@@ -11,11 +11,7 @@ const useUserInit = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [isInit, setIsInit] = useState(false);
-  // useEffect(() => {
-  //   if (user?.isAuth === true) {
-  //     init(user.playlists?.items);
-  //   }
-  // }, [user?.id]);
+
   async function initUser(){
     const token = localStorage.getItem("authToken")
     try {

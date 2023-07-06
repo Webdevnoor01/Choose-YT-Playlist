@@ -21,7 +21,6 @@ const useCheckAuth = () => {
     const token = localStorage.getItem("authToken")
 
     useEffect(() => {
-
         async function fetchUser(token) {
             try {
                 const response = await getUser(token)
@@ -46,7 +45,7 @@ const useCheckAuth = () => {
         }
         checkAuth()
 
-    }, [navigate, token])
+    }, [token])
     return {
         isAuth: useSelector(state => state.user.isAuth)
     }
