@@ -68,11 +68,9 @@ const VideoPlayer = () => {
   };
 
   useEffect(() => {
-    console.log(user.playlists.items.length);
     async function fetchUser() {
       console.log("userInit called in videoPlayser");
       const user = await initUser();
-      console.log(user);
       init(user.playlist?.items);
     }
     if (user.playlists.items.length === 0) {
@@ -144,6 +142,7 @@ const VideoPlayer = () => {
             playing={true}
             onProgress={(e) => console.log(e)}
             onPause={(e) => console.log(e)}
+            onReady={(e) =>{console.log("ready: ", e)}}
           />
         </Box>
 

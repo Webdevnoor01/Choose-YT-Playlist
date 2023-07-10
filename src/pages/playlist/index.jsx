@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 // react, redux
@@ -33,14 +32,14 @@ import useCheckAuth from "../../hooks/useCheckAuth";
 import useUserInit from "../../hooks/useUserInit";
 
 const Playlist = () => {
+  const { init, initUser } = useUserInit();
+  const user = useSelector((state) => state.user);
+  const playlists = useSelector((state) => state.playlist);
   const { isAuth } = useCheckAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { init, initUser } = useUserInit();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const user = useSelector((state) => state.user);
-  const playlists = useSelector((state) => state.playlist);
   const playlistArr = Object.values(playlists.items);
 
   const gridMinMaxObj = {
@@ -77,12 +76,16 @@ const Playlist = () => {
     },
   ];
 
-  useEffect( async () => {
-    const user = await initUser()
-    console.log("userInit", user)
-    if (user.playlists?.items) {
-      init(user.playlists.items);
+  useEffect( () => {
+    async function setupUser() {
+      const userData = await initUser();
+      console.log("userInit", userData);
+      if (userData.playlists?.items) {
+        init(userData.playlists.items);
+      }
     }
+
+      setupUser();
   }, [user.isAuth]);
 
   useEffect(() => {
