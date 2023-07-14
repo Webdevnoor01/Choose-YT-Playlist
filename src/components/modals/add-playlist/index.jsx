@@ -56,7 +56,6 @@ const AddPlaylistModal = () => {
 
   const addPlaylistIntoDB = async ({ payload }) => {
     const token = await localStorage.getItem("authToken");
-    console.log("payload: ", payload);
     try {
       const playlistPayload = {
         data: {

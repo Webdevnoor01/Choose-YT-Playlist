@@ -62,6 +62,7 @@ const PlaylistCard = ({
   const colors = tokens(theme.palette.mode);
 
   const { items: playlists } = state;
+
   const navigateToWatch = () => {
     const videoId = playlists[playlistId].videos[0].videoContentDetails.videoId;
     if (!recentPlaylists.playlistId) {
@@ -81,6 +82,7 @@ const PlaylistCard = ({
       })}`,
     });
   };
+  
   return (
     <Card
       sx={{

@@ -13,10 +13,8 @@ const usePlaylists = () => {
 
   useEffect(() => {
     const data = storage.get(STORAGE_KEY);
-    console.log(data)
     if (data) {
       dispatch(setplaylist(data))
-      console.log(data);
     }
     
   }, []);

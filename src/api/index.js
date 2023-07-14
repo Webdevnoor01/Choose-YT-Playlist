@@ -1,9 +1,8 @@
 import axios from "axios";
 
-const apiKey =
-    import.meta.env.VITE_YOUTUBE_API_KAY;
-const getPlaylistItems = async(playListId, pageToken, result = []) => {
-        let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=id,contentDetails,snippet&playlistId=${playListId}&maxResults=50&key=${apiKey}&${
+const apiKey = import.meta.env.VITE_YOUTUBE_API_KAY;
+const getPlaylistItems = async (playListId, pageToken, result = []) => {
+  let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=id,contentDetails,snippet&playlistId=${playListId}&maxResults=50&key=${apiKey}&${
     pageToken && `pageToken=${pageToken}`
   }`;
 
@@ -25,7 +24,6 @@ const getPlaylist = async (playlistId) => {
     const url = `https://www.googleapis.com/youtube/v3/playlists?part=id,contentDetails,snippet&id=${playlistId}&key=${apiKey}`;
 
     const { data } = await axios.get(url);
-    console.log("data: ", data)
     const {
       title: playlistTitle,
       description: playlistDescription,
@@ -57,7 +55,7 @@ const getPlaylist = async (playlistId) => {
         videoDescription: description,
         videoThumbnail: medium,
         videoContentDetails: item.contentDetails,
-        index:i+1
+        index: i + 1,
       };
     });
 
@@ -66,11 +64,11 @@ const getPlaylist = async (playlistId) => {
       playlistDescription,
       playlistTitle,
       playlistThumbnail: thumbnails.medium,
-      videos:result,
+      videos: result,
       channelTitle: ct,
       channelId: cid,
       channelTitle,
-      isFavorite:false
+      isFavorite: false,
     };
   } catch (e) {
     console.log("getPlaylist-error: ", e);

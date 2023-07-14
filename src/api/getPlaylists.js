@@ -3,6 +3,7 @@ import axios from "axios";
 const userUrl = import.meta.env.VITE_USER_API;
 
 async function getPlaylists(token, playlistIds) {
+  console.log("get playlists called")
   try {
     if (playlistIds) {
       const playlist = await axios.get(`${userUrl}/playlists`, {
