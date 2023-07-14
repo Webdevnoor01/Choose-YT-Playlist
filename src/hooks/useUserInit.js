@@ -7,7 +7,7 @@ import getUser from "../api/getUser";
 import { setUserProfile } from "../store/userSlice";
 
 const useUserInit = () => {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const user = useSelector((state) => state.user);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const useUserInit = () => {
       if (token) {
         fetchPlaylistFromDB();
       }
-      setLoading(prev => !prev)
+      setLoading(false)
     } catch (error) {
       dispatch(setPlsylitLoading(false));
       setLoading(false)

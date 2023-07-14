@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 // react, redux
@@ -48,6 +48,38 @@ const Playlist = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const playlistArr = Object.values(playlists.items);
+
+  console.log("playlist page rendering")
+  useMemo(() => {
+    async function setupUser() {
+      const userData = await initUser();
+      if (userData.playlist?.items) {
+        init(userData.playlist.items);
+      }
+      console.log("setup-user-called")
+    }
+    if(user.isAuth === false){
+
+      setupUser();
+    }
+  },[user.isAuth])
+  // useEffect(() => {
+  //   async function setupUser() {
+  //     const userData = await initUser();
+  //     if (userData.playlist?.items) {
+  //       init(userData.playlist.items);
+  //     }
+  //     console.log("setup-user-called")
+  //   }
+
+  //   setupUser();
+  // }, [user.isAuth]);
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/");
+    }
+  }, [user.isAuth]);
   const gridMinMaxObj = {
     20: "px",
     1: "fr",
@@ -89,22 +121,8 @@ const Playlist = () => {
     // updatePlaylistDB(playlistId)
   }
 
-   function updatePlaylistDB(playlistId) {
-    const payload = {
-      id: playlists.id,
-      data: {
-        videos: playlists.items[playlistId].videos,
-      },
-    };
-    dispatch(updatePlaylistIntoDB(payload));
-    
-      showToast({
-        type: "success",
-        message: "Playlist updated successfully",
-      });
-    
-  }
-  const playlistMoreOption = [
+
+    const playlistMoreOption = [
     {
       title: "Remove from playlist",
       Icon: <RemoveCircleOutlineOutlinedIcon />,
@@ -146,23 +164,7 @@ const Playlist = () => {
     },
   ];
 
-  useEffect(() => {
-    async function setupUser() {
-      const userData = await initUser();
-      if (userData.playlist?.items) {
-        init(userData.playlist.items);
-        setLoading(false);
-      }
-    }
 
-    setupUser();
-  }, [user.isAuth]);
-
-  useEffect(() => {
-    if (isAuth) {
-      navigate("/");
-    }
-  }, [user.isAuth]);
   return (
     <>
       {playlistArr.length === 0 && !playlists?.loading && !loading && (
