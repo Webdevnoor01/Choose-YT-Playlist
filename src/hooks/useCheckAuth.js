@@ -12,7 +12,8 @@ import { USER_INITIAL_STATE, setUserProfile } from "../store/userSlice";
 // apis
 import getUser from "../api/getUser";
 
-const useCheckAuth = () => {
+const useCheckAuth = (cbNavigate = false) => {
+  console.log("useCheckAuth-location", location)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("authToken");
@@ -31,6 +32,9 @@ const useCheckAuth = () => {
 
     if (token) {
       fetchUser(token);
+      // if(cbNavigate){
+      //   // cbNavigate()
+      // }
     } else {
       dispatch(setUserProfile(USER_INITIAL_STATE));
       console.log("navigating to login pagea: 1 ");

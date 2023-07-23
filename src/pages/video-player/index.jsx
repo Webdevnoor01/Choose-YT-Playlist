@@ -11,10 +11,12 @@ import {
   createSearchParams,
   useSearchParams,
   useParams,
+  useLocation
 } from "react-router-dom";
 
 // third-party libraries
-import ReactPlayer from "react-player/youtube";
+// import ReactPlayer from "react-player/youtube";
+const ReactPlayer  = lazy(() => import("react-player/youtube"))
 import * as qs from "query-string";
 import shortid from "shortid";
 
@@ -45,7 +47,8 @@ import useUserInit from "../../hooks/useUserInit";
 import VideoPlayerSkeletonAnimation from "../../components/video-player-skeleton-animation";
 
 const VideoPlayer = () => {
-  const { isAuth } = useCheckAuth();
+  const location = useLocation()
+  const { isAuth } = useCheckAuth(location);
   const { init, initUser } = useUserInit();
 
   const query = qs.default.parse(location.search);
@@ -70,7 +73,10 @@ const VideoPlayer = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
+  // const cbNavigate = ()=> {
+  //   let path = ""
+  //   if(location.paht)
+  // }
   const handleVideoReady = (reactPlayer) => {
     if (reactPlayer.player.isReady) {
       console.log("ready ", reactPlayer.player);
@@ -79,15 +85,19 @@ const VideoPlayer = () => {
   };
 
   useEffect(() => {
-    async function fetchUser() {
-      console.log("userInit called in videoPlayser");
-      const user = await initUser();
-      init(user.playlist?.items);
+    async function setupUser() {
+      const userData = await initUser();
+      if (userData.playlist?.items) {
+        init(userData.playlist.items);
+      }
+      console.log("setup-user-called")
     }
-    if (user.playlists.items.length === 0) {
-      fetchUser();
+
+    if(user.isAuth === false){
+
+      setupUser();
     }
-  }, []);
+  }, [user.isAuth]);
   // console.log(playlist.items[query.list]);
   useEffect(() => {
     if (playlist?.videos) {
@@ -126,7 +136,7 @@ const VideoPlayer = () => {
   };
   return (
     <>
-      {videoLoading && <VideoPlayerSkeletonAnimation />}
+      {/* {videoLoading && <VideoPlayerSkeletonAnimation />} */}
 
       
         <Box
@@ -136,7 +146,7 @@ const VideoPlayer = () => {
             alignItems: "baseline",
             flexWrap: "wrap",
             p: 0,
-            visibility:`${videoLoading ? "hidden":"visible"}`
+            // visibility:`${videoLoading ? "hidden":"visible"}`
           }}
         >
           {/* video player */}
@@ -149,6 +159,8 @@ const VideoPlayer = () => {
               },
             }}
           >
+            <Suspense fallback="video loading..." >
+
             <ReactPlayer
               url={`https://www.youtube.com/watch?v=${query.v}list=${
                 query.list
@@ -162,6 +174,7 @@ const VideoPlayer = () => {
               onPause={(e) => console.log(e)}
               onReady={handleVideoReady}
             />
+            </Suspense>
           </Box>
 
           {/* notes */}

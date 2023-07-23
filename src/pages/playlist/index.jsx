@@ -42,7 +42,7 @@ const Playlist = () => {
   const { init, initUser, loading, setLoading } = useUserInit();
   const user = useSelector((state) => state.user);
   const playlists = useSelector((state) => state.playlist);
-  const { isAuth } = useCheckAuth();
+  // const { isAuth } = useCheckAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -50,7 +50,7 @@ const Playlist = () => {
   const playlistArr = Object.values(playlists.items);
 
   console.log("playlist page rendering")
-  useMemo(() => {
+  useEffect(() => {
     async function setupUser() {
       const userData = await initUser();
       if (userData.playlist?.items) {
@@ -58,11 +58,13 @@ const Playlist = () => {
       }
       console.log("setup-user-called")
     }
+
     if(user.isAuth === false){
 
       setupUser();
     }
-  },[user.isAuth])
+  }, [user.isAuth]);
+
   // useEffect(() => {
   //   async function setupUser() {
   //     const userData = await initUser();
@@ -72,14 +74,15 @@ const Playlist = () => {
   //     console.log("setup-user-called")
   //   }
 
-  //   setupUser();
-  // }, [user.isAuth]);
 
-  useEffect(() => {
-    if (isAuth) {
-      navigate("/");
-    }
-  }, [user.isAuth]);
+  //   let token = localStorage.getItem("authToken")
+  //   if (token && (user.isAuth === false)) {
+  //     console.log("redirecting playlist page")
+      
+  //     setupUser();
+  //     navigate("/");
+  //   }
+  // }, [user.isAuth]);
   const gridMinMaxObj = {
     20: "px",
     1: "fr",

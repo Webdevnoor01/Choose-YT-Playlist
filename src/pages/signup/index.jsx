@@ -1,5 +1,5 @@
 // React
-import React from "react";
+import React, { useEffect } from "react";
 
 // React Router Dom
 import { Link, useNavigate } from "react-router-dom";
@@ -72,6 +72,12 @@ const Signup = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  useEffect(() => {
+    let token = localStorage.getItem("authToken")
+    if(token){
+      navigate("/")
+    }
+  },[])
   const formArr = Object.values(inputObj);
 
   const iconObj = {
