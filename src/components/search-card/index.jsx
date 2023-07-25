@@ -1,18 +1,25 @@
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Tooltip,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 import { tokens } from "../../theme";
 
-const SearchCard = ({ title, channelName, thumbnail, onClick }) => {
+const SearchCard = ({ title, channelName, thumbnail, onClick, index }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <Card
-      className='childDiv'
+      className="childDiv"
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "flex-start",
         gap: ".5rem",
         m: "1rem auto",
         borderRadius: ".5rem",
@@ -29,7 +36,7 @@ const SearchCard = ({ title, channelName, thumbnail, onClick }) => {
       }}
     >
       <CardContent
-        className='childDiv'
+        className="childDiv"
         sx={{
           minWidth: "45%",
           p: "0",
@@ -40,9 +47,9 @@ const SearchCard = ({ title, channelName, thumbnail, onClick }) => {
         onClick={onClick}
       >
         <CardMedia
-          className='childDiv'
+          className="childDiv"
           component={"img"}
-          alt='Video thumbnail'
+          alt="Video thumbnail"
           src={thumbnail}
           sx={{
             maxWidth: "100%",
@@ -50,8 +57,9 @@ const SearchCard = ({ title, channelName, thumbnail, onClick }) => {
           }}
         />
       </CardContent>
+
       <CardContent
-        className='childDiv'
+        className="childDiv"
         sx={{
           p: "0 .4rem",
           minWidth: "50%",
@@ -61,20 +69,22 @@ const SearchCard = ({ title, channelName, thumbnail, onClick }) => {
         }}
         onClick={onClick}
       >
+        <Tooltip title={title}>
+          <Typography
+            className="childDiv"
+            onClick={onClick}
+            sx={{
+              p: ".5rem",
+              [theme.breakpoints.down("sm")]: {
+                fontSize: ".8rem",
+              },
+            }}
+          >
+            {title.slice(0, 40)}...
+          </Typography>
+        </Tooltip>
         <Typography
-          className='childDiv'
-          onClick={onClick}
-          sx={{
-            p: ".5rem",
-            [theme.breakpoints.down("sm")]: {
-              fontSize: ".8rem",
-            },
-          }}
-        >
-          {title.slice(0, 30)}...
-        </Typography>
-        <Typography
-          className='childDiv'
+          className="childDiv"
           sx={{
             p: ".5rem",
             [theme.breakpoints.down("sm")]: {
@@ -83,6 +93,16 @@ const SearchCard = ({ title, channelName, thumbnail, onClick }) => {
           }}
         >
           {channelName}
+        </Typography>
+        <Typography
+          sx={{
+            p: ".5rem",
+            [theme.breakpoints.down("sm")]: {
+              fontSize: ".8rem",
+            },
+          }}
+        >
+          index: {index}
         </Typography>
       </CardContent>
     </Card>

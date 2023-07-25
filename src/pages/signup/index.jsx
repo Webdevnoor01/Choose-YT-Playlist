@@ -21,6 +21,9 @@ import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
 import InputGroup from "../../components/shared/input-group";
 import ButtonUI from "../../components/UI/button";
 
+// hooks
+import useCheckAuth from "../../hooks/useCheckAuth";
+
 // input json
 import inputObj from "./signpup.json";
 
@@ -29,6 +32,8 @@ import useRegister from "../../hooks/useRegister";
 import { showToast } from "../../utils/showToast";
 
 const Signup = () => {
+  const { setCanRun } = useCheckAuth()
+
   // Form validation schema
   const { loading, register } = useRegister();
   const schema = yup.object().shape({
@@ -76,6 +81,11 @@ const Signup = () => {
     let token = localStorage.getItem("authToken")
     if(token){
       navigate("/")
+    }
+    setCanRun(true)
+
+    return () =>{
+      setCanRun(false)
     }
   },[])
   const formArr = Object.values(inputObj);

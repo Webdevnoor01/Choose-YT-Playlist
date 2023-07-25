@@ -1,4 +1,4 @@
-import React from "react";
+import {useEffect} from "react";
 
 // react-redux
 import { useSelector } from "react-redux";
@@ -11,9 +11,13 @@ import EmptyMessage from "../../components/empty-message";
 import useCheckAuth from "../../hooks/useCheckAuth";
 
 const Notes = () => {
-  const { isAuth } = useCheckAuth();
+  const { isAuth, setCanRun } = useCheckAuth();
   const notes = useSelector((state) => state.notes);
   const noteArr = Object.values(notes);
+
+  useEffect(() => {
+    setCanRun(true)
+  },[])
   return (
     <Box
       sx={{

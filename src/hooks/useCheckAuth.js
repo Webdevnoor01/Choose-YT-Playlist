@@ -1,5 +1,5 @@
 // react
-import { useEffect } from "react";
+import { useState ,useEffect } from "react";
 // react-redux
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,7 +13,7 @@ import { USER_INITIAL_STATE, setUserProfile } from "../store/userSlice";
 import getUser from "../api/getUser";
 
 const useCheckAuth = (cbNavigate = false) => {
-  console.log("useCheckAuth-location", location)
+  const [canRun, setCanRun] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("authToken");
@@ -30,20 +30,24 @@ const useCheckAuth = (cbNavigate = false) => {
       }
     }
 
-    if (token) {
-      fetchUser(token);
-      // if(cbNavigate){
-      //   // cbNavigate()
-      // }
-    } else {
-      dispatch(setUserProfile(USER_INITIAL_STATE));
-      console.log("navigating to login pagea: 1 ");
-      navigate("/login");
+    if (canRun) {
+      console.log("useCheckAuthCalled")
+      if (token) {
+        fetchUser(token);
+        // if(cbNavigate){
+        //   // cbNavigate()
+        // }
+      } else { 
+        dispatch(setUserProfile(USER_INITIAL_STATE));
+        console.log("navigating to login pagea: 1 ");
+        navigate("/login");
+      }
     }
-  }, [token]);
+  }, [token, canRun]);
   return {
     isAuth: useSelector((state) => state.user.isAuth),
+    setCanRun
   };
 };
-
+ 
 export default useCheckAuth;

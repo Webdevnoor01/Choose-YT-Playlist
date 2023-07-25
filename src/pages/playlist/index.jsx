@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 
 // react, redux
 import { useSelector, useDispatch } from "react-redux";
@@ -37,12 +37,15 @@ import shortid from "shortid";
 import { showToast } from "../../utils/showToast";
 import useCheckAuth from "../../hooks/useCheckAuth";
 import useUserInit from "../../hooks/useUserInit";
+import { setNavigation } from "../../store/navigationSlice";
 
 const Playlist = () => {
   const { init, initUser, loading, setLoading } = useUserInit();
   const user = useSelector((state) => state.user);
+  const navigation = useSelector((state) => state.navigation)
   const playlists = useSelector((state) => state.playlist);
-  // const { isAuth } = useCheckAuth();
+  const { isAuth, setCanRun } = useCheckAuth();
+  const location = useLocation()
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -50,6 +53,19 @@ const Playlist = () => {
   const playlistArr = Object.values(playlists.items);
 
   console.log("playlist page rendering")
+  console.log("location: ", navigation)
+
+  useEffect(() => {
+    if(navigation.pathName !== "/login"){
+      setCanRun(true)
+    }
+
+    return () => {
+      dispatch(setNavigation({}))
+      setCanRun(false)
+    }
+  }, [])
+
   useEffect(() => {
     async function setupUser() {
       const userData = await initUser();
@@ -59,7 +75,7 @@ const Playlist = () => {
       console.log("setup-user-called")
     }
 
-    if(user.isAuth === false){
+    if(user.isAuth === false || navigation=== {}){
 
       setupUser();
     }

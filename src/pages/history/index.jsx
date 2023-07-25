@@ -1,4 +1,4 @@
-import React from "react";
+import {useEffect} from "react";
 
 // MUI component
 import {
@@ -29,13 +29,20 @@ import HistoryCard from "../../components/history-card";
 import useCheckAuth from "../../hooks/useCheckAuth";
 
 const History = () => {
-  const { isAuth } = useCheckAuth();
+  const { isAuth, setCanRun } = useCheckAuth();
   const states = useSelector((state) => state);
   const historyArr = Object.values(states.history.items);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  console.log("historyArr: ", historyArr);
+
+  useEffect(() => {
+    setCanRun(true)
+    
+    return () => {
+      setCanRun(false)
+    }
+  },[])
   return (
     <>
       <Box

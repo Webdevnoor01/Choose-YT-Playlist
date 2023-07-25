@@ -1,5 +1,4 @@
-import { Box } from "@mui/material";
-import React from "react";
+import {useEffect} from "react";
 
 // react-redux
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +15,7 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 // Components
+import { Box } from "@mui/material";
 import PlaylistCard from "../../components/playlist-card";
 import EmptyMessage from "../../components/empty-message";
 
@@ -23,7 +23,7 @@ import EmptyMessage from "../../components/empty-message";
 import useCheckAuth from "../../hooks/useCheckAuth";
 
 const RecentPlaylist = () => {
-  const { isAuth } = useCheckAuth();
+  const {setCanRun } = useCheckAuth();
   const dispatch = useDispatch();
   const recentPlaylists = useSelector((state) => state.recentPlaylists);
   const playlists = useSelector((state) => state.playlist.items);
@@ -34,7 +34,13 @@ const RecentPlaylist = () => {
     20: "px",
     1: "fr",
   };
+  useEffect(() => {
+    setCanRun(true)
 
+    return () => {
+      setCanRun(false)
+    }
+  },[])
   const recentPlaylistMoreOption = [
     {
       title: "Remove from recent playlist",

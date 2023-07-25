@@ -28,6 +28,7 @@ import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../../theme";
 import { SearchOutlined } from "@mui/icons-material";
 import SearchCard from "../../search-card";
+
 import {
   findFavoritePlaylistByTitle,
   findPlaylistById,
@@ -175,6 +176,8 @@ const SearchBox = ({ open }) => {
   const playlistResultArr = Object.values(playlistResult.items);
   console.log("palylistArr: ", playlistResultArr);
   const historyResultArr = Object.values(histories.items);
+
+  const handleSearch = (e) => setSearch(e.target.value)
   return (
     <Box
       sx={{
@@ -264,7 +267,7 @@ const SearchBox = ({ open }) => {
               },
             }}
             placeholder="Search..."
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearch}
           />
 
           {/* TODO: I have to design select component as reusable */}
@@ -344,6 +347,7 @@ const SearchBox = ({ open }) => {
               }
               channelName={playlist.channelName}
               playlistId={playlist.playlistId}
+              index={playlist.index}
               onClick={() =>
                 navigateToWatch(
                   playlist.playlistId,

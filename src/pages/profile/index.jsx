@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // MUI Components
 import { Box, CardMedia, Typography } from "@mui/material";
 
@@ -69,10 +69,17 @@ const profileEditObj = {
 };
 
 const Profile = () => {
-  const { isAuth } = useCheckAuth();
+  const { isAuth, setCanRun } = useCheckAuth();
   const [profileEditComponent, setProfileEditComponent] = useState("userInfo");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  useEffect(() => {
+    setCanRun(true)
+    return () => {
+      setCanRun(false)
+    }
+  },[])
 
   profileEditObj.changePassword.button.style = {
     backgroundColor: colors.pinkAccent[500],

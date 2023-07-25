@@ -1,5 +1,5 @@
 // react
-import React from "react";
+import {useEffect} from "react";
 
 // react-redux
 import { useSelector } from "react-redux";
@@ -22,13 +22,19 @@ import { tokens } from "../../theme";
 import useCheckAuth from "../../hooks/useCheckAuth";
 
 const Note = () => {
-  const {} = useCheckAuth();
+  const {setCanRun} = useCheckAuth();
   const theme = useTheme();
   const { noteId } = qs.default.parse(location.search);
   const currentNote = useSelector((state) => state.notes[noteId]);
 
   const colors = tokens(theme.palette.mode);
+  useEffect(() => {
+    setCanRun(true)
 
+    return () => {
+      setCanRun(false)
+    }
+  },[])
   // return <h2>Loading</h2>
   return (
     <Box

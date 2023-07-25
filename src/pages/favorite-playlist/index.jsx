@@ -1,3 +1,5 @@
+import {useEffect } from "react"
+
 // react-redux
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromFavorite } from "../../store/playlistSlice";
@@ -15,13 +17,21 @@ import EmptyMessage from "../../components/empty-message";
 import useCheckAuth from "../../hooks/useCheckAuth";
 
 const FavoritePlaylist = () => {
-  const { isAuth } = useCheckAuth();
+  const { isAuth, setCanRun } = useCheckAuth();
   const dispatch = useDispatch();
   const playlists = useSelector((state) => state.playlist.items);
   const playlistArr = Object.values(playlists);
   const favPlaylistArr = playlistArr.filter(
     (playlist) => playlist.isFavorite === true
   );
+
+  useEffect(() => {
+    setCanRun(true)
+
+    return () => {
+      setCanRun(false)
+    }
+  },[])
   const gridMinMaxObj = {
     20: "px",
     1: "fr",

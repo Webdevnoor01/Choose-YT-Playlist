@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 // Redux actions
 import { setUserProfile } from "../../store/userSlice";
+import { setNavigation } from "../../store/navigationSlice";
 
 // React router dom
 import { useNavigate, useLocation } from "react-router-dom";
@@ -40,9 +41,7 @@ import { showToast } from "../../utils/showToast";
 const Login = () => {
   const location = useLocation();
   const { init } = useUserInit();
-  const { isAuth } = useCheckAuth();
-  const state = useSelector((state) => state.user);
-  const user = useSelector((state) => state.user);
+  const { isAuth, setCanRun } = useCheckAuth();
   const { login, loading, error: loginERror } = useLogin();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -87,7 +86,6 @@ const Login = () => {
       identifier: data.userName,
     };
     const user = await login(loginPayload);
-    console.log("user: ", user);
     if (user) {
       if (!user.isError) {
         init(user.playlist.items);
@@ -95,10 +93,15 @@ const Login = () => {
           type: "success",
           message: "Loggedin successfully",
         });
-        location.state = {
-          prevLocation: location.pathname,
-        };
+        const path = {
+          pathName:location.pathname
+        }
         dispatch(setUserProfile(user));
+        const navigationPayload = {
+          pathName:location.pathname
+        }
+        console.log(navigationPayload)
+        dispatch(setNavigation(navigationPayload))
         navigate("/");
       }
     }
@@ -122,11 +125,11 @@ const Login = () => {
     console.log(errors);
   };
 
-  useEffect(() => {
-    if (isAuth) {
-      navigate("/");
-    }
-  }, [isAuth]);
+  // useEffect(() => {
+  //   if (isAuth) {
+  //     navigate("/");
+  //   }
+  // }, [isAuth]);
 
   return (
     <Box
