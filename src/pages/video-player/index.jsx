@@ -117,12 +117,12 @@ const VideoPlayer = () => {
   }, [query.list]);
 
   const handleVideoClick = (videoId, videoIndex) => {
-    
+    console.log("video click: ", videoId, videoIndex)
     setSearchParams(
       createSearchParams({ v: videoId, list: query.list, index: videoIndex })
     );
     setCurrentVideoIndex(videoIndex);
-    const video = playlist.videos.items[videoIndex - 1];
+    const video = playlist.videos[videoIndex - 1];
     const videoHistoryObj = {
       playlistId: playlist.playlistId,
       videoId: video.videoContentDetails.videoId,

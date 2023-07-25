@@ -32,7 +32,6 @@ import useRegister from "../../hooks/useRegister";
 import { showToast } from "../../utils/showToast";
 
 const Signup = () => {
-  const { setCanRun } = useCheckAuth()
 
   // Form validation schema
   const { loading, register } = useRegister();
@@ -81,11 +80,6 @@ const Signup = () => {
     let token = localStorage.getItem("authToken")
     if(token){
       navigate("/")
-    }
-    setCanRun(true)
-
-    return () =>{
-      setCanRun(false)
     }
   },[])
   const formArr = Object.values(inputObj);
