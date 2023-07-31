@@ -65,9 +65,8 @@ const getPlaylist = async (playlistId) => {
       playlistTitle,
       playlistThumbnail: thumbnails.medium,
       videos: result,
-      channelTitle: ct,
+      channelName: ct,
       channelId: cid,
-      channelTitle,
       isFavorite: false,
     };
   } catch (e) {

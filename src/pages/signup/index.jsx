@@ -21,8 +21,6 @@ import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
 import InputGroup from "../../components/shared/input-group";
 import ButtonUI from "../../components/UI/button";
 
-// hooks
-import useCheckAuth from "../../hooks/useCheckAuth";
 
 // input json
 import inputObj from "./signpup.json";

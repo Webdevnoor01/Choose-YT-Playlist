@@ -3,6 +3,7 @@ import axios from "axios";
 const userUrl =
     import.meta.env.VITE_USER_API
 async function createPlaylist(payload, token) {
+    console.log("playlistPayload: ", payload)
     try {
         const response = await axios.post(`${userUrl}/playlists`, payload, {
             headers: {

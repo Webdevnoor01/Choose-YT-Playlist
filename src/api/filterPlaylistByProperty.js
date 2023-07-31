@@ -3,7 +3,6 @@ import axios from "axios";
 const userUrl =
     import.meta.env.VITE_USER_API
 async function filterPlaylistByProperty(property) {
-    console.log("filter playlist called")
     try {
         const token = localStorage.getItem("authToken")
         if(token){
@@ -12,8 +11,6 @@ async function filterPlaylistByProperty(property) {
                     "Authorization" : `Bearer ${token}`
                 }
             })
-    
-           
     
             if (!playlist.data.error) {
                 return playlist.data.data[0]

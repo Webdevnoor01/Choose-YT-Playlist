@@ -4,10 +4,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import getPlaylist from "../api";
 import filterPlaylistByProperty from "../api/filterPlaylistByProperty";
 import updatePlaylist from "../api/updatePlaylist";
+import removePlaylistFromDB from "../api/removePlaylistFromDB";
 export const INIT_STATE = {
   error: "",
+  success:"",
   loading: false,
   updateLoading:false,
+  removeLoading:false,
   items: {},
   searchResult: {
     loading: false,
@@ -65,6 +68,16 @@ export const updatePlaylistIntoStore = createAsyncThunk(
   }
 );
 
+export const removePlaylistById = createAsyncThunk("user/playlist/remove", async  (playlistId, {rejectWithValue, fulfillWithValue}) => {
+
+  try {
+    const playlist = await removePlaylistFromDB(playlistId)
+    return fulfillWithValue(playlist)
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
+
 // export const updatePlaylistIntoDB = createAsyncThunk(
 //   "user/playlist/updateDB",
 //   async (payload, { fulfillWithValue, rejectWithValue }) => {
@@ -93,6 +106,9 @@ const playlistSlice = createSlice({
     },
     setPlaylistError: (state, action) => {
       state.error = "";
+    },
+    setPlaylistSuccess: (state, action) => {
+      state.success = "";
     },
     setPlsylitLoading: (state, action) => {
       state.loading = action.payload;
@@ -231,17 +247,9 @@ const playlistSlice = createSlice({
   extraReducers: {
     [fetchPlaylist.pending]: (state, action) => {
       state.loading = true;
-      state.error = {
-        name: "Success",
-        message: "Successfully fetched playlist data",
-      };
     },
     [fetchPlaylist.fulfilled]: (state, action) => {
       state.items[action.payload.playlistId] = action.payload;
-      state.error = {
-        name: "Success",
-        message: "Successfully fetched playlist data",
-      };
       state.loading = false;
       return state;
     },
@@ -267,19 +275,6 @@ const playlistSlice = createSlice({
         if(currentLength === updatedLength){
           state.error = "Playlist is already updated"
         }
-        if(currentLength < updatedLength) {
-            let updatedVideos = action.payload.videos.splice(currentLength)
-            state.items[action.payload.playlistId].videos.push(...updatedVideos)
-            const payload = {
-              id:state.id,
-              data:{
-                videos:[...action.payload.videos, ...updatedVideos]
-              }
-            }
-            state.id = ""
-            updatePlaylist(payload.id, payload)
-            state.updateLoading = false;
-        }
 
     },
 
@@ -287,12 +282,31 @@ const playlistSlice = createSlice({
       state.updateLoading = false;
       state.error = action.payload
     },
+
+
+    [removePlaylistById.pending]: (state, action) => {
+      state.removeLoading = true
+      console.log("removePayloadPending: ", action.payload)
+    },
+    [removePlaylistById.fulfilled]: (state, action ) => {
+      console.log("removePayloadFulfilled: ", action.payload)
+      delete state.items[action.payload.playlistId]
+      state.removeLoading = false
+      state.success = "Playlist removed successfully"
+
+    },
+    [removePlaylistById.rejected]:(state, action) => {
+      console.log("removePayloadRejected: ", action.payload)
+      state.updateLoading = false;
+
+    }
   },
 });
 export const {
   setPlaylist,
   removePlaylist,
   setPlaylistError,
+  setPlaylistSuccess,
   setAsFaroite,
   removeFromFavorite,
   findPlaylistById,

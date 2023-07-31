@@ -56,6 +56,7 @@ const AddPlaylistModal = () => {
 
   const addPlaylistIntoDB = async ({ payload }) => {
     const token = await localStorage.getItem("authToken");
+    console.log(payload)
     try {
       const playlistPayload = {
         data: {
@@ -68,6 +69,7 @@ const AddPlaylistModal = () => {
             width: payload.playlistThumbnail.width,
           },
           videos: payload.videos,
+          channelName:payload.channelName,
         },
       };
       const data = await createPlaylist(playlistPayload, token);
@@ -99,9 +101,12 @@ const AddPlaylistModal = () => {
     if (!playlistId.includes("youtube.com")) {
       if (playlistId.slice(0, 2) == "PL") {
         const fetchedPlaylist = await dispatch(fetchPlaylist(playlistId));
-        console.log("fetched-playlist: ", fetchedPlaylist);
         dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
         addPlaylistIntoDB(fetchedPlaylist);
+        showToast({
+          type: "success",
+          message: "Playlist added successfully.",
+        });
         return;
       }
       showToast({
@@ -124,9 +129,12 @@ const AddPlaylistModal = () => {
       }
 
       const fetchedPlaylist = await dispatch(fetchPlaylist(splitPlaylistId[1]));
-      console.log("fetchedPlaylsit: ", fetchedPlaylist);
       dispatch(setAddPlaylistToggle(!states.toggle.addPlaylistToggle));
       addPlaylistIntoDB(fetchedPlaylist);
+      showToast({
+        type: "success",
+        message: "Playlist added successfully.",
+      });
     }
   };
   const onInValid = (errors) => {
